@@ -1,6 +1,18 @@
 {
-  "lastSequence": 49,
+  "lastSequence": 50,
   "items": [
+    {
+      "id": 50,
+      "title": "Permissionless proof pipeline command",
+      "description": "/pro:permissionless-proof <url> - Run a full permissionless proof pipeline for a live website. Produces a high-fidelity parity rebuild first, then a clean elevated version with modern UI, motion, and polish. Designed for fast outreach and retainers.\n\nPipeline phases: (1) ACQUIRE - faithful extraction of HTML, assets, screenshots, (2) PARITY - strict mode rebuild matching structure exactly, (3) VERIFY - diff screenshots + structural checklist, (4) ELEVATE - typography, spacing, shadcn/ui, Framer Motion, accessibility.\n\nOutput: ./permissionless-proof/{domain}/ with deployable Vite+React codebase, screenshots, diff report, README.\n\nDesign decisions: Utility command (no git workflow), new subdirectory output, Vite+React framework, dual verification (visual + structural).",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|50|permissionless-proof-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/permissionless-proof-command",
+      "createdAt": "2026-01-03T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 49,
       "title": "Add playwriter as alternative browser MCP",
