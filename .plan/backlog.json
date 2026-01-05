@@ -1,6 +1,54 @@
 {
-  "lastSequence": 50,
+  "lastSequence": 54,
   "items": [
+    {
+      "id": 54,
+      "title": "/pro:chain - Sequential command execution",
+      "description": "Create /pro:chain command that runs multiple /pro:* commands in sequence. Each command completes before the next starts.\n\nUsage: /pro:chain chore, supabase.local\n\nFeatures:\n- Comma-separated command names\n- Arguments via quoting: /pro:chain \"feature add dark mode\", pr\n- Wait for interactive commands to complete\n- Stop chain on failure or user abort\n\nFuture: parallel execution, conditional chaining, named presets.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|54|pro-chain-command",
+      "source": "/pro:feature",
+      "sourceBranch": null,
+      "createdAt": "2026-01-05T13:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 53,
+      "title": "/pro:request - Twitter feature requests to maintainers",
+      "description": "Create /pro:request command that formats feature requests as tweets and helps submit them to project maintainers on X/Twitter.\n\nFeatures:\n- Takes feature request description\n- Formats as concise tweet (≤280 chars)\n- Tags appropriate maintainer (@bcherny for Claude Code)\n- Copies to clipboard AND opens twitter.com/intent/tweet URL\n\nCould be generic (specify maintainer handle) or have presets for common projects.",
+      "category": "feature",
+      "severity": "low",
+      "fingerprint": "feature|53|pro-request-twitter-command",
+      "source": "/pro:feature",
+      "sourceBranch": null,
+      "createdAt": "2026-01-05T13:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 52,
+      "title": "Remove slow ADR check from /pro:pr.merged",
+      "description": "The /pro:pr.merged command includes an ADR existence check that is slow and almost always results in 'ADRs already exist for the X branch. Skipping ADR creation.' This check adds unnecessary latency to what should be a quick cleanup operation. ADRs are created during feature work, not at merge time.\n\nFix: Remove or significantly speed up the ADR check in pr.merged.md. The command should focus on cleanup (archiving planning docs, deleting branches) without the overhead of ADR detection.",
+      "category": "chore",
+      "severity": "low",
+      "fingerprint": "chore|52|pr-merged-remove-adr-check",
+      "source": "/pro:feature",
+      "sourceBranch": null,
+      "createdAt": "2026-01-05T12:30:00Z",
+      "status": "open"
+    },
+    {
+      "id": 51,
+      "title": "Auto visual parity verification for permissionless proof",
+      "description": "Enhance /pro:permissionless-proof with automated visual parity checking loop. After PARITY phase builds, automatically:\n\n1. Screenshot source (cached) and parity build\n2. Use Claude's vision to analyze screenshots and compute parity score (0-100%)\n3. If score < 99%, identify gaps and auto-fix\n4. Rebuild and repeat until 99% OR diminishing returns OR max iterations\n\nExit conditions: (1) parity >= 99% = success, (2) <1% improvement for 3 consecutive iterations = diminishing returns, (3) max 10 iterations = safety cap.\n\nOn diminishing returns exit: ask user if they want to proceed to ELEVATE anyway.\n\nSaves iteration history (screenshots + scores) to screenshots/verify-iterations/ for debugging.\n\nImplementation: Internal iteration loop within command (not ralph-wiggum style external hooks). Uses Playwright MCP for screenshots. May add visual-parity-checker skill for the vision analysis.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|51|auto-visual-parity-verification",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/auto-visual-parity-verification",
+      "createdAt": "2026-01-05T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 50,
       "title": "Permissionless proof pipeline command",

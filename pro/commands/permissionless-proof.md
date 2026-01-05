@@ -465,9 +465,11 @@ Report: `[PASS] Parity build complete`
 
 ---
 
-## Phase 3: VERIFY (Dual Verification)
+## Phase 3: AUTO-VERIFY (Automated Visual Parity Loop)
 
-> Purpose: Confirm the parity rebuild matches the source before elevation.
+> Purpose: Automatically verify and improve parity until 99%+ match or exit conditions met.
+
+**ultrathink:** This phase requires careful visual analysis of screenshots. Compare source and parity systematically: layout structure, colors, typography, spacing, images, and content. Identify specific gaps with actionable fix recommendations.
 
 ### 3.1 Start Dev Server
 
@@ -478,118 +480,242 @@ DEV_PID=$!
 sleep 3  # Wait for server to start
 ```
 
-### 3.2 Capture Parity Screenshots
+### 3.2 Initialize Verification Loop
 
-Using Playwright MCP on the local dev server (http://localhost:5173):
+Set up iteration tracking:
+
+```
+ITERATION=0
+MAX_ITERATIONS=10
+SCORE_HISTORY=[]
+CONSECUTIVE_LOW_IMPROVEMENT=0
+LOW_IMPROVEMENT_THRESHOLD=1  # percent
+```
+
+Create iteration history directory:
+
+```bash
+mkdir -p "$OUTPUT_DIR/screenshots/verify-iterations"
+```
+
+### 3.3 Capture Parity Screenshot
+
+**[LOOP START]**
+
+Increment iteration and capture current state:
+
+```bash
+ITERATION=$((ITERATION + 1))
+mkdir -p "$OUTPUT_DIR/screenshots/verify-iterations/iteration-$(printf '%03d' $ITERATION)"
+```
+
+Using Playwright MCP on the local dev server:
 
 ```
 mcp__plugin_pro_playwright__browser_navigate: http://localhost:5173
 mcp__plugin_pro_playwright__browser_resize: {width: 1440, height: 900}
-mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "parity-desktop-full.png"}
+mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "screenshots/verify-iterations/iteration-{NNN}/parity.png"}
 ```
 
-Store in `{OUTPUT_DIR}/screenshots/parity/`.
+### 3.4 Vision Analysis
 
-### 3.3 Visual Comparison
+Read both screenshots and analyze for parity:
 
-Present to user:
+1. **Read the source screenshot**: `screenshots/source/source-desktop-full.png`
+2. **Read the parity screenshot**: `screenshots/verify-iterations/iteration-{NNN}/parity.png`
+
+Analyze both images and produce a structured parity report:
 
 ```
-VERIFY Phase: Visual Comparison
+VISION ANALYSIS PROMPT:
 ────────────────────────────────────────
+You are comparing two website screenshots for visual parity.
 
-Please compare these screenshots:
+**Image 1 (Source):** The original website we are trying to match.
+**Image 2 (Parity):** Our React rebuild attempt.
 
-Source (original site):
-  screenshots/source/source-desktop-full.png
+Analyze both screenshots systematically:
 
-Parity (rebuilt site):
-  screenshots/parity/parity-desktop-full.png
+1. **Layout Structure** - Does the overall layout match? (header, sections, footer positions)
+2. **Colors** - Do background colors, text colors, and accent colors match?
+3. **Typography** - Do font sizes, weights, and styles appear similar?
+4. **Spacing** - Is the padding and margin between elements comparable?
+5. **Images** - Are all images present and sized correctly?
+6. **Content** - Is all text content present and in the correct locations?
 
-Open both images and verify:
-- [ ] Layout matches
-- [ ] Colors match
-- [ ] Images present
-- [ ] Text content matches
-- [ ] Spacing is similar
+Produce a JSON report:
 
-Does the parity version match the source? (y/n)
-────────────────────────────────────────
-```
+{
+  "parityScore": <0-100>,
+  "gaps": [
+    {
+      "area": "<section name>",
+      "issue": "<specific visual difference>",
+      "severity": "<high|medium|low>",
+      "fix": "<suggested code change>"
+    }
+  ],
+  "summary": "<one sentence overall assessment>"
+}
 
-### 3.4 Structural Checklist
-
-Generate and display `diff/structural.md`:
-
-```markdown
-## Parity Verification Checklist
-
-### Navigation
-- [ ] Logo present and matches
-- [ ] All {count} menu items present
-- [ ] Links point to correct anchors/pages
-
-### Hero Section
-- [ ] Headline: "{exact text}"
-- [ ] Subheadline: "{exact text}"
-- [ ] CTA button: "{button text}"
-- [ ] Background image/treatment present
-
-### {Section Name} ({count} items)
-- [ ] Heading: "{exact text}"
-- [ ] All {count} items present
-- [ ] Each item has: title, description, image
-
-{Repeat for each section}
-
-### Contact Section
-- [ ] Phone: {phone number}
-- [ ] Email: {email}
-- [ ] Address: {address}
-- [ ] Form fields: {list}
-- [ ] Map: {present/not present}
-
-### Footer
-- [ ] Social links: {list}
-- [ ] Copyright: "{exact text}"
-- [ ] Secondary nav: {list}
-
----
-
-**Verification Result:**
-- Total items: {count}
-- Verified: {count}
-- Missing: {list any missing}
-```
-
-### 3.5 User Gate
-
-```
-Parity Verification Summary
-────────────────────────────────────────
-
-Visual match: [User confirmed above]
-Structural checklist: {X}/{Y} items verified
-
-If any items are missing, they must be fixed
-before proceeding to ELEVATE.
-
-Ready to proceed to ELEVATE phase? (y/n)
+Scoring guide:
+- 95-100%: Near-perfect match, only minor pixel differences
+- 85-94%: Good match with noticeable but minor differences
+- 70-84%: Moderate match, some layout or styling issues
+- 50-69%: Significant differences, major elements misaligned or missing
+- <50%: Poor match, fundamental structure differs
 ────────────────────────────────────────
 ```
 
-**CRITICAL:** Do NOT proceed to ELEVATE unless user explicitly approves parity.
+**JSON Validation:**
 
-If user says no:
-- Ask what's missing
-- Fix the specific issues
-- Re-run VERIFY
+Before proceeding, validate the vision analysis output:
+- `parityScore` must be a number between 0-100
+- `gaps` must be an array (can be empty if score is 100%)
+- Each gap must have: `area` (string), `issue` (string), `severity` (one of: high, medium, low)
+- `summary` must be a string
 
-### 3.6 Stop Dev Server
+If JSON is malformed or missing required fields:
+1. Retry vision analysis once with the same screenshots
+2. If still invalid, log the validation error and proceed to section 3.7 (User Decision)
+
+Save the report:
+
+```bash
+# Save report to iteration directory
+echo '{report JSON}' > "$OUTPUT_DIR/screenshots/verify-iterations/iteration-{NNN}/report.json"
+```
+
+### 3.5 Check Exit Conditions
+
+**Condition 1: SUCCESS (parity >= 99%)**
+
+```
+if parityScore >= 99:
+  LOG: "✓ Parity achieved: {score}%"
+  GOTO 3.8 (Stop Dev Server)
+```
+
+**Condition 2: DIMINISHING RETURNS**
+
+```
+if ITERATION > 1:
+  improvement = parityScore - SCORE_HISTORY[-1]
+  if improvement < LOW_IMPROVEMENT_THRESHOLD:
+    CONSECUTIVE_LOW_IMPROVEMENT += 1
+  else:
+    CONSECUTIVE_LOW_IMPROVEMENT = 0
+
+  if CONSECUTIVE_LOW_IMPROVEMENT >= 3:
+    LOG: "⚠ Diminishing returns detected after {ITERATION} iterations"
+    GOTO 3.7 (User Decision)
+```
+
+**Condition 3: MAX ITERATIONS**
+
+```
+if ITERATION >= MAX_ITERATIONS:
+  LOG: "⚠ Max iterations ({MAX_ITERATIONS}) reached"
+  GOTO 3.7 (User Decision)
+```
+
+**Otherwise: Continue to fixes**
+
+```
+SCORE_HISTORY.append(parityScore)
+GOTO 3.6 (Apply Fixes)
+```
+
+### 3.6 Apply Fixes and Rebuild
+
+For each gap identified in the vision analysis (prioritized by severity):
+
+1. **Identify the component file** from the gap's area description
+2. **Apply the suggested fix** using Edit tool
+3. **Track the fix** for the iteration report
+
+After applying fixes:
+
+```bash
+# Rebuild the project
+cd "$OUTPUT_DIR"
+npm run build
+
+# If build fails, revert last fix and try next gap
+# If all fixes cause build failures, proceed to 3.7
+```
+
+Log iteration summary:
+
+```
+Iteration {N} Complete
+────────────────────────────────────────
+Score: {parityScore}% (Δ {improvement}%)
+Gaps fixed: {count}
+Gaps remaining: {count}
+────────────────────────────────────────
+```
+
+**GOTO 3.3** (capture new screenshot and re-analyze)
+
+### 3.7 User Decision
+
+Present the current state when exiting without achieving 99% parity:
+
+```
+AUTO-VERIFY Complete (Non-Success Exit)
+════════════════════════════════════════
+
+Final Parity Score: {parityScore}%
+Iterations: {ITERATION}
+Exit Reason: {diminishing returns | max iterations}
+
+Score History:
+  Iteration 1: {score}%
+  Iteration 2: {score}% (+{delta}%)
+  ...
+
+Remaining Gaps ({count}):
+  • {area}: {issue} [{severity}]
+  • {area}: {issue} [{severity}]
+  ...
+
+Iteration history saved to:
+  screenshots/verify-iterations/
+
+════════════════════════════════════════
+```
+
+Use `AskUserQuestion`:
+- **"Proceed to ELEVATE"** - Continue with current parity level
+- **"Abort"** - Stop the pipeline, user will fix manually
+
+If user chooses "Abort":
+- Stop dev server
+- Exit pipeline with summary of what was achieved
+- Do NOT proceed to ELEVATE
+
+### 3.8 Stop Dev Server
 
 ```bash
 kill $DEV_PID 2>/dev/null
 ```
+
+Save final verification summary:
+
+```bash
+cat > "$OUTPUT_DIR/screenshots/verify-iterations/summary.json" << EOF
+{
+  "finalScore": {parityScore},
+  "iterations": {ITERATION},
+  "exitReason": "{success | diminishing_returns | max_iterations | user_abort}",
+  "scoreHistory": [{scores}],
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+```
+
+Report: `[PASS] Auto-verify complete: {score}% parity in {N} iterations`
 
 ---
 
@@ -865,16 +991,16 @@ Source: {url}
 Output: {output_dir}
 
 Pipeline Results:
-  ✓ ACQUIRE  - {X} sections, {X} assets extracted
-  ✓ PARITY   - 100% structural match verified
-  ✓ VERIFY   - User approved parity
-  ✓ ELEVATE  - Typography, shadcn/ui, motion added
+  ✓ ACQUIRE    - {X} sections, {X} assets extracted
+  ✓ PARITY     - 100% structural match verified
+  ✓ AUTO-VERIFY - {score}% parity in {N} iterations
+  ✓ ELEVATE    - Typography, shadcn/ui, motion added
 
 Files Created:
-  src/components/  - {X} component files
-  src/assets/      - {X} images
-  screenshots/     - Before/after comparisons
-  diff/            - Verification reports
+  src/components/           - {X} component files
+  src/assets/               - {X} images
+  screenshots/source/       - Original website captures
+  screenshots/verify-iterations/ - Parity iteration history
 
 Next Steps:
   1. npm run dev
@@ -894,8 +1020,12 @@ Next Steps:
 | Playwright unavailable | Fallback to WebFetch only, warn about JS content |
 | Auth wall detected | Ask user how to proceed |
 | Build fails | Report errors, do not proceed |
-| Parity verification fails | Do not proceed to ELEVATE, fix issues first |
-| User declines at gate | Stop and ask what needs fixing |
+| Vision analysis fails | Retry once; if still fails, fall back to user decision |
+| Vision JSON invalid | Validate parityScore (0-100), gaps array, severity values; retry once if malformed, then user decision |
+| Build fails during iteration | Revert last fix, try next gap; if all fail, proceed to user decision |
+| Max iterations reached | Present current state, ask user to proceed or abort |
+| Diminishing returns | Present current state, ask user to proceed or abort |
+| User declines at gate | Stop pipeline, output what was achieved |
 
 ---
 
@@ -916,7 +1046,8 @@ These rules are **non-negotiable**:
 
 - [ ] Output directory created with full Vite + React project
 - [ ] All source sections represented as components
-- [ ] Parity verified with screenshots and checklist
+- [ ] AUTO-VERIFY achieved 99%+ parity OR user approved current state
+- [ ] Iteration history saved to screenshots/verify-iterations/
 - [ ] Elevate phase applied (typography, shadcn/ui, motion)
 - [ ] Build passes without errors
 - [ ] README documents all changes
