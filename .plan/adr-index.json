@@ -1,6 +1,10 @@
 {
-  "lastSequence": 35,
+  "lastSequence": 36,
   "entries": [
+    {
+      "branch": "feat/auto-visual-parity-verification",
+      "adrs": ["036-auto-visual-parity-verification.md"]
+    },
     {
       "branch": "feat/permissionless-proof-command",
       "adrs": ["035-permissionless-proof-pipeline-architecture.md"]
