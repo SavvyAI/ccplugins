@@ -1,6 +1,10 @@
 {
-  "lastSequence": 34,
+  "lastSequence": 35,
   "entries": [
+    {
+      "branch": "feat/permissionless-proof-command",
+      "adrs": ["035-permissionless-proof-pipeline-architecture.md"]
+    },
     {
       "branch": "feature/add-playwriter-mcp-option",
       "adrs": ["034-playwriter-alternative-browser-mcp.md"]
