@@ -1,7 +1,7 @@
 {
   "name": "pro",
   "description": "Product Owner",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "author": {
     "name": "Wil Moore III"
   },
@@ -11,5 +11,6 @@
   "commands": "./commands/",
   "skills": "./skills/",
   "agents": "./agents/*.md",
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "hooks": "./hooks/hooks.json"
 }
