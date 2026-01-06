@@ -264,7 +264,29 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-### 2.2 Configure Tailwind
+### 2.2 Add Deploy Scripts
+
+Update `package.json` to include deployment scripts:
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && npx gh-pages -d dist",
+    "deploy:init": "gh repo create proof-{domain} --public --source=. --push && npm run deploy"
+  }
+}
+```
+
+**Note:** Replace `{domain}` with the sanitized domain name (e.g., `example-dentistry` for `www.example-dentistry.com`).
+
+The user can then:
+- `npm run deploy:init` - First time: creates GitHub repo and deploys to GitHub Pages
+- `npm run deploy` - Subsequent times: rebuilds and redeploys
+
+### 2.3 Configure Tailwind
 
 Write `tailwind.config.js`:
 
@@ -303,7 +325,7 @@ Update `src/index.css`:
 /* Base styles extracted from source */
 ```
 
-### 2.3 Create Directory Structure
+### 2.4 Create Directory Structure
 
 ```bash
 mkdir -p src/components
@@ -311,7 +333,7 @@ mkdir -p src/assets/images
 mkdir -p public
 ```
 
-### 2.4 Download Assets
+### 2.5 Download Assets
 
 For each identified asset:
 
@@ -322,7 +344,7 @@ curl -o src/assets/images/{filename} "{url}"
 
 Or use Bash with appropriate headers if needed.
 
-### 2.5 Generate Components
+### 2.6 Generate Components
 
 For each section identified in ACQUIRE phase, create a component:
 
@@ -371,7 +393,7 @@ export function HeroSection() {
 5. **No additions** - Do not add sections, features, or content
 6. **No simplification** - If source has 6 services, create 6 service cards
 
-### 2.6 Create Navigation Component
+### 2.7 Create Navigation Component
 
 ```tsx
 // src/components/Navigation.tsx
@@ -386,7 +408,7 @@ export function Navigation() {
 }
 ```
 
-### 2.7 Create Footer Component
+### 2.8 Create Footer Component
 
 ```tsx
 // src/components/Footer.tsx
@@ -401,7 +423,7 @@ export function Footer() {
 }
 ```
 
-### 2.8 Create App.tsx
+### 2.9 Create App.tsx
 
 ```tsx
 import { Navigation } from './components/Navigation'
@@ -425,7 +447,7 @@ function App() {
 export default App
 ```
 
-### 2.9 Update index.html
+### 2.10 Update index.html
 
 Preserve original meta tags:
 
@@ -453,7 +475,7 @@ Preserve original meta tags:
 </html>
 ```
 
-### 2.10 Build and Verify
+### 2.11 Build and Verify
 
 ```bash
 npm run build
@@ -950,14 +972,19 @@ Open http://localhost:5173
 
 ## Deployment
 
+**First time (creates GitHub repo + deploys to GitHub Pages):**
+
 \`\`\`bash
-npm run build
+npm run deploy:init
 \`\`\`
 
-Deploy the \`dist/\` folder to any static host:
-- Vercel: \`vercel deploy\`
-- Netlify: Drag and drop dist/
-- GitHub Pages: Push to gh-pages branch
+**Subsequent deploys (rebuilds + redeploys):**
+
+\`\`\`bash
+npm run deploy
+\`\`\`
+
+Live at: https://{username}.github.io/proof-{domain}/
 
 ## Credits
 
@@ -1003,9 +1030,9 @@ Files Created:
   screenshots/verify-iterations/ - Parity iteration history
 
 Next Steps:
-  1. npm run dev
-  2. Review at http://localhost:5173
-  3. Deploy: npm run build && [upload dist/]
+  1. npm run dev            → Preview locally
+  2. npm run deploy:init    → Create repo + deploy to GitHub Pages
+  3. npm run deploy         → Redeploy after changes
 
 ════════════════════════════════════════
 ```

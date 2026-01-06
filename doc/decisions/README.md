@@ -54,3 +54,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [034. Playwriter Alternative Browser MCP](034-playwriter-alternative-browser-mcp.md)
 - [035. Permissionless Proof Pipeline Architecture](035-permissionless-proof-pipeline-architecture.md)
 - [036. Auto Visual Parity Verification](036-auto-visual-parity-verification.md)
+- [037. GitHub Pages Deployment for Proofs](037-github-pages-deployment-for-proofs.md)
