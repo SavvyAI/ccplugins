@@ -1,6 +1,10 @@
 {
-  "lastSequence": 36,
+  "lastSequence": 37,
   "entries": [
+    {
+      "branch": "feat/permissionless-proof-deploy-scripts",
+      "adrs": ["037-github-pages-deployment-for-proofs.md"]
+    },
     {
       "branch": "feat/auto-visual-parity-verification",
       "adrs": ["036-auto-visual-parity-verification.md"]
