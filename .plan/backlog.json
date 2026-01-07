@@ -1,6 +1,18 @@
 {
-  "lastSequence": 56,
+  "lastSequence": 57,
   "items": [
+    {
+      "id": 57,
+      "title": "Universal Content Retriever (UCR) skill",
+      "description": "Claude skill for reliable, deterministic retrieval of any public web content. Solves the inconsistency problem where URLs sometimes resolve fully, sometimes partially, sometimes blocked. Features: (1) Tiered retrieval pipeline (WebFetch → Playwright → user paste), (2) Platform-aware extraction for X, LinkedIn, YouTube, TikTok, Instagram, Pinterest, blogs, (3) Normalized ContentObject schema for consistent reasoning, (4) Silent on success, report only on deviation, (5) Fail-soft with actionable recovery paths. v1 scope: public content only, no caching, skill-only architecture.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|57|universal-content-retriever-skill",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/universal-content-retriever-skill",
+      "createdAt": "2026-01-07T22:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 56,
       "title": "Product brief creates single file instead of versioned briefs",

@@ -209,6 +209,8 @@ These commands work in any directory, even before git init:
 |-------|-------------|
 | **frontend-design** | Create distinctive, production-grade frontend interfaces with high design quality. Automatically used when building web components, pages, dashboards, or styling any web UI. |
 | **build-in-public** | Automatically surface notable development moments and draft shareable content for X and LinkedIn. Proposes posts when features ship, bugs are solved, milestones are reached, design decisions are made, or learnings are discovered. |
+| **content-retriever** | Reliably retrieve any public web content from URLs. Handles X, LinkedIn, YouTube, TikTok, Instagram, Pinterest, and blogs with platform-aware extraction. Uses tiered fallback (WebFetch → Playwright → user paste) for maximum reliability. Silent on success, reports only on deviation. |
+| **product-brief** | Transform unstructured idea material into structured product briefs. Handles voice transcriptions, notes, or stream-of-consciousness input. Produces versioned briefs ready for validation. |
 
 Skills are automatically available when the plugin is installed. Claude uses them when relevant to your task.
 

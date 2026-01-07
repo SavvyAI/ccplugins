@@ -1,6 +1,10 @@
 {
-  "lastSequence": 40,
+  "lastSequence": 41,
   "entries": [
+    {
+      "branch": "feat/universal-content-retriever-skill",
+      "adrs": ["041-universal-content-retriever-skill.md"]
+    },
     {
       "branch": "fix/product-brief-versioning-confusion",
       "adrs": ["040-product-brief-versioned-storage.md"]
