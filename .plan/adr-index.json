@@ -1,6 +1,14 @@
 {
-  "lastSequence": 37,
+  "lastSequence": 39,
   "entries": [
+    {
+      "branch": "feat/permissionless-proof-check-dx",
+      "adrs": ["039-permissionless-proof-check-extension.md"]
+    },
+    {
+      "branch": "feat/checkpoint-persistence",
+      "adrs": ["038-todowrite-checkpoint-persistence.md"]
+    },
     {
       "branch": "feat/permissionless-proof-deploy-scripts",
       "adrs": ["037-github-pages-deployment-for-proofs.md"]

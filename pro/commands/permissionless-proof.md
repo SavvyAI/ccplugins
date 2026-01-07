@@ -1,6 +1,6 @@
 ---
 description: "Rebuild any website? → Parity-first extraction → Elevated proof with modern polish (plugin:pro@ccplugins)"
-allowed-tools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebFetch", "AskUserQuestion", "mcp__plugin_pro_playwright__browser_navigate", "mcp__plugin_pro_playwright__browser_snapshot", "mcp__plugin_pro_playwright__browser_take_screenshot", "mcp__plugin_pro_playwright__browser_evaluate", "mcp__plugin_pro_playwright__browser_wait_for", "mcp__plugin_pro_playwright__browser_close", "mcp__plugin_pro_playwright__browser_resize", "mcp__plugin_pro_shadcn-ui__get_component", "mcp__plugin_pro_shadcn-ui__get_component_demo", "mcp__plugin_pro_shadcn-ui__list_components"]
+allowed-tools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebFetch", "AskUserQuestion", "mcp__plugin_pro_playwright__browser_navigate", "mcp__plugin_pro_playwright__browser_snapshot", "mcp__plugin_pro_playwright__browser_take_screenshot", "mcp__plugin_pro_playwright__browser_evaluate", "mcp__plugin_pro_playwright__browser_wait_for", "mcp__plugin_pro_playwright__browser_close", "mcp__plugin_pro_playwright__browser_resize", "mcp__plugin_pro_playwright__browser_console_messages", "mcp__plugin_pro_playwright__browser_click", "mcp__plugin_pro_playwright__browser_hover", "mcp__plugin_pro_shadcn-ui__get_component", "mcp__plugin_pro_shadcn-ui__get_component_demo", "mcp__plugin_pro_shadcn-ui__list_components"]
 ---
 
 # Permissionless Proof Pipeline
@@ -26,17 +26,18 @@ Run a complete website rebuild pipeline for cold outreach. Produces a high-fidel
 ```
 
 - `<url>` - The website to rebuild (required)
-- `[output-dir]` - Where to create the project (optional, defaults to `.`)
+- `[output-dir]` - Where to create the project (optional, defaults to `proof-{domain-slug}`)
 
 **Examples:**
 ```bash
-# Create in current directory (user already cd'd to target folder)
+# Create in auto-derived directory (recommended)
 /pro:permissionless-proof https://www.gardensdentistrypb.com/
+# → Creates: proof-gardens-dentistry-pb/
 
 # Create in a specific subdirectory
-/pro:permissionless-proof https://www.gardensdentistrypb.com/ ./gardens-dentistry
+/pro:permissionless-proof https://www.gardensdentistrypb.com/ ./my-proof
 
-# Explicit current directory
+# Explicit current directory (not recommended)
 /pro:permissionless-proof https://www.gardensdentistrypb.com/ .
 ```
 
@@ -59,14 +60,54 @@ If URL is invalid or unreachable: **ABORT** with clear message.
 # Extract URL (first argument)
 URL=$(echo "$ARGUMENTS" | awk '{print $1}')
 
-# Extract output dir (second argument, defaults to ".")
-OUTPUT_DIR=$(echo "$ARGUMENTS" | awk '{print $2}')
-if [ -z "$OUTPUT_DIR" ]; then
-  OUTPUT_DIR="."
-fi
-
 # Extract domain for naming/reference
 DOMAIN=$(echo "$URL" | grep -oE '[a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,}' | head -1 | sed 's/www\.//')
+```
+
+### Derive Domain Slug
+
+Generate a URL-safe, human-readable, GitHub Pages-friendly directory name:
+
+```bash
+# Extract domain, remove www and TLD
+DOMAIN_RAW=$(echo "$URL" | sed -E 's|https?://||' | sed 's|/.*||' | sed 's/^www\.//')
+DOMAIN_NO_TLD=$(echo "$DOMAIN_RAW" | sed -E 's/\.[a-z]{2,}$//')
+
+# Convert camelCase and concatenated words to hyphenated
+# Insert hyphens at word boundaries (lowercase-uppercase, letter-number)
+DOMAIN_SLUG=$(echo "$DOMAIN_NO_TLD" | \
+  sed -E 's/([a-z])([A-Z])/\1-\2/g' | \
+  tr '[:upper:]' '[:lower:]' | \
+  sed 's/[^a-z0-9]/-/g' | \
+  sed 's/--*/-/g' | \
+  sed 's/^-//' | \
+  sed 's/-$//')
+
+# Apply prefix for output directory default
+OUTPUT_DIR_DEFAULT="proof-${DOMAIN_SLUG}"
+```
+
+**Examples:**
+| Input URL | Derived Slug |
+|-----------|--------------|
+| `https://www.ramanidentistryfl.com` | `proof-ramani-dentistry-fl` |
+| `https://gardensdentistrypb.com` | `proof-gardens-dentistry-pb` |
+| `https://SmithLawFirm.com` | `proof-smith-law-firm` |
+
+### Resolve Output Directory
+
+```bash
+# Extract user-specified output dir (second argument)
+USER_OUTPUT_DIR=$(echo "$ARGUMENTS" | awk '{print $2}')
+
+# Use user-specified or auto-derived default
+if [ -z "$USER_OUTPUT_DIR" ]; then
+  OUTPUT_DIR="$OUTPUT_DIR_DEFAULT"
+elif [ "$USER_OUTPUT_DIR" = "." ]; then
+  OUTPUT_DIR="."
+else
+  OUTPUT_DIR="$USER_OUTPUT_DIR"
+fi
 ```
 
 ### Check Output Directory
@@ -160,11 +201,242 @@ For each major section, note:
 - Favicon reference
 - Structured data (JSON-LD)
 
-### 1.3 Screenshot Capture
+### 1.3 CHECK (Interaction Audit)
 
-Using Playwright MCP, capture screenshots:
+> Purpose: Surface real user-facing failures on the source site through read-only interaction simulation.
 
-**Desktop Full Page:**
+**ultrathink:** This phase requires careful interaction analysis. Attempt clicks, scrolls, and focus events systematically across viewports. Log failures with precise technical details and operator-friendly translations. Evidence captured here will appear in subsequent screenshots.
+
+**Constraints:**
+- No destructive actions
+- No form submissions that transmit data
+- No authentication bypass
+- Read-only observation only
+
+#### 1.3.1 Viewport Testing Matrix
+
+Test across three viewports:
+
+| Viewport | Width | Height | Purpose |
+|----------|-------|--------|---------|
+| Desktop | 1440 | 900 | Primary business view |
+| Tablet | 768 | 1024 | iPad/tablet breakpoint |
+| Mobile | 375 | 812 | iPhone 12/13 size |
+
+#### 1.3.2 Navigation Testing
+
+For each viewport:
+
+1. Identify all visible top-level navigation links via snapshot
+2. Attempt click on each link:
+   - Record if navigation occurs (URL change)
+   - Record if no-op (click produces no change)
+   - Capture console errors immediately after click:
+   ```
+   mcp__plugin_pro_playwright__browser_console_messages: {level: "error"}
+   ```
+3. If mobile menu toggle visible:
+   - Attempt toggle click
+   - Record if menu opens/closes
+   - Capture before/after screenshots of toggle
+
+**Failure conditions:**
+- Link click produces no navigation and no UI feedback
+- Mobile menu toggle does not open menu
+- Navigation link unreachable on mobile but works on desktop
+
+#### 1.3.3 CTA Testing
+
+For each viewport:
+
+1. Identify all visible CTAs (buttons, links with action intent)
+2. For each CTA:
+   - Use snapshot to check if element is present and not obstructed
+   - Estimate tap target size (should be minimum 44×44px for mobile)
+   - Attempt hover (desktop) to verify state change exists
+   - Capture before/after screenshots if failure detected
+
+**Failure conditions:**
+- CTA hidden, clipped, or obstructed at viewport
+- CTA click produces no feedback
+- CTA tap target below 44×44px on mobile
+
+#### 1.3.4 Scroll Testing
+
+For each viewport:
+
+1. Scroll full page height using evaluate:
+   ```
+   mcp__plugin_pro_playwright__browser_evaluate: {function: "window.scrollTo(0, document.body.scrollHeight)"}
+   ```
+2. During scroll observation, detect:
+   - Horizontal overflow (horizontal scrollbar on mobile)
+   - Visible layout shifts
+3. Check for sticky elements blocking content
+
+**Failure conditions:**
+- Horizontal scroll required on mobile
+- Sticky header covers significant content when scrolled
+- Visible layout shift during scroll
+
+#### 1.3.5 Form Testing (Non-Destructive)
+
+For visible forms:
+
+1. Focus first available input field
+2. On mobile: assess if keyboard would overlap submit button
+3. Check for placeholder text and labels
+4. **Do NOT submit or enter actual data**
+
+**Failure conditions:**
+- Input focus triggers no visual feedback
+- Form lacks visible labels or placeholders
+- Mobile keyboard would overlap submit button
+
+#### 1.3.6 Interactive UI Testing
+
+For menus, modals, accordions:
+
+1. Identify interactive triggers via snapshot
+2. Attempt open trigger (click/tap)
+3. Record if UI element appears
+4. Capture before/after screenshots
+
+**Failure conditions:**
+- Menu/modal/accordion fails to open
+- Open state clips outside viewport
+
+#### 1.3.7 Dead-End Detection
+
+After interaction testing, identify:
+
+1. Page states with no visible CTA, form, or onward link
+2. Post-interaction states with no feedback or guidance
+
+Log as: "User reaches this state with no clear next step"
+
+#### 1.3.8 Trust Signal Detection
+
+Lightweight checks only:
+
+| Signal | Detection |
+|--------|-----------|
+| Copyright year | Compare footer year to current year (${new Date().getFullYear()}) |
+| Privacy/Terms | Check if links exist and are not 404 |
+| SSL | Confirm HTTPS (already known from URL) |
+| Form feedback | Check if forms have visible confirmation patterns |
+
+**Detection only when obvious.** Do not over-index on this section.
+
+#### 1.3.9 Generate Interaction Artifacts
+
+Save to `{OUTPUT_DIR}/screenshots/check/`:
+
+```
+check/
+├── interaction-log.json       # Timestamped log of all interactions
+├── issues.json                # Detected issues with translations
+├── desktop/
+│   ├── nav-001-before.png
+│   ├── nav-001-after.png
+│   └── ...
+├── tablet/
+│   └── ...
+└── mobile/
+    └── ...
+```
+
+**interaction-log.json structure:**
+
+```json
+{
+  "timestamp": "ISO-8601",
+  "source": "{url}",
+  "viewports": ["desktop", "tablet", "mobile"],
+  "interactions": [
+    {
+      "id": "nav-001",
+      "viewport": "mobile",
+      "action": "click",
+      "target": "Mobile menu toggle",
+      "result": "no_change",
+      "consoleErrors": [],
+      "screenshots": {
+        "before": "mobile/nav-001-before.png",
+        "after": "mobile/nav-001-after.png"
+      }
+    }
+  ]
+}
+```
+
+**issues.json structure:**
+
+```json
+{
+  "issues": [
+    {
+      "id": "issue-001",
+      "area": "Navigation",
+      "viewport": "mobile",
+      "technical": "Mobile menu toggle click produces no state change",
+      "operator": "Mobile visitors cannot open the navigation menu",
+      "severity": "high",
+      "evidence": {
+        "screenshot": "mobile/nav-001-after.png",
+        "consoleError": null
+      }
+    }
+  ]
+}
+```
+
+**Operator Translation Examples:**
+
+| Technical | Operator Translation |
+|-----------|---------------------|
+| CTA unreachable due to z-index overlap | Mobile visitors cannot tap your primary action |
+| Mobile menu toggle produces no state change | Mobile visitors cannot open the navigation menu |
+| Horizontal overflow detected at 375px viewport | Mobile visitors must scroll sideways to see content |
+| Form input lacks focus feedback | Visitors may not know which field is active |
+| Copyright year is 2023, current is 2026 | Footer shows outdated copyright year |
+
+#### 1.3.10 CHECK Summary
+
+Present findings:
+
+```
+CHECK Phase Complete
+────────────────────────────────────────
+
+Source: {url}
+
+Issues Detected: {count}
+
+Desktop ({count}):
+  • {operator description} [{severity}]
+
+Tablet ({count}):
+  • {operator description} [{severity}]
+
+Mobile ({count}):
+  • {operator description} [{severity}]
+
+Dead Ends: {count}
+Trust Signals: {count} issues
+
+Evidence saved to: screenshots/check/
+
+────────────────────────────────────────
+```
+
+**Note:** CHECK phase is informational. Proceed to screenshot capture regardless of findings. Issues surfaced here are evidence for the proof, not blockers.
+
+### 1.4 Screenshot Capture
+
+Using Playwright MCP, capture screenshots across all viewports:
+
+**Desktop Full Page (1440×900):**
 ```
 mcp__plugin_pro_playwright__browser_resize: {width: 1440, height: 900}
 mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "source-desktop-full.png"}
@@ -175,7 +447,13 @@ mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: 
 mcp__plugin_pro_playwright__browser_take_screenshot: {filename: "source-desktop-hero.png"}
 ```
 
-**Mobile:**
+**Tablet Full Page (768×1024):**
+```
+mcp__plugin_pro_playwright__browser_resize: {width: 768, height: 1024}
+mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "source-tablet-full.png"}
+```
+
+**Mobile Full Page (375×812):**
 ```
 mcp__plugin_pro_playwright__browser_resize: {width: 375, height: 812}
 mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "source-mobile-full.png"}
@@ -183,7 +461,18 @@ mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: 
 
 Store in `{OUTPUT_DIR}/screenshots/source/`.
 
-### 1.4 Asset Identification
+**Optional: WebKit Browser Pass**
+
+If WebKit is available (graceful degradation if not):
+
+```bash
+# Check if WebKit is available via Playwright
+# If available, repeat mobile screenshot capture with WebKit
+# If unavailable, log warning and continue
+echo "Note: WebKit browser pass skipped (not available)"
+```
+
+### 1.5 Asset Identification
 
 List all assets to download:
 - Hero images
@@ -194,7 +483,7 @@ List all assets to download:
 
 Note: Don't download at this phase. Document URLs for later.
 
-### 1.5 Auth Wall Detection
+### 1.6 Auth Wall Detection
 
 Check for:
 - Login forms blocking content
@@ -205,13 +494,13 @@ Check for:
 If detected, use `AskUserQuestion`:
 "This page has gated content. Should I proceed with visible content only, or do you have credentials to access more?"
 
-### 1.6 Acquire Summary
+### 1.7 Acquire Summary
 
 Present findings to user:
 
 ```
 ACQUIRE Phase Complete
-────────────────────────────────────────
+════════════════════════════════════════
 
 Source: {url}
 Title: {page title}
@@ -229,10 +518,26 @@ Assets Found:
   Forms: {count}
   Maps: {yes/no}
 
-Screenshots captured: 3
+Screenshots captured: 4 (desktop, tablet, mobile, hero)
+
+────────────────────────────────────────
+CHECK Results: {issue_count} issues detected
+────────────────────────────────────────
+
+  Desktop: {count} issues
+  Tablet:  {count} issues
+  Mobile:  {count} issues
+
+Top Issues:
+  • {operator description} [{severity}]
+  • {operator description} [{severity}]
+  • {operator description} [{severity}]
+
+Evidence saved to: screenshots/check/
+
+════════════════════════════════════════
 
 Proceed to PARITY phase? (y/n)
-────────────────────────────────────────
 ```
 
 Wait for explicit user confirmation before proceeding.
@@ -246,7 +551,7 @@ Wait for explicit user confirmation before proceeding.
 ### 2.1 Create Project Scaffold
 
 ```bash
-# OUTPUT_DIR was set in Parse Arguments phase (defaults to ".")
+# OUTPUT_DIR was set in Parse Arguments phase (defaults to "proof-{domain-slug}")
 
 if [ "$OUTPUT_DIR" != "." ]; then
   mkdir -p "$OUTPUT_DIR"
@@ -264,9 +569,25 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-### 2.2 Add Deploy Scripts
+Write `vite.config.ts` with GitHub Pages base path:
 
-Update `package.json` to include deployment scripts:
+```typescript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// GitHub Pages deploys to /{repo-name}/ subpath
+// OUTPUT_DIR matches the repo name for consistent URLs
+export default defineConfig({
+  plugins: [react()],
+  base: '/${OUTPUT_DIR}/',
+})
+```
+
+**Note:** Replace `${OUTPUT_DIR}` with the actual directory name (e.g., `proof-gardens-dentistry`). This ensures assets load correctly on GitHub Pages.
+
+### 2.2 Add Package Scripts
+
+Update `package.json` to include all required scripts:
 
 ```json
 {
@@ -275,16 +596,28 @@ Update `package.json` to include deployment scripts:
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build && npx gh-pages -d dist",
-    "deploy:init": "gh repo create proof-{domain} --public --source=. --push && npm run deploy"
+    "deploy:init": "git init && git add . && git commit -m 'Initial commit' && gh repo create ${OUTPUT_DIR} --public --source=. --push && npm run deploy",
+    "open": "PAGES_URL=\"https://$(gh api user -q .login).github.io/${OUTPUT_DIR}/\" && echo \"$PAGES_URL\" | pbcopy && echo \"Copied: $PAGES_URL\" && open \"$PAGES_URL\""
   }
 }
 ```
 
-**Note:** Replace `{domain}` with the sanitized domain name (e.g., `example-dentistry` for `www.example-dentistry.com`).
+**Note:** Replace `${OUTPUT_DIR}` with the actual directory name (e.g., `proof-gardens-dentistry`).
 
-The user can then:
-- `npm run deploy:init` - First time: creates GitHub repo and deploys to GitHub Pages
-- `npm run deploy` - Subsequent times: rebuilds and redeploys
+**Script behaviors:**
+
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Start local development server |
+| `npm run build` | Build production bundle |
+| `npm run deploy` | Build + deploy to existing GitHub Pages |
+| `npm run deploy:init` | Initialize git, create GitHub repo, push, deploy |
+| `npm run open` | Copy GitHub Pages URL to clipboard + open in browser |
+
+The user workflow is:
+1. `npm run deploy:init` - First time: creates GitHub repo and deploys
+2. `npm run open` - Opens deployed site, URL ready to paste in email
+3. `npm run deploy` - Subsequent deploys after changes
 
 ### 2.3 Configure Tailwind
 
@@ -330,8 +663,24 @@ Update `src/index.css`:
 ```bash
 mkdir -p src/components
 mkdir -p src/assets/images
-mkdir -p public
+mkdir -p public/evidence
+mkdir -p screenshots/source
+mkdir -p screenshots/check
 ```
+
+Write `.gitignore`:
+
+```
+node_modules/
+dist/
+.env
+.env.local
+.DS_Store
+*.log
+.vite/
+```
+
+**Note:** Do not overwrite if `.gitignore` already exists.
 
 ### 2.5 Download Assets
 
@@ -484,6 +833,30 @@ npm run build
 If build errors: Fix them before proceeding. Do not continue with broken build.
 
 Report: `[PASS] Parity build complete`
+
+### 2.12 Initialize Git Repository
+
+```bash
+cd "$OUTPUT_DIR"
+
+# Check if git is available
+if command -v git &> /dev/null; then
+  # Initialize if not already a git repo
+  if [ ! -d ".git" ]; then
+    git init
+    git add .
+    git commit -m "Initial commit: proof scaffold for ${DOMAIN}
+
+Generated by /pro:permissionless-proof
+Source: ${URL}"
+    echo "[PASS] Git repository initialized with initial commit"
+  fi
+else
+  echo "Warning: git not available, skipping repository initialization"
+fi
+```
+
+**Note:** Git initialization is automatic and requires no user input. The generated site is a versioned artifact by default.
 
 ---
 
@@ -997,7 +1370,159 @@ Live at: https://{username}.github.io/proof-{domain}/
 *This proof was created for demonstration purposes. All content belongs to the original site owner.*
 \`\`\`
 
-### 5.2 Final Verification
+### 5.2 Generate Evidence Index
+
+Create a web-accessible evidence viewer at `public/evidence/index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evidence - ${DOMAIN}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #111; color: #fff; padding: 1rem; }
+    h1 { font-size: 1.25rem; margin-bottom: 1rem; }
+    .section { margin-bottom: 2rem; }
+    .section-title { font-size: 0.875rem; color: #888; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; }
+    .thumb { aspect-ratio: 16/9; overflow: hidden; border-radius: 4px; cursor: pointer; background: #222; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; }
+    .thumb:hover img { transform: scale(1.05); }
+    .label { font-size: 0.75rem; color: #666; margin-top: 0.25rem; text-align: center; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; }
+    .modal.active { display: flex; align-items: center; justify-content: center; flex-direction: column; }
+    .modal img { max-width: 95vw; max-height: 85vh; object-fit: contain; }
+    .modal-label { color: #888; margin-top: 1rem; font-size: 0.875rem; }
+    .close { position: absolute; top: 1rem; right: 1rem; color: #fff; font-size: 2rem; cursor: pointer; z-index: 101; }
+    .back { display: inline-block; margin-bottom: 1rem; color: #888; text-decoration: none; font-size: 0.875rem; }
+    .back:hover { color: #fff; }
+    .issues { margin-top: 2rem; padding: 1rem; background: #1a1a1a; border-radius: 8px; }
+    .issue { padding: 0.75rem 0; border-bottom: 1px solid #333; }
+    .issue:last-child { border-bottom: none; }
+    .issue-severity { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem; }
+    .issue-severity.high { background: #7f1d1d; color: #fca5a5; }
+    .issue-severity.medium { background: #78350f; color: #fcd34d; }
+    .issue-severity.low { background: #1e3a5f; color: #93c5fd; }
+  </style>
+</head>
+<body>
+  <a href="../" class="back">← Back to proof</a>
+  <h1>Evidence: ${DOMAIN}</h1>
+
+  <div class="section">
+    <div class="section-title">Source Screenshots</div>
+    <div class="grid" id="source-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Interaction Audit</div>
+    <div class="grid" id="check-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Parity Iterations</div>
+    <div class="grid" id="parity-grid"></div>
+  </div>
+
+  <div class="issues" id="issues-container"></div>
+
+  <div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">×</span>
+    <img id="modal-img" src="" alt="">
+    <div class="modal-label" id="modal-label"></div>
+  </div>
+
+  <script>
+    // Screenshot data is injected during generation
+    const screenshots = ${SCREENSHOTS_JSON};
+    const issues = ${ISSUES_JSON};
+
+    function render(containerId, images) {
+      const grid = document.getElementById(containerId);
+      if (!images || images.length === 0) {
+        grid.innerHTML = '<div style="color:#666;font-size:0.875rem;">No screenshots available</div>';
+        return;
+      }
+      images.forEach(img => {
+        const div = document.createElement('div');
+        div.innerHTML = \`
+          <div class="thumb" onclick="openModal('\${img.path}', '\${img.name}')">
+            <img src="\${img.path}" alt="\${img.name}" loading="lazy">
+          </div>
+          <div class="label">\${img.name}</div>
+        \`;
+        grid.appendChild(div);
+      });
+    }
+
+    function renderIssues() {
+      const container = document.getElementById('issues-container');
+      if (!issues || issues.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+      container.innerHTML = '<div class="section-title">Detected Issues</div>' +
+        issues.map(i => \`
+          <div class="issue">
+            <span class="issue-severity \${i.severity}">\${i.severity}</span>
+            <strong>\${i.area}</strong>: \${i.operator}
+          </div>
+        \`).join('');
+    }
+
+    function openModal(src, label) {
+      document.getElementById('modal-img').src = src;
+      document.getElementById('modal-label').textContent = label;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    document.getElementById('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
+    document.onkeydown = e => { if (e.key === 'Escape') closeModal(); };
+
+    render('source-grid', screenshots.source || []);
+    render('check-grid', screenshots.check || []);
+    render('parity-grid', screenshots.parity || []);
+    renderIssues();
+  </script>
+</body>
+</html>
+```
+
+**Copy screenshots to public/evidence/:**
+
+```bash
+cp -r screenshots/source public/evidence/source 2>/dev/null || true
+cp -r screenshots/check public/evidence/check 2>/dev/null || true
+cp -r screenshots/verify-iterations public/evidence/parity 2>/dev/null || true
+```
+
+**Generate screenshots manifest (screenshots.json):**
+
+Build a JSON manifest of all evidence files and inject into the HTML template, replacing `${SCREENSHOTS_JSON}` and `${ISSUES_JSON}` placeholders.
+
+**Add quiet link in Footer component:**
+
+In `src/components/Footer.tsx`, add a small, unobtrusive link at the bottom:
+
+```tsx
+<a
+  href="/evidence/"
+  className="text-xs text-gray-400 hover:text-gray-300 mt-4 block"
+>
+  View evidence
+</a>
+```
+
+This link should be positioned after the copyright text, not prominently featured.
+
+### 5.3 Final Verification
 
 Start dev server and capture final screenshots:
 
@@ -1008,7 +1533,7 @@ sleep 3
 
 Capture elevated version screenshots for comparison.
 
-### 5.3 Completion Summary
+### 5.4 Completion Summary
 
 ```
 /pro:permissionless-proof Complete
@@ -1019,6 +1544,7 @@ Output: {output_dir}
 
 Pipeline Results:
   ✓ ACQUIRE    - {X} sections, {X} assets extracted
+  ✓ CHECK      - {X} issues detected ({desktop}/{tablet}/{mobile})
   ✓ PARITY     - 100% structural match verified
   ✓ AUTO-VERIFY - {score}% parity in {N} iterations
   ✓ ELEVATE    - Typography, shadcn/ui, motion added
@@ -1026,13 +1552,21 @@ Pipeline Results:
 Files Created:
   src/components/           - {X} component files
   src/assets/               - {X} images
-  screenshots/source/       - Original website captures
+  screenshots/source/       - Original website captures (4 viewports)
+  screenshots/check/        - Interaction audit evidence
   screenshots/verify-iterations/ - Parity iteration history
+  public/evidence/          - Web-accessible evidence index
+
+Git Repository:
+  ✓ Initialized with initial commit
 
 Next Steps:
   1. npm run dev            → Preview locally
   2. npm run deploy:init    → Create repo + deploy to GitHub Pages
-  3. npm run deploy         → Redeploy after changes
+  3. npm run open           → Open deployed site + copy URL to clipboard
+  4. npm run deploy         → Redeploy after changes
+
+Evidence accessible at: {pages_url}/evidence/
 
 ════════════════════════════════════════
 ```
@@ -1053,6 +1587,8 @@ Next Steps:
 | Max iterations reached | Present current state, ask user to proceed or abort |
 | Diminishing returns | Present current state, ask user to proceed or abort |
 | User declines at gate | Stop pipeline, output what was achieved |
+| WebKit unavailable | Log warning, continue with Chromium only |
+| Git unavailable | Log warning, skip repository initialization |
 
 ---
 
@@ -1066,16 +1602,21 @@ These rules are **non-negotiable**:
 4. **Never break SEO** - Keep original titles, descriptions, structured data
 5. **Never break CTAs** - Phone numbers, booking links, forms stay functional
 6. **Keep improvements obvious but restrained** - Polish, not reinvention
+7. **CHECK is observation, not opinion** - Log failures, don't editorialize
 
 ---
 
 ## Definition of Done
 
-- [ ] Output directory created with full Vite + React project
+- [ ] Output directory created at `proof-{domain-slug}/`
 - [ ] All source sections represented as components
+- [ ] CHECK phase completed with issues.json generated
 - [ ] AUTO-VERIFY achieved 99%+ parity OR user approved current state
 - [ ] Iteration history saved to screenshots/verify-iterations/
 - [ ] Elevate phase applied (typography, shadcn/ui, motion)
+- [ ] Evidence index generated at public/evidence/
+- [ ] Git repository initialized with initial commit
 - [ ] Build passes without errors
 - [ ] README documents all changes
 - [ ] User can run `npm install && npm run dev` successfully
+- [ ] User can run `npm run deploy:init && npm run open` successfully
