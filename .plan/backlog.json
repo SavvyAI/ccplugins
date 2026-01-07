@@ -1,6 +1,18 @@
 {
-  "lastSequence": 54,
+  "lastSequence": 55,
   "items": [
+    {
+      "id": 55,
+      "title": "Permissionless Proof CHECK + DX improvements",
+      "description": "Evolve the permissionless proof system from static visual parity generator to customer-experience evidence engine.\n\nCHECK EXTENSION:\n- Interaction audit (nav, CTAs, forms, scrolling, modals)\n- Dead-end detection\n- Trust/credibility signals\n- Tablet viewport (768×1024) + optional WebKit pass\n- Operator translation layer\n- Web-accessible evidence index at /evidence/\n\nDX IMPROVEMENTS:\n- Domain-scoped output directory (proof-{domain-slug})\n- Auto git init with initial commit\n- Vite base path fix for GitHub Pages\n- npm scripts: build, deploy, deploy:init, open\n- Default .gitignore generation\n\nSuccess: 3-7 indisputable issues per proof, single-command deploy+open, evidence accessible on phone mid-conversation.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|55|permissionless-proof-check-dx",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/permissionless-proof-check-dx",
+      "createdAt": "2026-01-07T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 54,
       "title": "/pro:chain - Sequential command execution",

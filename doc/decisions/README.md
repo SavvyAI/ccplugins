@@ -56,3 +56,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [036. Auto Visual Parity Verification](036-auto-visual-parity-verification.md)
 - [037. GitHub Pages Deployment for Proofs](037-github-pages-deployment-for-proofs.md)
 - [038. TodoWrite Checkpoint Persistence](038-todowrite-checkpoint-persistence.md)
+- [039. Permissionless Proof CHECK Extension](039-permissionless-proof-check-extension.md)
