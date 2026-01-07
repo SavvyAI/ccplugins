@@ -26,7 +26,10 @@ Run comprehensive, brutal market validation against a product idea. This command
 Find the product brief in this order:
 1. If `$ARGUMENTS` is a file path: read it
 2. If `$ARGUMENTS` contains brief content: use it
-3. If no arguments: look for `.plan/product/brief.md`
+3. If no arguments: find the most recent brief
+   - Check for `.plan/product/briefs/*.md` files
+   - If found: use the most recent (by filename date)
+   - If empty: check for legacy `.plan/product/brief.md` (non-index format)
 4. If still not found: error with helpful message
 
 ```
@@ -362,7 +365,7 @@ Works in any directory without git:
 
 ## Definition of Done
 
-- Brief resolved (from argument, file, or `.plan/product/brief.md`)
+- Brief resolved (from argument, file, `.plan/product/briefs/*.md`, or legacy `brief.md`)
 - Core thesis extracted
 - Multi-dimensional research completed
 - Evidence synthesized

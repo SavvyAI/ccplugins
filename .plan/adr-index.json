@@ -1,6 +1,10 @@
 {
-  "lastSequence": 39,
+  "lastSequence": 40,
   "entries": [
+    {
+      "branch": "fix/product-brief-versioning-confusion",
+      "adrs": ["040-product-brief-versioned-storage.md"]
+    },
     {
       "branch": "feat/permissionless-proof-check-dx",
       "adrs": ["039-permissionless-proof-check-extension.md"]
