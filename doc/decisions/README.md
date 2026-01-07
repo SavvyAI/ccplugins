@@ -57,3 +57,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [037. GitHub Pages Deployment for Proofs](037-github-pages-deployment-for-proofs.md)
 - [038. TodoWrite Checkpoint Persistence](038-todowrite-checkpoint-persistence.md)
 - [039. Permissionless Proof CHECK Extension](039-permissionless-proof-check-extension.md)
+- [040. Product Brief Versioned Storage](040-product-brief-versioned-storage.md)

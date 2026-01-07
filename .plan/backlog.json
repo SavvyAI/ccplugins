@@ -1,6 +1,18 @@
 {
-  "lastSequence": 55,
+  "lastSequence": 56,
   "items": [
+    {
+      "id": 56,
+      "title": "Product brief creates single file instead of versioned briefs",
+      "description": "/pro:product.brief creates a single .plan/product/brief.md file, which is misleading for mature products adding new feature briefs. ADR-031 specifies 'timestamped files' but implementation uses single file.\n\n**Steps to reproduce:**\n1. Work on a product (brief created outside system)\n2. Run /pro:product.brief for a new feature idea\n3. Command creates brief.md as if it's THE product brief\n\n**Fix:** Transform brief.md into an index linking to timestamped briefs in briefs/ subdirectory. Format: YYYY-MM-DD-{slugified-title}.md",
+      "category": "bug",
+      "severity": "low",
+      "fingerprint": "bug|56|product-brief-versioning-confusion",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/product-brief-versioning-confusion",
+      "createdAt": "2026-01-07T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 55,
       "title": "Permissionless Proof CHECK + DX improvements",

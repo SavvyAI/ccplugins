@@ -12,7 +12,7 @@ Let's create a pitch deck outline.
 Generate a structured pitch deck outline from your validated product. Uses the product brief and validation report to create an investor-ready 10-slide structure.
 
 **Prerequisites:**
-1. Product brief exists (`.plan/product/brief.md`)
+1. Product brief exists (in `.plan/product/briefs/*.md` or legacy `brief.md`)
 2. Validation report exists (`.plan/product/validation-*.md`)
 
 **This command produces:**
@@ -26,7 +26,10 @@ Generate a structured pitch deck outline from your validated product. Uses the p
 
 Find required documents:
 
-1. **Brief:** Look for `.plan/product/brief.md`
+1. **Brief:** Find most recent brief
+   - Check for `.plan/product/briefs/*.md` files
+   - If found: use the most recent (by filename date)
+   - If empty: check for legacy `.plan/product/brief.md` (non-index format)
 2. **Validation:** Find most recent `.plan/product/validation-*.md`
 
 If either is missing:
@@ -34,7 +37,7 @@ If either is missing:
 Error: Cannot generate pitch without validation.
 
 Required files:
-- .plan/product/brief.md (run /pro:product.brief)
+- Product brief in .plan/product/briefs/ (run /pro:product.brief)
 - .plan/product/validation-*.md (run /pro:product.validate)
 ```
 
