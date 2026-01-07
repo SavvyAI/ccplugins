@@ -1,0 +1,16 @@
+{
+  "description": "Checkpoint TodoWrite state for resume capability",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/checkpoint.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

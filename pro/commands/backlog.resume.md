@@ -1,6 +1,6 @@
 ---
 description: "What's next? → Resumes in-progress work OR recommends highest priority item → Smart continuation"
-allowed-tools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "AskUserQuestion"]
+allowed-tools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "AskUserQuestion", "TodoWrite"]
 ---
 
 ## Context
@@ -121,6 +121,9 @@ For the selected in-progress item:
    - Read recent git history: `git log --oneline -10`
    - Check for uncommitted changes: `git status`
    - Review the backlog item's description and requirements
+   - **Check for checkpoint**: Read `.plan/{branch-name}/checkpoint.json` if it exists
+     - If found, restore todos using `TodoWrite` with the checkpoint's `todos` array
+     - This preserves work state from the previous session
 
 3. **Present status summary**
 
@@ -132,9 +135,12 @@ For the selected in-progress item:
    │  Planning notes: .plan/feat-example-branch/             │
    │  Last commit: abc1234 - "Add initial implementation"    │
    │  Uncommitted changes: 3 files modified                  │
+   │  Checkpoint: ✓ restored (3 completed, 2 pending)        │
    │                                                         │
    └─────────────────────────────────────────────────────────┘
    ```
+
+   If checkpoint was restored, show the todo summary. If no checkpoint exists, omit that line.
 
 4. **Continue work**
    - Read and follow the planning notes
