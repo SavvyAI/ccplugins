@@ -1,6 +1,10 @@
 {
-  "lastSequence": 41,
+  "lastSequence": 42,
   "entries": [
+    {
+      "branch": "feat/npx-dev-port-command",
+      "adrs": ["042-npx-dev-port-command.md"]
+    },
     {
       "branch": "feat/universal-content-retriever-skill",
       "adrs": ["041-universal-content-retriever-skill.md"]

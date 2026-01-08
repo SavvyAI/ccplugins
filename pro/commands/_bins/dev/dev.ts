@@ -10,6 +10,48 @@ import { notifySuccess, notifyError, notifyWarning, notifyInfo } from './notify'
 
 const execAsync = promisify(exec)
 
+// Safe port ranges for dynamic allocation (ADR-012)
+const SAFE_PORT_RANGES = [
+  { start: 4000, end: 4099 }, // Primary range
+  { start: 6000, end: 6099 }, // Fallback 1
+  { start: 7000, end: 7099 }, // Fallback 2
+]
+
+// Common/conflicting ports to reject
+const REJECTED_PORTS = new Set([
+  3000, // React, Rails, Express
+  5000, // Flask, macOS AirPlay
+  8000, // Django, Python HTTP
+  8080, // Common proxy/alt HTTP
+])
+
+// Check if a port is in a safe range
+function isPortInSafeRange(port: number): boolean {
+  return SAFE_PORT_RANGES.some(range => port >= range.start && port <= range.end)
+}
+
+// Check if a port is available
+async function isPortAvailable(port: number): Promise<boolean> {
+  try {
+    await execAsync(`lsof -i :${port}`)
+    return false // Port is in use
+  } catch {
+    return true // Port is free
+  }
+}
+
+// Find next available port in safe ranges
+async function findSafePort(): Promise<number> {
+  for (const range of SAFE_PORT_RANGES) {
+    for (let port = range.start; port <= range.end; port++) {
+      if (await isPortAvailable(port)) {
+        return port
+      }
+    }
+  }
+  throw new Error('No available port found in safe ranges (4000-4099, 6000-6099, 7000-7099)')
+}
+
 // Get primary network IP address
 function getNetworkIP(): string | null {
   const nets = networkInterfaces()
@@ -919,6 +961,105 @@ async function doctor() {
   })
 }
 
+// Show current port for a server
+function showPort(serverName: string) {
+  const servers = loadServersConfig()
+  const server = servers[serverName]
+
+  if (!server) {
+    console.error(`Error: Server '${serverName}' not found in .dev/servers.json`)
+    console.log(`Available servers: ${Object.keys(servers).join(', ')}`)
+    process.exit(1)
+  }
+
+  const pidData = loadPidFile()
+  const runningInfo = pidData[serverName]
+
+  console.log(`${serverName}:`)
+  console.log(`  Configured port: ${server.preferredPort}`)
+
+  if (runningInfo) {
+    if (runningInfo.port !== server.preferredPort) {
+      console.log(`  Running on port: ${runningInfo.port} (differs from config)`)
+    } else {
+      console.log(`  Status: running on :${runningInfo.port}`)
+    }
+  } else {
+    console.log(`  Status: not running`)
+  }
+}
+
+// Set port for a server (specific port or auto-scan)
+async function setPort(serverName: string, requestedPort: number | 'auto') {
+  const servers = loadServersConfig()
+  const server = servers[serverName]
+
+  if (!server) {
+    console.error(`Error: Server '${serverName}' not found in .dev/servers.json`)
+    console.log(`Available servers: ${Object.keys(servers).join(', ')}`)
+    process.exit(1)
+  }
+
+  let newPort: number
+
+  if (requestedPort === 'auto') {
+    // Auto-scan for best available port
+    console.log(`🔍 Scanning for available port in safe ranges...`)
+    try {
+      newPort = await findSafePort()
+    } catch (error) {
+      console.error(`❌ ${(error as Error).message}`)
+      process.exit(1)
+    }
+  } else {
+    // Validate the requested port
+    if (requestedPort < 1024) {
+      console.error(`❌ Port ${requestedPort} requires elevated privileges.`)
+      console.error(`   Use ports 4000-4099, 6000-6099, or 7000-7099.`)
+      process.exit(1)
+    }
+
+    if (REJECTED_PORTS.has(requestedPort)) {
+      console.error(`❌ Port ${requestedPort} is a common/conflicting port.`)
+      console.error(`   Use ports 4000-4099, 6000-6099, or 7000-7099.`)
+      process.exit(1)
+    }
+
+    if (!isPortInSafeRange(requestedPort)) {
+      console.error(`❌ Port ${requestedPort} is outside safe ranges.`)
+      console.error(`   Use ports 4000-4099, 6000-6099, or 7000-7099.`)
+      process.exit(1)
+    }
+
+    // Check if port is available
+    if (!(await isPortAvailable(requestedPort))) {
+      console.error(`❌ Port ${requestedPort} is already in use.`)
+      console.error(`   Run 'lsof -i :${requestedPort}' to see what's using it.`)
+      process.exit(1)
+    }
+
+    newPort = requestedPort
+  }
+
+  const oldPort = server.preferredPort
+
+  // Update the configuration
+  server.preferredPort = newPort
+  writeFileSync(serversConfigPath, JSON.stringify(servers, null, 2))
+  console.log(`✅ ${serverName} port changed: ${oldPort} → ${newPort}`)
+
+  // Check if server is currently running and needs restart
+  const pidData = loadPidFile()
+  if (pidData[serverName]) {
+    const isRunning = await isProcessRunning(pidData[serverName].pid)
+    if (isRunning) {
+      console.log(`🔄 Server is running, restarting on new port...`)
+      await stopServers(serverName)
+      await startServer(serverName, null)
+    }
+  }
+}
+
 // Initialize dev environment
 function initializeDevEnvironment() {
   // Check if servers.json already exists
@@ -1007,7 +1148,7 @@ function initializeDevEnvironment() {
 }
 
 // Known commands (command-first pattern)
-const COMMANDS = ['start', 'stop', 'restart', 'status', 'logs', 'doctor', 'cleanup', 'init', 'help']
+const COMMANDS = ['start', 'stop', 'restart', 'status', 'logs', 'port', 'doctor', 'cleanup', 'init', 'help']
 
 // Parse CLI arguments
 function parseArguments() {
@@ -1015,10 +1156,12 @@ function parseArguments() {
   const parsed: {
     command: string | null
     serverName: string | null
+    extraArg: string | null
     logViewer: string | null
   } = {
     command: null,
     serverName: null,
+    extraArg: null,
     logViewer: null,
   }
 
@@ -1032,6 +1175,8 @@ function parseArguments() {
       parsed.command = arg
     } else if (!parsed.serverName) {
       parsed.serverName = arg
+    } else if (!parsed.extraArg) {
+      parsed.extraArg = arg
     }
   }
 
@@ -1066,31 +1211,34 @@ function showHelp() {
        npx dev [name]
 
 Commands:
-  start [name]         Start server (first server if no name)
-  stop [name]          Stop server (all servers if no name)
-  restart [name]       Restart server
-  status [name]        Show running servers with health
-  logs [name]          Follow server logs
-  doctor               Diagnose environment issues
-  cleanup              Remove stale pid entries
-  init                 Initialize .dev/ from package.json
+  start [name]           Start server (first server if no name)
+  stop [name]            Stop server (all servers if no name)
+  restart [name]         Restart server
+  status [name]          Show running servers with health
+  logs [name]            Follow server logs
+  port [name] [port|auto]  View or set server port
+  doctor                 Diagnose environment issues
+  cleanup                Remove stale pid entries
+  init                   Initialize .dev/ from package.json
 
 Shorthand:
   npx dev              Start first server
   npx dev <name>       Start named server
 
 Examples:
-  npx dev start web    Start web server
-  npx dev stop         Stop all servers
-  npx dev stop web     Stop web server
-  npx dev restart api  Restart API server
-  npx dev status       Show all running servers
-  npx dev logs web     Follow web server logs
+  npx dev start web      Start web server
+  npx dev stop           Stop all servers
+  npx dev restart api    Restart API server
+  npx dev status         Show all running servers
+  npx dev port           Show current port (first server)
+  npx dev port web       Show current port for web
+  npx dev port web auto  Auto-allocate safe port for web
+  npx dev port web 4050  Set web server to port 4050
 `)
 }
 
 // Main CLI
-const { command, serverName, logViewer } = parseArguments()
+const { command, serverName, extraArg, logViewer } = parseArguments()
 const logViewerCommand = getLogViewerCommand(logViewer)
 
 // Handle commands that don't need servers.json first
@@ -1185,6 +1333,43 @@ switch (actualCommand) {
   case 'logs':
     await showLogs(actualServerName)
     break
+
+  case 'port': {
+    // If no server name, use first server (like 'start' does)
+    let targetServer = actualServerName
+    if (!targetServer) {
+      const firstServer = Object.keys(servers)[0]
+      if (!firstServer) {
+        console.error('No servers configured in .dev/servers.json')
+        process.exit(1)
+      }
+      targetServer = firstServer
+    }
+
+    if (!servers[targetServer]) {
+      console.error(`Unknown server: ${targetServer}`)
+      console.log(`Available servers: ${Object.keys(servers).join(', ')}`)
+      process.exit(1)
+    }
+
+    if (!extraArg) {
+      // No arg: show current port
+      showPort(targetServer)
+    } else if (extraArg === 'auto') {
+      // 'auto': scan for best port
+      await setPort(targetServer, 'auto')
+    } else {
+      // Number: set specific port
+      const requestedPort = parseInt(extraArg, 10)
+      if (isNaN(requestedPort)) {
+        console.error(`Invalid port: ${extraArg}`)
+        console.log('Use a number (e.g., 4050) or "auto" to scan')
+        process.exit(1)
+      }
+      await setPort(targetServer, requestedPort)
+    }
+    break
+  }
 
   case 'cleanup':
     await cleanup()

@@ -1,6 +1,18 @@
 {
-  "lastSequence": 57,
+  "lastSequence": 58,
   "items": [
+    {
+      "id": 58,
+      "title": "npx dev port command for forced port changes",
+      "description": "Add `npx dev port <server> <port>` CLI subcommand to dev.ts for manually setting server ports. Addresses the issue where /pro:dev.setup or npx dev init assigns undesired ports (e.g., 8080). Features: (1) Updates preferredPort in .dev/servers.json, (2) Auto-restarts server if currently running on old port, (3) Validates port availability before setting, (4) Follows command-first CLI pattern from ADR-011.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|58|npx-dev-port-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/npx-dev-port-command",
+      "createdAt": "2026-01-08T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 57,
       "title": "Universal Content Retriever (UCR) skill",
