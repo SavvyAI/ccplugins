@@ -58,3 +58,6 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [038. TodoWrite Checkpoint Persistence](038-todowrite-checkpoint-persistence.md)
 - [039. Permissionless Proof CHECK Extension](039-permissionless-proof-check-extension.md)
 - [040. Product Brief Versioned Storage](040-product-brief-versioned-storage.md)
+- [041. Universal Content Retriever Skill](041-universal-content-retriever-skill.md)
+- [042. npx dev Port Command](042-npx-dev-port-command.md)
+- [043. DOM-Based Structural Parity Verification](043-dom-based-structural-parity-verification.md)

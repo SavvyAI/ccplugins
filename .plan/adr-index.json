@@ -1,6 +1,10 @@
 {
-  "lastSequence": 42,
+  "lastSequence": 43,
   "entries": [
+    {
+      "branch": "fix/permissionless-proof-parity-failures",
+      "adrs": ["043-dom-based-structural-parity-verification.md"]
+    },
     {
       "branch": "feat/npx-dev-port-command",
       "adrs": ["042-npx-dev-port-command.md"]
