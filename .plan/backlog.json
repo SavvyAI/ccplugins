@@ -1,6 +1,18 @@
 {
-  "lastSequence": 58,
+  "lastSequence": 59,
   "items": [
+    {
+      "id": 59,
+      "title": "Permissionless proof parity failures - multiple issues",
+      "description": "Three interconnected bugs in /pro:permissionless-proof:\n\n1. **Excessive human intervention** - Asks for confirmation at phase transitions when it should be autonomous\n2. **CHECK phase not finding problems** - Reports 0 issues on real production sites. Missing content/copy audit dimension. Needs to be more aggressive to provide sales talking points.\n3. **PARITY not achieving parity** - Claims 98% but produces 60-70% match. Example: gardensdentistrypb.com clone has wrong colors (red testimonials vs navy), cramped spacing, dark service cards vs light. Vision scoring is too generous.\n\nBlocks core value proposition - can't use for cold outreach without manual rework.",
+      "category": "bug",
+      "severity": "critical",
+      "fingerprint": "bug|59|permissionless-proof-parity-failures",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/permissionless-proof-parity-failures",
+      "createdAt": "2026-01-08T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 58,
       "title": "npx dev port command for forced port changes",

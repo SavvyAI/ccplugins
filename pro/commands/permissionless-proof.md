@@ -19,6 +19,45 @@ Run a complete website rebuild pipeline for cold outreach. Produces a high-fidel
 
 ---
 
+## PARITY MODE (Critical Constraint)
+
+During PARITY and AUTO-VERIFY phases, operate under these **non-negotiable constraints**:
+
+```
+You are not allowed to design.
+You are not allowed to interpret.
+You are not allowed to improve.
+You are not allowed to simplify.
+You are only allowed to COPY until no structural or visual differences remain.
+If any difference exists, you must continue.
+
+You may not declare completion.
+You may only stop when parity is absolute.
+```
+
+**What this means:**
+
+| Forbidden | Required |
+|-----------|----------|
+| "Similar layout" | Identical section count and order |
+| "Comparable styling" | Exact colors, exact fonts, exact spacing |
+| "Placeholder image" | Actual image from source URL |
+| "Simplified structure" | Every DOM element reproduced |
+| "98% parity" | 100% structural match or continue iterating |
+| "Good enough" | Identical or not done |
+
+**The model behaves like:**
+- A meticulous junior dev
+- With zero taste
+- Zero creativity
+- Zero initiative
+
+**Just:** Copy. Do not interpret. Do not improve. Do not simplify.
+
+**Parity is not creative work. It's clerical work with teeth.**
+
+---
+
 ## Input
 
 ```
@@ -169,6 +208,72 @@ mcp__plugin_pro_playwright__browser_snapshot
 **Tier 3: User Paste Fallback**
 
 If both tiers fail, ask user to paste the page content manually.
+
+### 1.1.5 HTML/DOM Extraction (Critical for Parity)
+
+**This is the source of truth for PARITY phase.** Do not rely on screenshots for structure.
+
+Using Playwright MCP, extract the actual HTML:
+
+```
+mcp__plugin_pro_playwright__browser_evaluate: {
+  function: "(() => document.documentElement.outerHTML)()"
+}
+```
+
+Save the raw HTML to `{OUTPUT_DIR}/source/index.html`.
+
+Then extract structural metadata:
+
+```
+mcp__plugin_pro_playwright__browser_evaluate: {
+  function: `(() => {
+    const sections = Array.from(document.querySelectorAll('section, header, footer, main, main > div, [class*="section"], [class*="hero"], [class*="banner"]'))
+      .filter(el => el.offsetHeight > 100)
+      .map((el, i) => ({
+        index: i,
+        tagName: el.tagName,
+        id: el.id || null,
+        className: el.className || null,
+        hasBackgroundImage: !!getComputedStyle(el).backgroundImage.match(/url\\(/),
+        backgroundColor: getComputedStyle(el).backgroundColor,
+        images: Array.from(el.querySelectorAll('img')).map(img => ({
+          src: img.src,
+          alt: img.alt,
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        })),
+        headings: Array.from(el.querySelectorAll('h1, h2, h3')).map(h => ({
+          level: h.tagName,
+          text: h.textContent.trim()
+        })),
+        ctas: Array.from(el.querySelectorAll('a[href], button')).filter(b =>
+          b.textContent.trim().length > 0 && b.textContent.trim().length < 50
+        ).map(b => ({
+          text: b.textContent.trim(),
+          href: b.href || null
+        }))
+      }));
+
+    const designTokens = {
+      bodyFont: getComputedStyle(document.body).fontFamily,
+      bodyColor: getComputedStyle(document.body).color,
+      bodyBg: getComputedStyle(document.body).backgroundColor,
+      linkColor: getComputedStyle(document.querySelector('a') || document.body).color
+    };
+
+    return { sections, designTokens, sectionCount: sections.length };
+  })()`
+}
+```
+
+Save to `{OUTPUT_DIR}/source/structure.json`.
+
+**This structure.json is the PARITY CONTRACT:**
+- Section count MUST match in rebuild
+- Every image URL MUST be downloaded and used
+- Every heading MUST appear verbatim
+- Background treatments MUST match (image vs color)
 
 ### 1.2 Structure Analysis
 
@@ -401,7 +506,54 @@ check/
 | Form input lacks focus feedback | Visitors may not know which field is active |
 | Copyright year is 2023, current is 2026 | Footer shows outdated copyright year |
 
-#### 1.3.10 CHECK Summary
+#### 1.3.10 Content & Copy Audit
+
+> Purpose: Surface content opportunities for cold outreach talking points. These are NOT technical failures—they're sales ammunition.
+
+**Be aggressive here.** Every real website has improvement opportunities. If you find zero issues, you're not looking hard enough.
+
+| Check | What to Look For | Severity |
+|-------|------------------|----------|
+| **Headline Clarity** | Is the value proposition clear in <5 words? Generic ("Welcome to X") = issue | medium |
+| **CTA Specificity** | Are CTAs action-oriented? "Submit" or "Click Here" = weak | medium |
+| **Social Proof** | Are testimonials, reviews, or trust badges visible above the fold? | high |
+| **Credibility Signals** | Are credentials, certifications, awards, years in business displayed? | medium |
+| **Urgency/Scarcity** | Any time-limited offers or availability signals? (Often missing) | low |
+| **Mobile Copy** | Is copy scannable? Long paragraphs on mobile = problem | medium |
+| **Contact Visibility** | Is phone number visible without scrolling? (Critical for local business) | high |
+| **Image Quality** | Are images professional? Stock photos vs real team/location? | medium |
+| **Differentiation** | What makes this business different? Is it stated clearly? | high |
+
+**Output format:**
+
+```json
+{
+  "contentIssues": [
+    {
+      "area": "Hero",
+      "issue": "Generic headline 'Welcome to Gardens Dentistry' doesn't communicate value",
+      "opportunity": "Could highlight unique differentiator (aesthetic focus, specific technology, etc.)",
+      "severity": "medium"
+    },
+    {
+      "area": "Above the fold",
+      "issue": "No testimonials or review count visible without scrolling",
+      "opportunity": "Adding '5-star rating' badge or testimonial snippet would boost trust immediately",
+      "severity": "high"
+    }
+  ]
+}
+```
+
+**Operator-friendly summary:**
+
+For each content issue, provide a one-sentence talking point the operator can use in outreach:
+
+> "Your homepage headline could be doing more work—right now it says 'Welcome' but doesn't tell visitors what makes you different from the dentist down the street."
+
+**Note:** Content audit findings inform the ELEVATE phase but do NOT block PARITY. These are opportunities, not requirements.
+
+#### 1.3.11 CHECK Summary
 
 Present findings:
 
@@ -411,8 +563,8 @@ CHECK Phase Complete
 
 Source: {url}
 
-Issues Detected: {count}
-
+TECHNICAL ISSUES: {count}
+────────────────────────────────────────
 Desktop ({count}):
   • {operator description} [{severity}]
 
@@ -425,12 +577,26 @@ Mobile ({count}):
 Dead Ends: {count}
 Trust Signals: {count} issues
 
+CONTENT OPPORTUNITIES: {count}
+────────────────────────────────────────
+  • {area}: {issue} [{severity}]
+  • {area}: {issue} [{severity}]
+  • {area}: {issue} [{severity}]
+
+OUTREACH TALKING POINTS:
+────────────────────────────────────────
+  1. "{operator-friendly content opportunity}"
+  2. "{operator-friendly content opportunity}"
+  3. "{operator-friendly content opportunity}"
+
 Evidence saved to: screenshots/check/
 
 ────────────────────────────────────────
 ```
 
-**Note:** CHECK phase is informational. Proceed to screenshot capture regardless of findings. Issues surfaced here are evidence for the proof, not blockers.
+**Note:** CHECK phase is informational. Proceed to screenshot capture regardless of findings.
+
+**IMPORTANT:** If you found ZERO issues (technical + content), you did not look hard enough. Re-run the audit with more scrutiny. Every production website has room for improvement.
 
 ### 1.4 Screenshot Capture
 
@@ -535,18 +701,21 @@ Top Issues:
 
 Evidence saved to: screenshots/check/
 
-════════════════════════════════════════
+DOM Structure: {sectionCount} sections extracted
+Parity Contract: source/structure.json
 
-Proceed to PARITY phase? (y/n)
+════════════════════════════════════════
 ```
 
-Wait for explicit user confirmation before proceeding.
+**Automatic transition to PARITY phase.** No confirmation required.
 
 ---
 
 ## Phase 2: PARITY (Strict Mode Rebuild)
 
-> Purpose: Create a React rebuild that matches the original structure exactly.
+> Purpose: Create a React rebuild that is **structurally identical** to the original.
+>
+> **REMEMBER PARITY MODE:** You are not allowed to design, interpret, improve, or simplify. Copy until identical.
 
 ### 2.1 Create Project Scaffold
 
@@ -912,121 +1081,144 @@ mcp__plugin_pro_playwright__browser_resize: {width: 1440, height: 900}
 mcp__plugin_pro_playwright__browser_take_screenshot: {fullPage: true, filename: "screenshots/verify-iterations/iteration-{NNN}/parity.png"}
 ```
 
-### 3.4 Vision Analysis
+### 3.4 Structural Verification (Not Vision Scoring)
 
-Read both screenshots and analyze for parity:
+**Do NOT use subjective percentage scoring.** Use structural verification against the PARITY CONTRACT (`source/structure.json`).
+
+#### 3.4.1 Extract Rebuild Structure
+
+Using Playwright on the dev server, extract the rebuild's structure:
+
+```
+mcp__plugin_pro_playwright__browser_evaluate: {
+  function: `(() => {
+    const sections = Array.from(document.querySelectorAll('section, header, footer, main, main > div, [class*="section"], [class*="hero"], [class*="banner"]'))
+      .filter(el => el.offsetHeight > 100)
+      .map((el, i) => ({
+        index: i,
+        tagName: el.tagName,
+        hasBackgroundImage: !!getComputedStyle(el).backgroundImage.match(/url\\(/),
+        backgroundColor: getComputedStyle(el).backgroundColor,
+        imageCount: el.querySelectorAll('img').length,
+        headingCount: el.querySelectorAll('h1, h2, h3').length,
+        ctaCount: el.querySelectorAll('a[href], button').length
+      }));
+    return { sections, sectionCount: sections.length };
+  })()`
+}
+```
+
+#### 3.4.2 Compare Against Parity Contract
+
+For each section in `source/structure.json`, verify the rebuild matches:
+
+```
+STRUCTURAL VERIFICATION CHECKLIST:
+────────────────────────────────────────
+For each section (source vs rebuild):
+
+□ Section exists at same index
+□ Background treatment matches:
+  - If source has background IMAGE → rebuild MUST have background image
+  - If source has solid color → rebuild MUST have same/similar color
+□ Image count matches (±0)
+□ Heading count matches (±0)
+□ CTA count matches (±0)
+
+Global checks:
+□ Total section count matches EXACTLY
+□ All source images are present (no placeholders)
+□ Hero section has same layout type (full-bleed vs contained)
+────────────────────────────────────────
+```
+
+Produce a PASS/FAIL report:
+
+```json
+{
+  "allPassed": false,
+  "totalSections": { "source": 12, "rebuild": 10, "pass": false },
+  "failures": [
+    {
+      "section": 0,
+      "name": "Hero",
+      "check": "backgroundImage",
+      "source": true,
+      "rebuild": false,
+      "fix": "Hero must have background image. Source has team photo at [URL]. Download and use as background-image."
+    },
+    {
+      "section": 3,
+      "name": "Services",
+      "check": "missing",
+      "source": "exists",
+      "rebuild": "missing",
+      "fix": "Section 3 (Services) is completely missing. Create ServicesSection component matching source structure."
+    }
+  ],
+  "passes": [
+    { "section": 1, "name": "About", "allChecks": true }
+  ]
+}
+```
+
+**CRITICAL:** If `allPassed` is false, you MUST continue iterating. You may NOT declare completion.
+
+#### 3.4.3 Visual Cross-Check
+
+After structural verification, also compare screenshots visually:
 
 1. **Read the source screenshot**: `screenshots/source/source-desktop-full.png`
 2. **Read the parity screenshot**: `screenshots/verify-iterations/iteration-{NNN}/parity.png`
 
-Analyze both images and produce a structured parity report:
+Look for differences NOT caught by structural checks:
+- Color mismatches (exact hex values)
+- Spacing/padding differences
+- Font mismatches
+- Image positioning
 
-```
-VISION ANALYSIS PROMPT:
-────────────────────────────────────────
-You are comparing two website screenshots for visual parity.
-
-**Image 1 (Source):** The original website we are trying to match.
-**Image 2 (Parity):** Our React rebuild attempt.
-
-Analyze both screenshots systematically:
-
-1. **Layout Structure** - Does the overall layout match? (header, sections, footer positions)
-2. **Colors** - Do background colors, text colors, and accent colors match?
-3. **Typography** - Do font sizes, weights, and styles appear similar?
-4. **Spacing** - Is the padding and margin between elements comparable?
-5. **Images** - Are all images present and sized correctly?
-6. **Content** - Is all text content present and in the correct locations?
-
-Produce a JSON report:
-
-{
-  "parityScore": <0-100>,
-  "gaps": [
-    {
-      "area": "<section name>",
-      "issue": "<specific visual difference>",
-      "severity": "<high|medium|low>",
-      "fix": "<suggested code change>"
-    }
-  ],
-  "summary": "<one sentence overall assessment>"
-}
-
-Scoring guide:
-- 95-100%: Near-perfect match, only minor pixel differences
-- 85-94%: Good match with noticeable but minor differences
-- 70-84%: Moderate match, some layout or styling issues
-- 50-69%: Significant differences, major elements misaligned or missing
-- <50%: Poor match, fundamental structure differs
-────────────────────────────────────────
-```
-
-**JSON Validation:**
-
-Before proceeding, validate the vision analysis output:
-- `parityScore` must be a number between 0-100
-- `gaps` must be an array (can be empty if score is 100%)
-- Each gap must have: `area` (string), `issue` (string), `severity` (one of: high, medium, low)
-- `summary` must be a string
-
-If JSON is malformed or missing required fields:
-1. Retry vision analysis once with the same screenshots
-2. If still invalid, log the validation error and proceed to section 3.7 (User Decision)
+Add any visual failures to the report.
 
 Save the report:
 
 ```bash
-# Save report to iteration directory
 echo '{report JSON}' > "$OUTPUT_DIR/screenshots/verify-iterations/iteration-{NNN}/report.json"
 ```
 
 ### 3.5 Check Exit Conditions
 
-**Condition 1: SUCCESS (parity >= 99%)**
+**Condition 1: SUCCESS (ALL checks pass)**
 
 ```
-if parityScore >= 99:
-  LOG: "✓ Parity achieved: {score}%"
+if report.allPassed == true AND report.failures.length == 0:
+  LOG: "✓ PARITY ACHIEVED - All structural checks pass"
   GOTO 3.8 (Stop Dev Server)
 ```
 
-**Condition 2: DIMINISHING RETURNS**
-
-```
-if ITERATION > 1:
-  improvement = parityScore - SCORE_HISTORY[-1]
-  if improvement < LOW_IMPROVEMENT_THRESHOLD:
-    CONSECUTIVE_LOW_IMPROVEMENT += 1
-  else:
-    CONSECUTIVE_LOW_IMPROVEMENT = 0
-
-  if CONSECUTIVE_LOW_IMPROVEMENT >= 3:
-    LOG: "⚠ Diminishing returns detected after {ITERATION} iterations"
-    GOTO 3.7 (User Decision)
-```
-
-**Condition 3: MAX ITERATIONS**
+**Condition 2: MAX ITERATIONS (safety cap)**
 
 ```
 if ITERATION >= MAX_ITERATIONS:
   LOG: "⚠ Max iterations ({MAX_ITERATIONS}) reached"
+  LOG: "Remaining failures: {failures.length}"
   GOTO 3.7 (User Decision)
 ```
 
-**Otherwise: Continue to fixes**
+**Otherwise: MUST continue iterating**
 
 ```
-SCORE_HISTORY.append(parityScore)
+# You may NOT declare completion if failures exist
 GOTO 3.6 (Apply Fixes)
 ```
 
+**NOTE:** There is no "diminishing returns" exit. If failures exist, you continue. Parity is not creative work—it's clerical work with teeth.
+
 ### 3.6 Apply Fixes and Rebuild
 
-For each gap identified in the vision analysis (prioritized by severity):
+For each failure identified in the structural verification (prioritized: missing sections first, then background mismatches, then counts):
 
-1. **Identify the component file** from the gap's area description
-2. **Apply the suggested fix** using Edit tool
+1. **Identify the component file** from the failure's section description
+2. **Apply the fix** specified in the failure report using Edit tool
 3. **Track the fix** for the iteration report
 
 After applying fixes:
@@ -1036,7 +1228,7 @@ After applying fixes:
 cd "$OUTPUT_DIR"
 npm run build
 
-# If build fails, revert last fix and try next gap
+# If build fails, revert last fix and try next failure
 # If all fixes cause build failures, proceed to 3.7
 ```
 
@@ -1045,34 +1237,33 @@ Log iteration summary:
 ```
 Iteration {N} Complete
 ────────────────────────────────────────
-Score: {parityScore}% (Δ {improvement}%)
-Gaps fixed: {count}
-Gaps remaining: {count}
+Failures remaining: {failures.length}
+Passes: {passes.length}
+Fixes applied: {count}
 ────────────────────────────────────────
 ```
 
-**GOTO 3.3** (capture new screenshot and re-analyze)
+**GOTO 3.3** (capture new screenshot and re-verify)
 
 ### 3.7 User Decision
 
-Present the current state when exiting without achieving 99% parity:
+Present the current state when max iterations reached (the ONLY non-success exit):
 
 ```
-AUTO-VERIFY Complete (Non-Success Exit)
+AUTO-VERIFY Complete (Max Iterations)
 ════════════════════════════════════════
 
-Final Parity Score: {parityScore}%
 Iterations: {ITERATION}
-Exit Reason: {diminishing returns | max iterations}
+Exit Reason: Max iterations ({MAX_ITERATIONS}) reached
 
-Score History:
-  Iteration 1: {score}%
-  Iteration 2: {score}% (+{delta}%)
-  ...
+Structural Verification Status:
+  Total Sections: {source} expected, {rebuild} built
+  Passes: {passes.length}
+  Failures: {failures.length}
 
-Remaining Gaps ({count}):
-  • {area}: {issue} [{severity}]
-  • {area}: {issue} [{severity}]
+Remaining Failures:
+  • {section}: {check} - {fix}
+  • {section}: {check} - {fix}
   ...
 
 Iteration history saved to:
@@ -1082,7 +1273,7 @@ Iteration history saved to:
 ```
 
 Use `AskUserQuestion`:
-- **"Proceed to ELEVATE"** - Continue with current parity level
+- **"Proceed to ELEVATE anyway"** - Continue with incomplete parity (user accepts risk)
 - **"Abort"** - Stop the pipeline, user will fix manually
 
 If user chooses "Abort":
@@ -1101,16 +1292,17 @@ Save final verification summary:
 ```bash
 cat > "$OUTPUT_DIR/screenshots/verify-iterations/summary.json" << EOF
 {
-  "finalScore": {parityScore},
+  "allPassed": {report.allPassed},
   "iterations": {ITERATION},
-  "exitReason": "{success | diminishing_returns | max_iterations | user_abort}",
-  "scoreHistory": [{scores}],
+  "exitReason": "{success | max_iterations | user_abort}",
+  "failureCount": {failures.length},
+  "passCount": {passes.length},
   "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
 ```
 
-Report: `[PASS] Auto-verify complete: {score}% parity in {N} iterations`
+Report: `[PASS] Auto-verify complete: {passes.length}/{totalSections} sections verified in {N} iterations`
 
 ---
 
