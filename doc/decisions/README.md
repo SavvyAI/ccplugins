@@ -62,3 +62,5 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [042. npx dev Port Command](042-npx-dev-port-command.md)
 - [043. DOM-Based Structural Parity Verification](043-dom-based-structural-parity-verification.md)
 - [044. Chrome Extension Developer Skill](044-chrome-extension-developer-skill.md)
+- [045. GitHub Pages Full Automation](045-github-pages-full-automation.md)
+- [046. Multi-Proof Marketplace Architecture](046-multi-proof-marketplace-architecture.md)

@@ -1,6 +1,18 @@
 {
-  "lastSequence": 61,
+  "lastSequence": 62,
   "items": [
+    {
+      "id": 62,
+      "title": "Multi-proof marketplace support",
+      "description": "Enable multiple proofs per website with marketplace-ready metadata. Features: (1) New slug format: proof-{domain}-{YYMMDD}{seq} for uniqueness and sortability, (2) Interactive prompt when URL has existing proofs - create new or update, (3) Dual storage: central registry (.plan/proofs/index.json) + per-proof manifest (proof.json), (4) Rich marketplace metadata: thumbnails, tags, pricing tier, showcase status, issue counts, parity scores. Enables: side-by-side comparison of software evolution, portfolio growth for marketplace, re-running proofs on updated sites, and future marketplace features.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|62|multi-proof-marketplace-support",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/multi-proof-marketplace-support",
+      "createdAt": "2026-01-09T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 61,
       "title": "GitHub Pages automation skill",
