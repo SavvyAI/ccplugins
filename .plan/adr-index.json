@@ -1,6 +1,10 @@
 {
-  "lastSequence": 45,
+  "lastSequence": 46,
   "entries": [
+    {
+      "branch": "feat/multi-proof-marketplace-support",
+      "adrs": ["046-multi-proof-marketplace-architecture.md"]
+    },
     {
       "branch": "feat/gh-pages-automation",
       "adrs": ["045-github-pages-full-automation.md"]

@@ -6,7 +6,7 @@ Thanks to everyone who has contributed to ccplugins!
 
 | Contributor | Commits |
 |-------------|---------|
-| [Wil (₩) Moore III](https://github.com/wilmoore) | 161 |
+| [Wil (₩) Moore III](https://github.com/wilmoore) | 163 |
 | Ryan Johnson | 1 |
 
 ---

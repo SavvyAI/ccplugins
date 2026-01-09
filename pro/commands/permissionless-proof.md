@@ -105,7 +105,7 @@ DOMAIN=$(echo "$URL" | grep -oE '[a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,}' | head 
 
 ### Derive Domain Slug
 
-Generate a URL-safe, human-readable, GitHub Pages-friendly directory name:
+Generate a URL-safe, human-readable, GitHub Pages-friendly directory name with date-based versioning for multiple proofs per domain (see ADR-046):
 
 ```bash
 # Extract domain, remove www and TLD
@@ -122,16 +122,107 @@ DOMAIN_SLUG=$(echo "$DOMAIN_NO_TLD" | \
   sed 's/^-//' | \
   sed 's/-$//')
 
-# Apply prefix for output directory default
-OUTPUT_DIR_DEFAULT="proof-${DOMAIN_SLUG}"
+# Generate date component (YYMMDD)
+DATE_COMPONENT=$(date +%y%m%d)
+
+# Find next sequence letter for this domain+date
+# Scan for existing proofs matching pattern: proof-{domain-slug}-{YYMMDD}*
+EXISTING_PROOFS=$(ls -d proof-${DOMAIN_SLUG}-${DATE_COMPONENT}* 2>/dev/null | sort)
+if [ -z "$EXISTING_PROOFS" ]; then
+  SEQUENCE="a"
+else
+  # Get last sequence letter and increment
+  LAST_SEQ=$(echo "$EXISTING_PROOFS" | tail -1 | sed "s/proof-${DOMAIN_SLUG}-${DATE_COMPONENT}//")
+  # Increment: a->b, b->c, ..., z->aa (edge case)
+  SEQUENCE=$(echo "$LAST_SEQ" | awk '{
+    c = $0
+    if (c == "z") { print "aa" }
+    else if (length(c) == 1) { printf "%c", c + 1 }
+    else { print c "a" }
+  }')
+fi
+
+# Apply prefix with date + sequence for unique output directory
+OUTPUT_DIR_DEFAULT="proof-${DOMAIN_SLUG}-${DATE_COMPONENT}${SEQUENCE}"
 ```
 
+**Slug Format:** `proof-{domain-slug}-{YYMMDD}{seq}`
+
 **Examples:**
-| Input URL | Derived Slug |
-|-----------|--------------|
-| `https://www.ramanidentistryfl.com` | `proof-ramani-dentistry-fl` |
-| `https://gardensdentistrypb.com` | `proof-gardens-dentistry-pb` |
-| `https://SmithLawFirm.com` | `proof-smith-law-firm` |
+| Input URL | First Run | Second Run Same Day | Later Run |
+|-----------|-----------|---------------------|-----------|
+| `https://www.ramanidentistryfl.com` | `proof-ramani-dentistry-fl-240109a` | `proof-ramani-dentistry-fl-240109b` | `proof-ramani-dentistry-fl-240215a` |
+| `https://gardensdentistrypb.com` | `proof-gardens-dentistry-pb-240109a` | `proof-gardens-dentistry-pb-240109b` | `proof-gardens-dentistry-pb-240215a` |
+| `https://SmithLawFirm.com` | `proof-smith-law-firm-240109a` | `proof-smith-law-firm-240109b` | `proof-smith-law-firm-240215a` |
+
+**Benefits:**
+- Chronologically sortable
+- Multiple proofs per domain supported
+- No overwrites - each run creates unique directory
+- GitHub Pages friendly URLs
+
+### Check for Existing Proofs
+
+Before proceeding, check if proofs already exist for this domain. This enables the user to choose between creating a new proof or updating an existing one.
+
+```bash
+# Check for existing proofs for this domain (any date)
+EXISTING_DOMAIN_PROOFS=$(ls -d proof-${DOMAIN_SLUG}-* 2>/dev/null | sort)
+
+# Also check the central registry if it exists
+REGISTRY_FILE=".plan/proofs/index.json"
+if [ -f "$REGISTRY_FILE" ]; then
+  # Extract proofs for this domain from registry
+  REGISTRY_PROOFS=$(cat "$REGISTRY_FILE" | grep -o "\"id\": \"proof-${DOMAIN_SLUG}-[^\"]*\"" | sed 's/"id": "//g; s/"//g')
+fi
+```
+
+**If existing proofs found:** Use `AskUserQuestion` to present options:
+
+```
+Existing proofs found for {domain}:
+  • proof-{domain-slug}-240109a (deployed, 98% parity)
+  • proof-{domain-slug}-240105a (deployed, 95% parity)
+
+What would you like to do?
+```
+
+**Options:**
+1. **"Create new proof"** - Continue with new timestamp/sequence (default)
+2. **"Update most recent"** - Overwrite the latest proof in place (uses existing OUTPUT_DIR)
+3. **"View existing and exit"** - List all proofs with details and stop
+
+**If "Update most recent" selected:**
+```bash
+# Use the most recent proof directory instead of generating new
+OUTPUT_DIR=$(echo "$EXISTING_DOMAIN_PROOFS" | tail -1)
+UPDATE_MODE=true
+```
+
+**If "View existing and exit" selected:**
+```
+Existing proofs for {domain}:
+────────────────────────────────────────
+  1. proof-{slug}-240109a
+     Created: 2026-01-09 14:30
+     Status: deployed
+     Parity: 98%
+     Issues: 7 (2 desktop, 1 tablet, 4 mobile)
+     URL: https://user.github.io/proof-{slug}-240109a/
+
+  2. proof-{slug}-240105a
+     Created: 2026-01-05 10:15
+     Status: deployed
+     Parity: 95%
+     Issues: 12 (4 desktop, 3 tablet, 5 mobile)
+     URL: https://user.github.io/proof-{slug}-240105a/
+────────────────────────────────────────
+Run /pro:permissionless-proof {url} again to create a new proof.
+```
+
+Then **STOP** - do not proceed with pipeline.
+
+**If no existing proofs:** Skip this check entirely (no prompt for first-time URLs).
 
 ### Resolve Output Directory
 
@@ -1725,6 +1816,129 @@ sleep 3
 
 Capture elevated version screenshots for comparison.
 
+### 5.4 Generate Proof Metadata (proof.json)
+
+Create a comprehensive metadata file for marketplace and portfolio features (see ADR-046):
+
+```bash
+cat > "$OUTPUT_DIR/proof.json" << EOF
+{
+  "id": "${OUTPUT_DIR}",
+  "version": "1.0.0",
+  "source": {
+    "url": "${URL}",
+    "domain": "${DOMAIN}",
+    "domainSlug": "${DOMAIN_SLUG}",
+    "capturedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  },
+  "pipeline": {
+    "acquireCompleted": "${ACQUIRE_TIMESTAMP}",
+    "checkCompleted": "${CHECK_TIMESTAMP}",
+    "parityCompleted": "${PARITY_TIMESTAMP}",
+    "parityIterations": ${ITERATION},
+    "finalParityScore": ${FINAL_PARITY_SCORE:-0},
+    "elevateCompleted": "${ELEVATE_TIMESTAMP}",
+    "deployCompleted": null
+  },
+  "issues": {
+    "technical": {
+      "desktop": ${DESKTOP_ISSUES:-0},
+      "tablet": ${TABLET_ISSUES:-0},
+      "mobile": ${MOBILE_ISSUES:-0},
+      "total": ${TOTAL_TECHNICAL_ISSUES:-0}
+    },
+    "content": {
+      "total": ${CONTENT_ISSUES:-0}
+    }
+  },
+  "deployment": {
+    "status": "pending",
+    "pagesUrl": null,
+    "evidenceUrl": null,
+    "deployedAt": null
+  },
+  "marketplace": {
+    "showcase": false,
+    "tags": [],
+    "industry": null,
+    "pricingTier": null,
+    "thumbnail": "screenshots/source/source-desktop-hero.png"
+  },
+  "meta": {
+    "createdAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+    "updatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+    "createdBy": "pro:permissionless-proof",
+    "proofSchemaVersion": "1.0.0"
+  }
+}
+EOF
+```
+
+**Note:** Pipeline timestamps and issue counts should be captured during their respective phases and stored in variables for final proof.json generation.
+
+### 5.5 Update Central Registry
+
+Update the central proof registry for portfolio/marketplace querying:
+
+```bash
+REGISTRY_DIR=".plan/proofs"
+REGISTRY_FILE="$REGISTRY_DIR/index.json"
+
+# Create registry directory if not exists
+mkdir -p "$REGISTRY_DIR"
+
+# Initialize registry if not exists
+if [ ! -f "$REGISTRY_FILE" ]; then
+  cat > "$REGISTRY_FILE" << EOF
+{
+  "version": "1.0.0",
+  "proofs": []
+}
+EOF
+fi
+
+# Add this proof to registry (using jq if available, otherwise manual append)
+if command -v jq &> /dev/null; then
+  # Use jq for proper JSON manipulation
+  jq --arg id "${OUTPUT_DIR}" \
+     --arg url "${URL}" \
+     --arg slug "${DOMAIN_SLUG}" \
+     --arg created "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+     --arg path "./${OUTPUT_DIR}" \
+     '.proofs += [{
+       "id": $id,
+       "sourceUrl": $url,
+       "domainSlug": $slug,
+       "createdAt": $created,
+       "updatedAt": $created,
+       "status": "pending",
+       "path": $path,
+       "pagesUrl": null
+     }]' "$REGISTRY_FILE" > "${REGISTRY_FILE}.tmp" && mv "${REGISTRY_FILE}.tmp" "$REGISTRY_FILE"
+else
+  echo "Warning: jq not available. Registry update skipped. Install jq for full functionality."
+fi
+```
+
+**Registry Structure:**
+```json
+{
+  "version": "1.0.0",
+  "proofs": [
+    {
+      "id": "proof-gardens-dentistry-pb-240109a",
+      "sourceUrl": "https://gardensdentistrypb.com",
+      "domainSlug": "gardens-dentistry-pb",
+      "createdAt": "2026-01-09T14:30:00Z",
+      "updatedAt": "2026-01-09T15:00:00Z",
+      "status": "deployed",
+      "path": "./proof-gardens-dentistry-pb-240109a",
+      "pagesUrl": "https://user.github.io/proof-gardens-dentistry-pb-240109a/"
+    }
+  ]
+}
+```
+
 ---
 
 ## Phase 6: DEPLOY (GitHub Pages Automation)
@@ -1836,7 +2050,50 @@ if command -v pbcopy > /dev/null 2>&1; then
 fi
 ```
 
-### 6.7 Deployment Summary
+### 6.7 Update Metadata Post-Deployment
+
+After successful deployment, update both proof.json and the central registry with deployment information:
+
+```bash
+DEPLOY_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+EVIDENCE_URL="${PAGES_URL}evidence/"
+
+# Update proof.json with deployment info
+if command -v jq &> /dev/null && [ -f "$OUTPUT_DIR/proof.json" ]; then
+  jq --arg status "deployed" \
+     --arg pagesUrl "$PAGES_URL" \
+     --arg evidenceUrl "$EVIDENCE_URL" \
+     --arg deployedAt "$DEPLOY_TIMESTAMP" \
+     --arg updatedAt "$DEPLOY_TIMESTAMP" \
+     '.deployment.status = $status |
+      .deployment.pagesUrl = $pagesUrl |
+      .deployment.evidenceUrl = $evidenceUrl |
+      .deployment.deployedAt = $deployedAt |
+      .pipeline.deployCompleted = $deployedAt |
+      .meta.updatedAt = $updatedAt' \
+     "$OUTPUT_DIR/proof.json" > "$OUTPUT_DIR/proof.json.tmp" && \
+     mv "$OUTPUT_DIR/proof.json.tmp" "$OUTPUT_DIR/proof.json"
+  echo "[DEPLOY] Updated proof.json with deployment info"
+fi
+
+# Update central registry
+REGISTRY_FILE=".plan/proofs/index.json"
+if command -v jq &> /dev/null && [ -f "$REGISTRY_FILE" ]; then
+  jq --arg id "$OUTPUT_DIR" \
+     --arg status "deployed" \
+     --arg pagesUrl "$PAGES_URL" \
+     --arg updatedAt "$DEPLOY_TIMESTAMP" \
+     '(.proofs[] | select(.id == $id)) |= . + {
+       status: $status,
+       pagesUrl: $pagesUrl,
+       updatedAt: $updatedAt
+     }' "$REGISTRY_FILE" > "${REGISTRY_FILE}.tmp" && \
+     mv "${REGISTRY_FILE}.tmp" "$REGISTRY_FILE"
+  echo "[DEPLOY] Updated central registry"
+fi
+```
+
+### 6.8 Deployment Summary
 
 Set `DEPLOYED=true` and `PAGES_URL` for use in completion summary.
 
@@ -1870,6 +2127,11 @@ Files Created:
   screenshots/check/        - Interaction audit evidence
   screenshots/verify-iterations/ - Parity iteration history
   public/evidence/          - Web-accessible evidence index
+  proof.json                - Marketplace metadata manifest
+
+Metadata:
+  Proof ID: {output_dir}
+  Registry: .plan/proofs/index.json (updated)
 
 Deployment:
   Repository: https://github.com/{owner}/{repo}
@@ -1905,6 +2167,11 @@ Files Created:
   screenshots/check/        - Interaction audit evidence
   screenshots/verify-iterations/ - Parity iteration history
   public/evidence/          - Web-accessible evidence index
+  proof.json                - Marketplace metadata manifest
+
+Metadata:
+  Proof ID: {output_dir}
+  Registry: .plan/proofs/index.json (updated)
 
 Git Repository:
   ✓ Initialized with initial commit
@@ -1956,15 +2223,19 @@ These rules are **non-negotiable**:
 
 ## Definition of Done
 
-- [ ] Output directory created at `proof-{domain-slug}/`
+- [ ] Output directory created with unique slug: `proof-{domain-slug}-{YYMMDD}{seq}`
+- [ ] Interactive prompt shown if existing proofs detected for domain
 - [ ] All source sections represented as components
 - [ ] CHECK phase completed with issues.json generated
 - [ ] AUTO-VERIFY achieved 99%+ parity OR user approved current state
 - [ ] Iteration history saved to screenshots/verify-iterations/
 - [ ] Elevate phase applied (typography, shadcn/ui, motion)
 - [ ] Evidence index generated at public/evidence/
+- [ ] proof.json metadata manifest created with marketplace fields
+- [ ] Central registry (.plan/proofs/index.json) updated
 - [ ] Git repository initialized with initial commit
 - [ ] Build passes without errors
 - [ ] README documents all changes
 - [ ] User can run `npm install && npm run dev` successfully
 - [ ] DEPLOY phase: GitHub repo created, Pages enabled, site live (or clear manual steps if gh not authenticated)
+- [ ] proof.json and registry updated with deployment URL after successful deploy
