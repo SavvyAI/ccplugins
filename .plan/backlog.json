@@ -1,6 +1,18 @@
 {
-  "lastSequence": 59,
+  "lastSequence": 60,
   "items": [
+    {
+      "id": 60,
+      "title": "Chrome Extension Developer skill",
+      "description": "Create a skill (+ subagent for proactive invocation) that codifies Chrome extension development knowledge. Covers: Manifest V3 patterns, Chrome Web Store publishing lifecycle, extension status API checking, testing/debugging strategies, and project structure guidance. Based on learnings from building 'Conversation Titles for ChatGPT' extension. Patterns and decision frameworks only - no hardcoded templates that can rot.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|60|chrome-extension-developer-skill",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/chrome-extension-developer-skill",
+      "createdAt": "2026-01-08T22:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 59,
       "title": "Permissionless proof parity failures - multiple issues",

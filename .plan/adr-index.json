@@ -1,6 +1,10 @@
 {
-  "lastSequence": 43,
+  "lastSequence": 44,
   "entries": [
+    {
+      "branch": "feat/chrome-extension-developer-skill",
+      "adrs": ["044-chrome-extension-developer-skill.md"]
+    },
     {
       "branch": "fix/permissionless-proof-parity-failures",
       "adrs": ["043-dom-based-structural-parity-verification.md"]

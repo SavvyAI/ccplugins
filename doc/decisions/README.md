@@ -61,3 +61,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [041. Universal Content Retriever Skill](041-universal-content-retriever-skill.md)
 - [042. npx dev Port Command](042-npx-dev-port-command.md)
 - [043. DOM-Based Structural Parity Verification](043-dom-based-structural-parity-verification.md)
+- [044. Chrome Extension Developer Skill](044-chrome-extension-developer-skill.md)
