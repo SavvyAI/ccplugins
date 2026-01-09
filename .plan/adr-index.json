@@ -1,6 +1,10 @@
 {
-  "lastSequence": 44,
+  "lastSequence": 45,
   "entries": [
+    {
+      "branch": "feat/gh-pages-automation",
+      "adrs": ["045-github-pages-full-automation.md"]
+    },
     {
       "branch": "feat/chrome-extension-developer-skill",
       "adrs": ["044-chrome-extension-developer-skill.md"]

@@ -1,6 +1,18 @@
 {
-  "lastSequence": 60,
+  "lastSequence": 61,
   "items": [
+    {
+      "id": 61,
+      "title": "GitHub Pages automation skill",
+      "description": "Create /pro:gh-pages skill for fully automated GitHub Pages deployment. Uses gh CLI API to enable Pages (POST /repos/{owner}/{repo}/pages with gh-pages branch source), pushes built assets via gh-pages npm package, waits for propagation, and returns live URL. Solves the problem where permissionless-proof and other commands output 'Manual Steps Required' for Pages setup. Skill can be called by any command needing static site deployment. Falls back to clear guidance if API fails (permissions, private repos, etc.).",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|61|gh-pages-automation-skill",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/gh-pages-automation",
+      "createdAt": "2026-01-08T23:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 60,
       "title": "Chrome Extension Developer skill",

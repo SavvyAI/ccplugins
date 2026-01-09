@@ -1725,7 +1725,128 @@ sleep 3
 
 Capture elevated version screenshots for comparison.
 
-### 5.4 Completion Summary
+---
+
+## Phase 6: DEPLOY (GitHub Pages Automation)
+
+> Purpose: Deploy the proof to GitHub Pages with zero manual steps.
+
+This phase uses the `gh-pages` skill to fully automate deployment. See `pro/skills/gh-pages/SKILL.md` for implementation details.
+
+### 6.1 Pre-Deployment Check
+
+```bash
+# Verify gh CLI is authenticated
+gh auth status 2>&1 | grep -q "Logged in" || {
+  echo "⚠️ gh CLI not authenticated. Skipping auto-deploy."
+  echo "Run 'gh auth login' then 'npm run deploy:init' manually."
+  # Continue to summary without deployment
+}
+```
+
+If gh is not authenticated, skip deployment and show manual steps in summary.
+
+### 6.2 Create Repository and Deploy
+
+```bash
+cd "$OUTPUT_DIR"
+
+# Check if remote exists
+REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
+
+if [ -z "$REMOTE_URL" ]; then
+  echo "[DEPLOY] Creating GitHub repository..."
+  gh repo create "$OUTPUT_DIR" --public --source=. --push
+
+  if [ $? -ne 0 ]; then
+    echo "⚠️ Failed to create repository. Manual deployment required."
+    # Continue to summary
+  fi
+fi
+
+OWNER=$(gh repo view --json owner -q ".owner.login" 2>/dev/null || echo "")
+REPO=$(gh repo view --json name -q ".name" 2>/dev/null || echo "")
+```
+
+### 6.3 Deploy Assets to gh-pages Branch
+
+```bash
+# Ensure gh-pages package is available
+npm list gh-pages > /dev/null 2>&1 || npm install --save-dev gh-pages
+
+# Deploy to gh-pages branch
+echo "[DEPLOY] Pushing to gh-pages branch..."
+npx gh-pages -d dist -m "Deploy proof: ${DOMAIN}"
+```
+
+### 6.4 Enable GitHub Pages via API
+
+```bash
+echo "[DEPLOY] Enabling GitHub Pages..."
+
+# Check if already enabled
+PAGES_STATUS=$(gh api "/repos/$OWNER/$REPO/pages" 2>&1 || echo "not-found")
+
+if echo "$PAGES_STATUS" | grep -q '"html_url"'; then
+  PAGES_URL=$(echo "$PAGES_STATUS" | jq -r '.html_url')
+  echo "[DEPLOY] GitHub Pages already enabled"
+else
+  # Enable Pages with gh-pages branch
+  ENABLE_RESULT=$(gh api --method POST "/repos/$OWNER/$REPO/pages" \
+    -f source[branch]="gh-pages" \
+    -f source[path]="/" 2>&1 || echo "")
+
+  if echo "$ENABLE_RESULT" | grep -q '"html_url"'; then
+    PAGES_URL=$(echo "$ENABLE_RESULT" | jq -r '.html_url')
+    echo "[DEPLOY] GitHub Pages enabled"
+  elif echo "$ENABLE_RESULT" | grep -q "409"; then
+    # Already exists
+    PAGES_URL=$(gh api "/repos/$OWNER/$REPO/pages" --jq '.html_url' 2>/dev/null)
+    echo "[DEPLOY] GitHub Pages was already enabled"
+  else
+    # API failed - construct URL anyway
+    PAGES_URL="https://$OWNER.github.io/$REPO/"
+    echo "[DEPLOY] Could not verify Pages status. URL may take 1-2 minutes to become active."
+  fi
+fi
+```
+
+### 6.5 Wait for Propagation
+
+```bash
+echo "[DEPLOY] Waiting for site to build (up to 60s)..."
+
+for i in $(seq 1 12); do
+  STATUS=$(gh api "/repos/$OWNER/$REPO/pages" --jq '.status' 2>/dev/null || echo "unknown")
+  case "$STATUS" in
+    "built") echo "[DEPLOY] Site is live!"; break ;;
+    "building") echo "[DEPLOY] Building... ($i/12)"; sleep 5 ;;
+    "errored") echo "[DEPLOY] Build reported errors but may still work."; break ;;
+    *) sleep 5 ;;
+  esac
+done
+```
+
+### 6.6 Copy URL to Clipboard
+
+```bash
+if command -v pbcopy > /dev/null 2>&1; then
+  echo "$PAGES_URL" | pbcopy
+  echo "[DEPLOY] URL copied to clipboard"
+fi
+```
+
+### 6.7 Deployment Summary
+
+Set `DEPLOYED=true` and `PAGES_URL` for use in completion summary.
+
+If deployment failed at any step, set `DEPLOYED=false` and include manual steps in completion summary.
+
+---
+
+### 6.8 Completion Summary
+
+**If DEPLOYED=true:**
 
 ```
 /pro:permissionless-proof Complete
@@ -1740,6 +1861,42 @@ Pipeline Results:
   ✓ PARITY     - 100% structural match verified
   ✓ AUTO-VERIFY - {score}% parity in {N} iterations
   ✓ ELEVATE    - Typography, shadcn/ui, motion added
+  ✓ DEPLOY     - GitHub Pages live
+
+Files Created:
+  src/components/           - {X} component files
+  src/assets/               - {X} images
+  screenshots/source/       - Original website captures (4 viewports)
+  screenshots/check/        - Interaction audit evidence
+  screenshots/verify-iterations/ - Parity iteration history
+  public/evidence/          - Web-accessible evidence index
+
+Deployment:
+  Repository: https://github.com/{owner}/{repo}
+  Live URL:   {pages_url}
+  Evidence:   {pages_url}/evidence/
+
+(URL copied to clipboard)
+
+════════════════════════════════════════
+```
+
+**If DEPLOYED=false (gh not authenticated or API failed):**
+
+```
+/pro:permissionless-proof Complete
+════════════════════════════════════════
+
+Source: {url}
+Output: {output_dir}
+
+Pipeline Results:
+  ✓ ACQUIRE    - {X} sections, {X} assets extracted
+  ✓ CHECK      - {X} issues detected ({desktop}/{tablet}/{mobile})
+  ✓ PARITY     - 100% structural match verified
+  ✓ AUTO-VERIFY - {score}% parity in {N} iterations
+  ✓ ELEVATE    - Typography, shadcn/ui, motion added
+  ⚠ DEPLOY     - Manual steps required
 
 Files Created:
   src/components/           - {X} component files
@@ -1752,13 +1909,12 @@ Files Created:
 Git Repository:
   ✓ Initialized with initial commit
 
-Next Steps:
-  1. npm run dev            → Preview locally
-  2. npm run deploy:init    → Create repo + deploy to GitHub Pages
-  3. npm run open           → Open deployed site + copy URL to clipboard
-  4. npm run deploy         → Redeploy after changes
-
-Evidence accessible at: {pages_url}/evidence/
+Manual Deployment Steps:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Authenticate: gh auth login
+2. Deploy: npm run deploy:init
+3. Open: npm run open
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ════════════════════════════════════════
 ```
@@ -1811,4 +1967,4 @@ These rules are **non-negotiable**:
 - [ ] Build passes without errors
 - [ ] README documents all changes
 - [ ] User can run `npm install && npm run dev` successfully
-- [ ] User can run `npm run deploy:init && npm run open` successfully
+- [ ] DEPLOY phase: GitHub repo created, Pages enabled, site live (or clear manual steps if gh not authenticated)
