@@ -1,6 +1,18 @@
 {
-  "lastSequence": 62,
+  "lastSequence": 63,
   "items": [
+    {
+      "id": 63,
+      "title": "Content Fighter dual-agent refinement system",
+      "description": "Dual-agent iterative content refinement loop that scores and rewrites content until it achieves 10/10. Content Fighter A (Critic) scrutinizes content using a ruthless 5-axis scoring rubric (Authority, Directionality, Founder Pull, Action Gravity, Signal Density). Content Fighter B (Rewriter) applies the feedback. Loop continues until 10/10 with verbose progress shown each round. Command-only architecture (/pro:content-fight). No iteration limit, no config - 10/10 is the only acceptable outcome.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|63|content-fighter-dual-agent",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/content-fighter-dual-agent-refinement",
+      "createdAt": "2026-01-09T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 62,
       "title": "Multi-proof marketplace support",
