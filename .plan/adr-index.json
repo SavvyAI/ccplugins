@@ -1,6 +1,10 @@
 {
-  "lastSequence": 46,
+  "lastSequence": 47,
   "entries": [
+    {
+      "branch": "feat/content-fighter-dual-agent-refinement",
+      "adrs": ["047-content-fighter-adversarial-refinement-loop.md"]
+    },
     {
       "branch": "feat/multi-proof-marketplace-support",
       "adrs": ["046-multi-proof-marketplace-architecture.md"]
