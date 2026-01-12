@@ -1,6 +1,18 @@
 {
-  "lastSequence": 66,
+  "lastSequence": 67,
   "items": [
+    {
+      "id": 67,
+      "title": "Production-ready coding skill",
+      "description": "Explore mechanisms to ensure Claude Code follows production-ready practices by default (use real loggers not console.log, proper error handling, externalized config). Investigating skill vs subagent vs enhanced CLAUDE.md rules. Goal: production patterns without requiring user to specify per-project.",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|67|production-ready-skill",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/production-ready-skill",
+      "createdAt": "2026-01-12T20:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 66,
       "title": "Bounty Hunter - automated bounty discovery and execution",
