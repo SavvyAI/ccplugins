@@ -1,6 +1,10 @@
 {
-  "lastSequence": 48,
+  "lastSequence": 49,
   "entries": [
+    {
+      "branch": "spike/production-ready-skill",
+      "adrs": ["049-code-quality-skill-architecture.md"]
+    },
     {
       "branch": "feat/bounty-hunter-command",
       "adrs": ["048-bounty-hunter-command-architecture.md"]
