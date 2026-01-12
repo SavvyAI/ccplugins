@@ -108,6 +108,25 @@ Installing this plugin gives Claude Code:
 | **Figma** | Figma design file access and integration |
 | **shadcn-ui** | Access shadcn/ui v4 components, blocks, and implementations |
 
+### Shell Configuration (Optional MCP Servers)
+
+Some MCP servers require environment variables. Add these to your shell config (`.zshrc` or `.bashrc`):
+
+```bash
+# GitHub token for shadcn-ui MCP (optional, increases rate limit from 60 to 5000/hr)
+export GITHUB_TOKEN='ghp_your_token_here'
+
+# Supabase env vars from running local instance
+# Handles edge cases: silent fail if not installed, skips if services stopped
+out="$(supabase status --output env 2>/dev/null)"; \
+  echo "$out" | grep -q '^Stopped services:' && true || \
+  eval "$(echo "$out" | grep -E '^[A-Z_][A-Z0-9_]*=' | sed 's/^SERVICE_ROLE_KEY=/SUPABASE_SERVICE_ROLE_KEY=/' | sed 's/^/export /')"
+```
+
+After adding, restart your shell or run `source ~/.zshrc`.
+
+**Note:** If these env vars are not set, you'll see warnings in `/plugin` UI. The plugin still works - only those specific MCP servers will be unavailable.
+
 ### Playwright Setup
 
 By default, the plugin uses standard [@playwright/mcp](https://github.com/microsoft/playwright-mcp) which launches a standalone Chrome instance for browser automation.
@@ -150,20 +169,11 @@ The wrapper automatically enables `PLAYWRITER_AUTO_ENABLE` for automatic initial
 
 Use `/pro:supabase.local` to initialize and manage local Supabase instances with unique ports per project.
 
-The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment:
-
-```bash
-# Get your key from a running local Supabase instance
-export SUPABASE_SERVICE_ROLE_KEY=$(supabase status -o json | jq -r '.SERVICE_ROLE_KEY')
-```
+The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [Shell Configuration](#shell-configuration-optional-mcp-servers) for the recommended setup.
 
 ### shadcn-ui Setup
 
-The shadcn-ui MCP works out of the box but benefits from a GitHub token for higher rate limits (5000 vs 60 requests/hour):
-
-```bash
-export GITHUB_TOKEN=ghp_your_token_here
-```
+The shadcn-ui MCP works out of the box but benefits from a GitHub token for higher rate limits (5000 vs 60 requests/hour). See [Shell Configuration](#shell-configuration-optional-mcp-servers) for setup.
 
 The server provides access to shadcn/ui v4 components across React, Vue, Svelte, and React Native frameworks.
 
