@@ -1,0 +1,87 @@
+{
+  "fetchedAt": "2026-01-12T00:45:00Z",
+  "source": "algora.io",
+  "floorApplied": 1000,
+  "totalScanned": 10,
+  "totalFiltered": 8,
+  "topCandidate": {
+    "title": "Schema Migration System for ZIO Schema 2",
+    "amount": 4000,
+    "currency": "USD",
+    "repoOwner": "zio",
+    "repoName": "zio-blocks",
+    "issueNumber": 519,
+    "issueUrl": "https://github.com/zio/zio-blocks/issues/519",
+    "recommendation": "PENDING_TRIAGE",
+    "positiveSignals": [],
+    "negativeSignals": [],
+    "risks": [],
+    "note": "Highest payout bounty, requires detailed triage"
+  },
+  "allBounties": [
+    {
+      "title": "Schema Migration System for ZIO Schema 2",
+      "amount": 4000,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 519,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/519"
+    },
+    {
+      "title": "Finalize Patch & Diffing",
+      "amount": 3000,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 516,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/516"
+    },
+    {
+      "title": "Replace TypeName by TypeId & Macro Derivation",
+      "amount": 3000,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 471,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/471"
+    },
+    {
+      "title": "Add Into[A, B] and As[A, B] Type Classes with Macro Derivation",
+      "amount": 2500,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 518,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/518"
+    },
+    {
+      "title": "Add TOON support to ZIO Schema 2",
+      "amount": 2000,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 654,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/654"
+    },
+    {
+      "title": "Add structural schemas",
+      "amount": 2000,
+      "repoOwner": "zio",
+      "repoName": "zio-blocks",
+      "issueNumber": 517,
+      "issueUrl": "https://github.com/zio/zio-blocks/issues/517"
+    },
+    {
+      "title": "Vectorial EM field model",
+      "amount": 1000,
+      "repoOwner": "rafael-fuente",
+      "repoName": "diffractsim",
+      "issueNumber": 69,
+      "issueUrl": "https://github.com/rafael-fuente/diffractsim/issues/69"
+    },
+    {
+      "title": "Split Mudlet up into libmudlet and a Qt front-end",
+      "amount": 1000,
+      "repoOwner": "Mudlet",
+      "repoName": "Mudlet",
+      "issueNumber": 8030,
+      "issueUrl": "https://github.com/Mudlet/Mudlet/issues/8030"
+    }
+  ]
+}
