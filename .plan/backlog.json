@@ -1,6 +1,18 @@
 {
-  "lastSequence": 63,
+  "lastSequence": 64,
   "items": [
+    {
+      "id": 64,
+      "title": "Plugin manifest config errors (4 issues)",
+      "description": "Four errors shown in /plugin UI: (1) Missing SUPABASE_SERVICE_ROLE_KEY env var, (2) Missing GITHUB_TOKEN env var, (3) Agents path not found despite files existing, (4) Duplicate hooks file - hooks/hooks.json auto-loaded by convention but also declared explicitly.\n\n**Steps to reproduce:**\n1. Open /plugin → Installed → select 'pro'\n2. View errors section\n\n**Root causes:**\n- Errors 1-2: Optional env vars not set (not bugs)\n- Error 3: Glob pattern or path resolution issue\n- Error 4: Manifest declares hooks path that's auto-loaded by Claude Code convention",
+      "category": "bug",
+      "severity": "high",
+      "fingerprint": "bug|64|plugin-manifest-config-errors",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/plugin-manifest-config-errors",
+      "createdAt": "2026-01-10T04:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 63,
       "title": "Content Fighter dual-agent refinement system",
