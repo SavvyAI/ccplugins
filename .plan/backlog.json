@@ -1,6 +1,18 @@
 {
-  "lastSequence": 65,
+  "lastSequence": 66,
   "items": [
+    {
+      "id": 66,
+      "title": "Bounty Hunter - automated bounty discovery and execution",
+      "description": "Add /pro:bounty.scout and /pro:bounty.hunter commands for automated OSS bounty discovery, triage, and execution. Scout mode: discovery + triage only, surfaces top candidate with TAKE/SKIP recommendation. Hunter mode: full execution including fork, implementation, tests, and PR creation with human checkpoint. Hard-coded to Algora.io for v1. Encodes maintainer psychology and decision compression, not just code generation. Goals: reduce cognitive overhead of bounty triage, compress search→decision→implementation loop from hours to minutes, establish repeatable $1-2k/month baseline.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|66|bounty-hunter-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/bounty-hunter-command",
+      "createdAt": "2026-01-12T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 65,
       "title": "Document shell environment setup for optional MCP servers",

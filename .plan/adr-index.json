@@ -1,6 +1,10 @@
 {
-  "lastSequence": 47,
+  "lastSequence": 48,
   "entries": [
+    {
+      "branch": "feat/bounty-hunter-command",
+      "adrs": ["048-bounty-hunter-command-architecture.md"]
+    },
     {
       "branch": "feat/content-fighter-dual-agent-refinement",
       "adrs": ["047-content-fighter-adversarial-refinement-loop.md"]

@@ -54,6 +54,8 @@ Installing this plugin gives Claude Code:
 | `/pro:product.brief` | Distill unstructured ideas into structured product brief |
 | `/pro:product.validate` | Brutal market validation from a harsh co-founder persona |
 | `/pro:product.pitch` | Generate investor-ready pitch deck outline from validation |
+| `/pro:bounty.scout` | Discover and evaluate high-ROI bounties (no side effects) |
+| `/pro:bounty.hunter` | Full bounty execution: fork, implement, PR with human checkpoint |
 
 ## Workflow
 
@@ -95,6 +97,10 @@ Installing this plugin gives Claude Code:
 /pro:product.brief "idea here"  # Distill chaos into structured brief
 /pro:product.validate           # Brutal market validation
 /pro:product.pitch              # Generate pitch deck outline
+
+# Bounty hunting (OSS revenue)
+/pro:bounty.scout               # Research bounties, get TAKE/SKIP recommendation
+/pro:bounty.hunter              # Full execution: fork, implement, PR
 ```
 
 ## Bundled MCP Servers
@@ -129,7 +135,12 @@ After adding, restart your shell or run `source ~/.zshrc`.
 
 ### Playwright Setup
 
-By default, the plugin uses standard [@playwright/mcp](https://github.com/microsoft/playwright-mcp) which launches a standalone Chrome instance for browser automation.
+By default, the plugin uses standard [@playwright/mcp](https://github.com/microsoft/playwright-mcp) which launches a **headless** Chrome instance for browser automation. This means no browser window will pop up while you're working.
+
+**To show the browser** (useful for debugging):
+```bash
+export PLAYWRIGHT_HEADED=1
+```
 
 **Alternative: playwriter (Chrome extension-based)**
 
@@ -176,6 +187,64 @@ The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [
 The shadcn-ui MCP works out of the box but benefits from a GitHub token for higher rate limits (5000 vs 60 requests/hour). See [Shell Configuration](#shell-configuration-optional-mcp-servers) for setup.
 
 The server provides access to shadcn/ui v4 components across React, Vue, Svelte, and React Native frameworks.
+
+## Bounty Hunting Pipeline
+
+Automate OSS bounty discovery, triage, and execution:
+
+```
+/pro:bounty.scout → TAKE/SKIP decision → /pro:bounty.hunter → PR submitted
+```
+
+### Two-Command Architecture
+
+**Scout** (research-only):
+- Fetches bounties from Algora.io
+- Applies scoring heuristics based on maintainer signals
+- Returns top candidate with TAKE/SKIP recommendation
+- Zero side effects (safe to run repeatedly)
+
+**Hunter** (full execution):
+- Requires `gh auth login` first
+- Posts `/attempt` comment on selected bounty
+- Forks repository and creates spike branch
+- Generates planning artifacts (scope, risks, implementation order)
+- Implements minimal, merge-safe MVP
+- Opens PR with human checkpoint before final submission
+
+### Scoring Heuristics
+
+Bounties are evaluated for mergeability, not just difficulty:
+
+**Positive signals**: Clear maintainer guidance, isolated module, existing PRs incomplete/misaligned, well-defined acceptance criteria
+
+**Negative signals**: Strong PR near merge, maintainer endorsing another solution, core/security/crypto code, high ambiguity, broad refactors required
+
+### Human Checkpoint
+
+The hunter command pauses before or after PR creation for review:
+- Diff summary and risk assessment
+- Mergeability rationale (maintainer perspective)
+- Options: approve, adjust, or abort
+
+### State Persistence
+
+Results stored in `.plan/bounty-hunter/`:
+- `discovered.json` - Cached bounty listings
+- `attempts.json` - Record of claimed bounties and their status
+- `config.json` - User preferences (floor amount, language filters)
+
+### Usage
+
+```bash
+# Quick research pass
+/pro:bounty.scout
+
+# Full execution when ready
+/pro:bounty.hunter
+```
+
+**Goal**: Compress the search → decision → implementation loop from hours to minutes.
 
 ## Product Validation Pipeline
 
