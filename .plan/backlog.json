@@ -1,6 +1,18 @@
 {
-  "lastSequence": 64,
+  "lastSequence": 65,
   "items": [
+    {
+      "id": 65,
+      "title": "Document shell environment setup for optional MCP servers",
+      "description": "Update pro/readme.md to document the correct shell configuration for optional MCP servers. Add instructions for GITHUB_TOKEN (shadcn-ui) and dynamic SUPABASE_SERVICE_ROLE_KEY extraction from running local Supabase. Includes robust one-liner that handles edge cases like stopped services.",
+      "category": "chore",
+      "severity": "medium",
+      "fingerprint": "chore|65|document-shell-env-setup",
+      "source": "/pro:chore",
+      "sourceBranch": "chore/document-shell-env-setup",
+      "createdAt": "2026-01-11T05:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 64,
       "title": "Plugin manifest config errors (4 issues)",
