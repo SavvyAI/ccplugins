@@ -67,3 +67,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [047. Content Fighter Adversarial Refinement Loop](047-content-fighter-adversarial-refinement-loop.md)
 - [048. Bounty Hunter Command Architecture](048-bounty-hunter-command-architecture.md)
 - [049. Code Quality Skill Architecture](049-code-quality-skill-architecture.md)
+- [050. Bounty Competitive Intelligence System](050-bounty-competitive-intelligence-system.md)

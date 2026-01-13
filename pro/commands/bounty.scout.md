@@ -48,17 +48,49 @@ Discover and evaluate open-source bounties without taking execution actions.
       - All maintainer comments
       - Labels and milestones
 
-   b. **Check existing PRs**:
-      - List all linked PRs
-      - For each PR: status, size, last activity, author
+   b. **Parse Algora bot comment** (PRIMARY INTELLIGENCE SOURCE):
+      ```bash
+      gh api repos/[owner]/[repo]/issues/[number]/comments \
+        --jq '.[] | select(.user.login == "algora-pbc") | .body'
+      ```
+
+      Extract from the attempts table:
+      - **Total attempts**: Number of `/attempt` claims
+      - **Active (WIP)**: Competitors still working (no PR linked)
+      - **Submitted PRs**: PRs linked in Solution column
+      - **Reward candidates**: PRs with "Reward" in Actions column (CRITICAL)
+
+      **CRITICAL**: If ANY row has "Reward" in Actions:
+      - Maintainer is actively considering that PR for payout
+      - This is a strong negative signal
+      - Should heavily weight toward SKIP
+
+   c. **Check existing PRs** (for scope analysis):
+      - List all linked PRs via `gh pr list --repo [owner/repo] --search "linked:issue:[issue-number]"`
+      - For each PR, gather:
+        - Status (open/closed/merged)
+        - Size (additions/deletions/files changed)
+        - Last activity date
+        - Author
+        - **Labels** (especially `bounty claim`, `bounty-claim`, or any "claim" variant)
       - Identify if any PR is close to merge
 
-   c. **Assess competition**:
-      - Count active attempts
-      - Check for recent `/attempt` comments
-      - Note maintainer responses to attempts
+   d. **Check for bounty claim label** (CRITICAL SIGNAL):
+      ```bash
+      gh pr view [pr-number] --repo [owner/repo] --json labels --jq '.labels[].name'
+      ```
+      If ANY competing PR has a label containing "bounty" AND "claim":
+      - This is a **CRITICAL negative signal**
+      - Likely indicates maintainer has chosen a winner trajectory
+      - Should trigger automatic SKIP unless scope is clearly incomplete
 
-   d. **Detect constraints**:
+   e. **Assess competition level**:
+      - **HIGH**: 3+ PRs with "Reward" status, or any PR 5x+ scope ahead
+      - **MEDIUM**: 2+ submitted PRs, active maintainer engagement
+      - **LOW**: No submitted PRs, only WIP attempts
+      - **Quantify scope delta**: If competitor has 3x+ your estimated effort, flag as HIGH risk
+
+   f. **Detect constraints**:
       - Architectural requirements mentioned
       - Specific technologies required
       - Test coverage expectations
@@ -78,6 +110,10 @@ Discover and evaluate open-source bounties without taking execution actions.
    **Negative signals** (each reduces score):
    - Strong PR already near merge
    - Maintainer explicitly endorsing another solution
+   - **Competing PR has `bounty claim` label** (CRITICAL - almost always SKIP)
+   - **Competing PR has "Reward" in Algora bot Actions** (maintainer considering for payout)
+   - **Competing PR is 3x+ scope ahead with active maintainer engagement**
+   - **3+ competitors with submitted PRs** (crowded field)
    - Changes touch core, security, crypto, or consensus code
    - High ambiguity with no maintainer clarification
    - Broad refactors or cross-cutting changes required
@@ -86,6 +122,9 @@ Discover and evaluate open-source bounties without taking execution actions.
 
    **Bail conditions** (automatic SKIP):
    - PR already merged or explicitly approved
+   - **Another PR has `bounty claim` label** (maintainer chose winner trajectory)
+   - **Multiple PRs have "Reward" status** (maintainer actively evaluating others)
+   - **Maintainer comment says "close to winning" or "almost ready to merge" on another PR**
    - Maintainer states they are actively working on it
    - Security-sensitive or correctness-critical domain
    - Would require invasive core changes
@@ -122,7 +161,28 @@ Discover and evaluate open-source bounties without taking execution actions.
 
 **Recommendation**: TAKE / SKIP
 
-**Scoring Breakdown**:
+---
+
+### Competitive Intelligence
+
+| Metric | Value |
+|--------|-------|
+| Competing PRs | X open, Y closed |
+| `/attempt` claims | Z authors |
+| Bounty claim holder | PR #NNN / None |
+| Competition level | 🔴 Critical / 🟠 High / 🟡 Medium / 🟢 Low |
+
+**Scope Leader** (if any):
+- PR #NNN by @author: +X,XXX lines, Y files
+
+**Key Threats**:
+- [Threat 1 - e.g., "PR #663 has bounty claim label"]
+- [Threat 2 - e.g., "Maintainer actively reviewing #663"]
+
+---
+
+### Scoring Breakdown
+
 - Positive: [list signals found]
 - Negative: [list signals found]
 - Net Score: +N / -N
@@ -134,8 +194,17 @@ Discover and evaluate open-source bounties without taking execution actions.
 - [Risk 1]
 - [Risk 2]
 
-**If TAKE - Next Steps**:
-Run `/pro:bounty.hunter` to execute on this bounty.
+---
+
+### Next Steps
+
+**If TAKE**:
+1. Run `/pro:bounty.recon [issue-url]` for detailed competitive analysis
+2. Run `/pro:bounty.hunter` to execute
+
+**If SKIP due to competition**:
+- Consider next candidate from `allBounties` list
+- Or wait for competition to resolve (PR merged/rejected)
 
 ---
 ```
@@ -161,7 +230,36 @@ Run `/pro:bounty.hunter` to execute on this bounty.
        "recommendation": "TAKE",
        "positiveSignals": ["..."],
        "negativeSignals": ["..."],
-       "risks": ["..."]
+       "risks": ["..."],
+       "competitiveIntelligence": {
+         "algoraBot": {
+           "totalAttempts": 9,
+           "activeWIP": 5,
+           "submittedPRs": 4,
+           "rewardCandidates": 3,
+           "rewardPRs": [661, 657, 663]
+         },
+         "competingPRs": [
+           {
+             "number": 456,
+             "author": "competitor",
+             "state": "open",
+             "additions": 5000,
+             "deletions": 100,
+             "filesChanged": 15,
+             "hasBountyClaimLabel": false,
+             "hasRewardStatus": true,
+             "lastActivityDays": 3,
+             "maintainerEngaged": true
+           }
+         ],
+         "bountyClaimHolder": null,
+         "competitionLevel": "high",
+         "scopeLeader": {
+           "prNumber": 456,
+           "additions": 5000
+         }
+       }
      },
      "allBounties": [...]
    }
