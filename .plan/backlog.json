@@ -1,6 +1,18 @@
 {
-  "lastSequence": 67,
+  "lastSequence": 68,
   "items": [
+    {
+      "id": 68,
+      "title": "Expand Bounty Scout to GitHub-native sources",
+      "description": "Expand /pro:bounty.scout to discover paid/monetizable opportunities beyond Algora.io. Phase 1 adds GitHub-native discovery: (1) Paid Issue Signals - search issues with keywords like 'bounty', 'paid', 'would pay' and labels like help-wanted, (2) Sponsors-Enabled Repositories - detect repos with GitHub Sponsors and flag monetizable issues, (3) Urgency Signals - detect issues with keywords like 'regression', 'release blocker', 'urgent'. Unified list with source as metadata, confidence tiers instead of fake dollar amounts. Preserves Scout→Recon→Hunter pipeline compatibility.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|68|bounty-scout-github-native-sources",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/bounty-scout-github-native-sources",
+      "createdAt": "2026-01-13T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 67,
       "title": "Production-ready coding skill",
