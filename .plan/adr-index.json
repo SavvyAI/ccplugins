@@ -1,6 +1,10 @@
 {
-  "lastSequence": 50,
+  "lastSequence": 51,
   "entries": [
+    {
+      "branch": "feat/bounty-scout-github-native-sources",
+      "adrs": ["051-bounty-scout-multi-source-expansion.md"]
+    },
     {
       "branch": "feat/bounty-competitive-intelligence",
       "adrs": ["050-bounty-competitive-intelligence-system.md"]
