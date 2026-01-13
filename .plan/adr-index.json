@@ -1,6 +1,10 @@
 {
-  "lastSequence": 49,
+  "lastSequence": 50,
   "entries": [
+    {
+      "branch": "feat/bounty-competitive-intelligence",
+      "adrs": ["050-bounty-competitive-intelligence-system.md"]
+    },
     {
       "branch": "spike/production-ready-skill",
       "adrs": ["049-code-quality-skill-architecture.md"]
