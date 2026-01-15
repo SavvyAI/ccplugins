@@ -9,13 +9,18 @@ Let's plan the implementation for: $ARGUMENTS
 
 ## Your Task
 
-0. Enter **plan mode** (announce this to the user).
-1. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this work. Summarize any relevant decisions before proposing changes. Do not suggest reversing or contradicting existing ADRs without explicitly acknowledging them.
-2. Confirm and document the requirements and scope.
-3. Ask clarifying questions until mutual clarity is reached on the design and approach.
-4. Generate a clear, descriptive feature branch name based on the agreed work.
-5. Create and switch to the new branch.
-6. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
+**CRITICAL: Branch creation is MANDATORY and must happen FIRST. Never perform any
+investigation, code reading, or changes until the branch exists. This is a non-negotiable
+safety invariant per ADR-017.**
+
+0. **IMMEDIATELY create branch** - Generate a `feat/` branch name from the initial description
+   (`$ARGUMENTS`) and create it. Do NOT proceed to any other step until this is complete.
+   Example: "add dark mode toggle" → `feat/add-dark-mode-toggle`
+1. Enter **plan mode** (announce this to the user).
+2. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this work. Summarize any relevant decisions before proposing changes. Do not suggest reversing or contradicting existing ADRs without explicitly acknowledging them.
+3. Confirm and document the requirements and scope.
+4. Ask clarifying questions until mutual clarity is reached on the design and approach.
+5. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
    - Ensure `.plan/backlog.json` exists (create with `{"lastSequence": 0, "items": []}` if not)
    - Increment `lastSequence` and add item:
      ```json
@@ -32,11 +37,11 @@ Let's plan the implementation for: $ARGUMENTS
        "status": "in-progress"
      }
      ```
-7. Store all planning notes, todos, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `fix/pattern-matcher-tests-static-rule` >> `fix-pattern-matcher-tests-static-rule`.
-8. Outline detailed implementation steps.
-9. Implement the feature and document changes.
-10. `> coderabbit --prompt-only`
-11. Document any known issues that won't be addressed here:
+6. Store all planning notes, todos, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `feat/add-dark-mode` >> `feat-add-dark-mode`.
+7. Outline detailed implementation steps.
+8. Implement the feature and document changes.
+9. `> coderabbit --prompt-only`
+10. Document any known issues that won't be addressed here:
     - Use `/pro:backlog.add <description>` to add items to the backlog
     - Set `source` to `/pro:feature` and `sourceBranch` to current branch
 

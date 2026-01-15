@@ -1,6 +1,10 @@
 {
-  "lastSequence": 51,
+  "lastSequence": 52,
   "entries": [
+    {
+      "branch": "fix/bug-command-branch-enforcement",
+      "adrs": ["052-branch-first-enforcement-for-work-commands.md"]
+    },
     {
       "branch": "feat/bounty-scout-github-native-sources",
       "adrs": ["051-bounty-scout-multi-source-expansion.md"]

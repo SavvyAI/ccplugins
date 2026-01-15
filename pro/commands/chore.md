@@ -26,13 +26,18 @@ A chore is necessary non-feature work that supports the system. It intentionally
 
 ## Your Task
 
-0. Enter **plan mode** (announce this to the user).
-1. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this work. Summarize any relevant decisions before proposing changes. Do not suggest changes that contradict existing ADRs without explicitly acknowledging them.
-2. Confirm and document the chore scope.
-3. Ask clarifying questions until mutual clarity is reached on what needs to be done.
-4. Generate a clear, descriptive `chore/` branch name based on the work.
-5. Create and switch to the new branch.
-6. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
+**CRITICAL: Branch creation is MANDATORY and must happen FIRST. Never perform any
+investigation, code reading, or changes until the branch exists. This is a non-negotiable
+safety invariant per ADR-017.**
+
+0. **IMMEDIATELY create branch** - Generate a `chore/` branch name from the initial description
+   (`$ARGUMENTS`) and create it. Do NOT proceed to any other step until this is complete.
+   Example: "update dependencies" → `chore/update-dependencies`
+1. Enter **plan mode** (announce this to the user).
+2. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this work. Summarize any relevant decisions before proposing changes. Do not suggest changes that contradict existing ADRs without explicitly acknowledging them.
+3. Confirm and document the chore scope.
+4. Ask clarifying questions until mutual clarity is reached on what needs to be done.
+5. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
    - Ensure `.plan/backlog.json` exists (create with `{"lastSequence": 0, "items": []}` if not)
    - Increment `lastSequence` and add item:
      ```json
@@ -49,11 +54,11 @@ A chore is necessary non-feature work that supports the system. It intentionally
        "status": "in-progress"
      }
      ```
-7. Store all planning notes, todos, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `chore/update-deps` >> `chore-update-deps`.
-8. Outline detailed implementation steps.
-9. Implement the chore and document changes.
-10. `> coderabbit --prompt-only`
-11. Document any related issues discovered that won't be addressed here:
+6. Store all planning notes, todos, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `chore/update-deps` >> `chore-update-deps`.
+7. Outline detailed implementation steps.
+8. Implement the chore and document changes.
+9. `> coderabbit --prompt-only`
+10. Document any related issues discovered that won't be addressed here:
     - Use `/pro:backlog.add <description>` to add items to the backlog
     - Set `source` to `/pro:chore` and `sourceBranch` to current branch
 

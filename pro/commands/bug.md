@@ -19,12 +19,17 @@ Before planning the fix, gather the following information through guided prompts
 
 ## Your Task
 
-0. Enter **plan mode** (announce this to the user).
-1. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this area. Summarize any relevant decisions before proposing fixes. Do not suggest changes that contradict existing ADRs without explicitly acknowledging them.
-2. Capture bug details via the guided prompts above. Ask each question interactively.
-3. Generate a clear, descriptive `fix/` branch name based on the bug description.
-4. Create and switch to the new branch.
-5. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
+**CRITICAL: Branch creation is MANDATORY and must happen FIRST. Never perform any
+investigation, code reading, or changes until the branch exists. This is a non-negotiable
+safety invariant per ADR-017.**
+
+0. **IMMEDIATELY create branch** - Generate a `fix/` branch name from the initial bug description
+   (`$ARGUMENTS`) and create it. Do NOT proceed to any other step until this is complete.
+   Example: "login button broken" → `fix/login-button-broken`
+1. Enter **plan mode** (announce this to the user).
+2. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this area. Summarize any relevant decisions before proposing fixes. Do not suggest changes that contradict existing ADRs without explicitly acknowledging them.
+3. Capture bug details via the guided prompts above. Ask each question interactively.
+4. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
    - Ensure `.plan/backlog.json` exists (create with `{"lastSequence": 0, "items": []}` if not)
    - Map severity from bug details: "blocks work" → critical, "degraded experience" → high, "minor annoyance" → low
    - Increment `lastSequence` and add item:
@@ -42,13 +47,13 @@ Before planning the fix, gather the following information through guided prompts
        "status": "in-progress"
      }
      ```
-6. Store all planning notes, bug details, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `fix/pattern-matcher-tests-static-rule` >> `fix-pattern-matcher-tests-static-rule`.
-7. **Investigate root cause** - Gather empirical evidence, trace code paths, identify where the bug originates. Do not proceed to implementation until the root cause is understood.
-8. Outline fix implementation steps.
-9. Implement the fix and document changes.
-10. **Verify fix** - Confirm the reproduction steps no longer trigger the bug.
-11. `> coderabbit --prompt-only`
-12. Document any related issues discovered that won't be addressed here:
+5. Store all planning notes, bug details, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `fix/pattern-matcher-tests-static-rule` >> `fix-pattern-matcher-tests-static-rule`.
+6. **Investigate root cause** - Gather empirical evidence, trace code paths, identify where the bug originates. Do not proceed to implementation until the root cause is understood.
+7. Outline fix implementation steps.
+8. Implement the fix and document changes.
+9. **Verify fix** - Confirm the reproduction steps no longer trigger the bug.
+10. `> coderabbit --prompt-only`
+11. Document any related issues discovered that won't be addressed here:
     - Use `/pro:backlog.add <description>` to add items to the backlog
     - Set `source` to `/pro:bug` and `sourceBranch` to current branch
 

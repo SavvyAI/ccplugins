@@ -1,6 +1,18 @@
 {
-  "lastSequence": 68,
+  "lastSequence": 69,
   "items": [
+    {
+      "id": 69,
+      "title": "Work commands not creating branch before fix",
+      "description": "Critical bug: /pro:bug (and all work-initiating commands) allows investigation and potentially fixes to happen on main before branch is created. The command step ordering puts branch creation at steps 3-5, after plan mode and questions. Per ADR-017, branches must be created 'at invocation time' - immediately when command starts.\n\n**Steps to reproduce:**\n1. Run /pro:bug with a bug description\n2. Claude starts investigating immediately without creating branch first\n3. Fix may be implemented on main\n\n**Root cause:** Command instructions put branch creation after plan mode entry and info gathering instead of FIRST.\n\n**Fix:** Restructure all 5 work-initiating commands to create branch as step 0, before any other work.",
+      "category": "bug",
+      "severity": "critical",
+      "fingerprint": "bug|69|bug-command-branch-enforcement",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/bug-command-branch-enforcement",
+      "createdAt": "2026-01-15T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 68,
       "title": "Expand Bounty Scout to GitHub-native sources",
