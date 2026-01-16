@@ -38,15 +38,20 @@ This keeps your main working directory pristine while experimenting in parallel.
 
 ## Your Task
 
-0. Enter **plan mode** (announce this to the user).
-1. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this exploration. Summarize any relevant decisions.
-2. Clarify the spike scope:
+**CRITICAL: Branch creation is MANDATORY and must happen FIRST. Never perform any
+investigation, code reading, or changes until the branch exists. This is a non-negotiable
+safety invariant per ADR-017.**
+
+0. **IMMEDIATELY create branch** - Generate a `spike/` branch name from the initial description
+   (`$ARGUMENTS`) and create it. Do NOT proceed to any other step until this is complete.
+   Example: "explore redis caching options" → `spike/explore-redis-caching-options`
+1. Enter **plan mode** (announce this to the user).
+2. **Check ADRs for related decisions** - Search `doc/decisions/` for prior decisions related to this exploration. Summarize any relevant decisions.
+3. Clarify the spike scope:
    - What uncertainty are we trying to reduce?
    - What would "success" look like for this spike?
    - What is the time-box? (suggest a reasonable default if not specified)
-3. Generate a clear, descriptive `spike/` branch name based on the exploration goal.
-4. Create and switch to the new branch.
-5. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
+4. **Add to backlog as in-progress** - This enables `/pro:backlog.resume` to pick up where you left off:
    - Ensure `.plan/backlog.json` exists (create with `{"lastSequence": 0, "items": []}` if not)
    - Increment `lastSequence` and add item:
      ```json
@@ -63,9 +68,9 @@ This keeps your main working directory pristine while experimenting in parallel.
        "status": "in-progress"
      }
      ```
-6. Create minimal planning directory: `${ProjectRoot}/.plan/${BranchName}` (branch naming: `spike/foo-bar` → `spike-foo-bar`)
-7. Begin exploration. Document findings as you go (inline comments, notes, or code).
-8. **After exploration, prompt the user:**
+5. Create minimal planning directory: `${ProjectRoot}/.plan/${BranchName}` (branch naming: `spike/foo-bar` → `spike-foo-bar`)
+6. Begin exploration. Document findings as you go (inline comments, notes, or code).
+7. **After exploration, prompt the user:**
    > "Would you like to document your findings? This helps preserve institutional memory for future reference."
    - If yes: Create `.plan/{branch}/findings.md` with:
      - What was explored
