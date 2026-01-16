@@ -1,6 +1,18 @@
 {
-  "lastSequence": 69,
+  "lastSequence": 70,
   "items": [
+    {
+      "id": 70,
+      "title": "Web-check integration & Claude-free CLI for permissionless proof",
+      "description": "Explore integrating web-check.xyz for website analysis and investigate building a Claude-free CLI for permissionless proof. Key questions: (1) Can web-check provide 'walk-in' ammunition for cold outreach? (2) Can we build permissionless proof without LLM tokens - what's deterministic vs requires reasoning? (3) Architecture options: integrate web-check API, self-host web-check-api (Go), or build our own CLI using existing tools (Lighthouse, SSL checkers, DNS tools).",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|70|web-check-permissionless-cli",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/web-check-permissionless-cli",
+      "createdAt": "2026-01-15T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 69,
       "title": "Work commands not creating branch before fix",
