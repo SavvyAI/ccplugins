@@ -1,6 +1,18 @@
 {
-  "lastSequence": 70,
+  "lastSequence": 71,
   "items": [
+    {
+      "id": 71,
+      "title": "Author publish command for traditional publishing pipeline",
+      "description": "/author:publish - Traditional publishing pipeline command. Transforms a book concept into publisher-ready submission artifacts and submission tracking. Phased pipeline with checkpoints: (1) SCAN (optional) - go/no-go concept validation, (2) QUERY - agent query letter generation, (3) PROPOSAL - full book proposal, (4) TARGETS - curated agent target map, (5) LAUNCH - submission tracking + advance framing. Outputs stored in book/publish/ with dual JSON+Markdown for tracking. Creates ADR-054 to document reversal of ADR-028's artifact generation stance (this is opt-in intentional invocation, not automation theater).",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|71|author-publish-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/author-publish-command",
+      "createdAt": "2026-01-17T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 70,
       "title": "Web-check integration & Claude-free CLI for permissionless proof",
