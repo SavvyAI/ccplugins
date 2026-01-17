@@ -1,6 +1,10 @@
 {
-  "lastSequence": 52,
+  "lastSequence": 53,
   "entries": [
+    {
+      "branch": "spike/web-check-permissionless-cli",
+      "adrs": ["053-claude-free-website-audit-architecture.md"]
+    },
     {
       "branch": "fix/bug-command-branch-enforcement",
       "adrs": ["052-branch-first-enforcement-for-work-commands.md"]
