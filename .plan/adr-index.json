@@ -1,6 +1,10 @@
 {
-  "lastSequence": 53,
+  "lastSequence": 54,
   "entries": [
+    {
+      "branch": "feat/author-publish-command",
+      "adrs": ["054-author-publish-pipeline-architecture.md"]
+    },
     {
       "branch": "spike/web-check-permissionless-cli",
       "adrs": ["053-claude-free-website-audit-architecture.md"]

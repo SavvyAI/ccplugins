@@ -19,6 +19,11 @@ book/
 │   └── ...
 ├── front-matter/          # Title, dedication, preface
 ├── back-matter/           # Appendix, bibliography
+├── publish/               # Publishing pipeline artifacts
+│   ├── query.md           # Agent query letter
+│   ├── proposal.md        # Full book proposal
+│   ├── targets.md         # Agent target map
+│   └── submissions.md     # Submission tracker
 └── dist/                  # Compiled outputs
 ```
 
@@ -34,6 +39,7 @@ book/
 | `/author:status` | View progress dashboard with inferred milestones |
 | `/author:targets` | View targets vs. current progress |
 | `/author:targets.edit` | Modify chapter and word count targets |
+| `/author:publish` | Traditional publishing pipeline (query, proposal, agents) |
 
 ## Anti-Features
 
