@@ -72,3 +72,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [052. Branch-First Enforcement for Work Commands](052-branch-first-enforcement-for-work-commands.md)
 - [053. Claude-Free Website Audit Architecture](053-claude-free-website-audit-architecture.md)
 - [054. Author Publish Pipeline Architecture](054-author-publish-pipeline-architecture.md)
+- [055. Bundled Compilation Scripts for /author:init](055-author-init-bundled-compilation-scripts.md)

@@ -52,3 +52,7 @@ To test:
 
 - Node.js 18+ (for ESM support)
 - pdflatex (for PDF generation): `brew install texlive`
+
+## Related ADRs
+
+- [055. Bundled Compilation Scripts for /author:init](../../doc/decisions/055-author-init-bundled-compilation-scripts.md)

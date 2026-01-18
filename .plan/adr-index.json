@@ -1,6 +1,10 @@
 {
-  "lastSequence": 54,
+  "lastSequence": 55,
   "entries": [
+    {
+      "branch": "feat/author-init-compilation-tooling",
+      "adrs": ["055-author-init-bundled-compilation-scripts.md"]
+    },
     {
       "branch": "feat/author-publish-command",
       "adrs": ["054-author-publish-pipeline-architecture.md"]
