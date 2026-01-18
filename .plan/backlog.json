@@ -1,6 +1,33 @@
 {
-  "lastSequence": 71,
+  "lastSequence": 73,
   "items": [
+    {
+      "id": 73,
+      "title": "Add self-service compilation tooling to /author:init",
+      "description": "Enhance /author:init to generate package.json with npm scripts and bundled compile-latex.mjs/preview-pdf.mjs scripts. Enables authors to run `npm run preview` to generate PDF without invoking Claude Code. Based on spike #72 findings. Uses ADR-010 pattern for bundled bin assets.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|73|author-init-compilation-tooling",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/author-init-compilation-tooling",
+      "createdAt": "2026-01-17T18:50:00Z",
+      "status": "in-progress"
+    },
+    {
+      "id": 72,
+      "title": "Extract Claude Code book niceties to Author plugin",
+      "description": "Spike to identify gaps between hand-crafted book projects (like Claude Code book) and what /author:init generates. Key findings: (1) Missing scripts/ directory with npm compile/preview commands, (2) Missing .claude/book-rules.md for canonical rules, (3) Incomplete .gitignore for LaTeX intermediates, (4) No README.md or doc/README.md generated. High-priority: add package.json + scripts for self-service compilation (npm run preview) so authors don't need Claude Code just to preview PDF.",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|72|author-plugin-book-niceties",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/extract-claude-book-niceties-to-author-plugin",
+      "createdAt": "2026-01-17T18:40:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-01-17T18:50:00Z",
+      "resolvedBranch": "feat/author-init-compilation-tooling",
+      "resolution": "Promoted to feature #73"
+    },
     {
       "id": 71,
       "title": "Author publish command for traditional publishing pipeline",

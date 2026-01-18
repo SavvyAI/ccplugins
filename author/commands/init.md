@@ -15,12 +15,44 @@ Create the directory structure and manifest files needed for a long-form writing
 ### Step 1: Check for Existing Project
 
 ```bash
-ls book/ 2>/dev/null
+ls book/book.json 2>/dev/null
 ```
 
-If `book/` exists and contains files:
-- Display: "A book project already exists. Use `/author:chapter` to add content."
+If `book/book.json` exists, the project is already initialized. Check for missing tooling:
+
+```bash
+ls scripts/compile-latex.mjs 2>/dev/null
+ls package.json 2>/dev/null
+```
+
+**If both scripts and package.json exist:**
+- Display: "Book project is fully initialized. Use `/author:chapter` to add content."
 - Exit
+
+**If book exists but tooling is missing:**
+
+Use `AskUserQuestion`:
+
+```
+question: "This book project is missing compilation tooling (scripts/package.json). Add it now?"
+header: "Upgrade"
+options:
+  - "Yes, add tooling (Recommended)" (add scripts and package.json)
+  - "No, skip" (continue without tooling)
+```
+
+If "Yes, add tooling":
+- Read book title and author from `book/book.json`
+- Skip to Step 5.5 (Create Compilation Scripts) and Step 5.6 (Create package.json)
+- Skip to Step 8 (Update .gitignore) - append missing patterns only
+- Display upgrade confirmation and exit
+
+If "No, skip":
+- Display: "Skipped. Use `/author:chapter` to add content."
+- Exit
+
+**If book/ does not exist:**
+- Continue with Step 2 (fresh initialization)
 
 ### Step 2: Check for Existing Content
 
@@ -113,6 +145,47 @@ mkdir -p book/back-matter
 mkdir -p book/dist/specmd
 mkdir -p book/dist/latex
 mkdir -p book/dist/markdown
+mkdir -p scripts
+```
+
+### Step 5.5: Create Compilation Scripts
+
+Copy the bundled compilation scripts from `author/commands/_bins/init/` to the project's `scripts/` directory:
+
+1. **Read** `author/commands/_bins/init/compile-latex.mjs`
+2. **Write** to `scripts/compile-latex.mjs`
+3. **Read** `author/commands/_bins/init/preview-pdf.mjs`
+4. **Write** to `scripts/preview-pdf.mjs`
+
+These scripts enable self-service book compilation without invoking Claude Code.
+
+### Step 5.6: Create package.json
+
+Read `author/commands/_bins/init/package.template.json` and substitute placeholders:
+
+- `{{PACKAGE_NAME}}` → slugified book title (lowercase, hyphens, e.g., "my-awesome-book")
+- `{{TITLE}}` → book title as provided
+- `{{AUTHOR}}` → author name as provided
+
+Write the result to `package.json` in the project root.
+
+**Example output:**
+
+```json
+{
+  "name": "the-leverage-gap",
+  "version": "0.1.0",
+  "description": "The Leverage Gap",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "compile:latex": "node scripts/compile-latex.mjs",
+    "compile:pdf": "node scripts/preview-pdf.mjs --no-open",
+    "preview": "node scripts/preview-pdf.mjs"
+  },
+  "author": "Wil Moore III",
+  "license": "UNLICENSED"
+}
 ```
 
 ### Step 6: Create Book Manifest
@@ -162,11 +235,26 @@ Write `book/chapters/00-preface.md`:
 
 ### Step 8: Update .gitignore
 
-If `.gitignore` exists, append (if not already present):
+If `.gitignore` exists, append (if not already present). If `.gitignore` does not exist, create it:
 
 ```
 # Author plugin build outputs
 book/dist/
+
+# LaTeX intermediate files
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Node.js
+node_modules/
+
+# OS files
+.DS_Store
 ```
 
 ### Step 9: Display Confirmation
@@ -186,19 +274,28 @@ book/dist/
 ║  - Total Words: <min>-<max>                                     ║
 ║                                                                 ║
 ║  Structure created:                                             ║
-║  book/                                                          ║
-║  ├── book.json           (manifest)                             ║
-║  ├── chapters/           (your content)                         ║
-║  │   └── 00-preface.md   (starter chapter)                      ║
-║  ├── front-matter/       (title, dedication)                    ║
-║  │   └── title.md        (title page)                           ║
-║  ├── back-matter/        (appendix, bibliography)               ║
-║  └── dist/               (compiled outputs)                     ║
+║  ./                                                             ║
+║  ├── package.json        (npm scripts)                          ║
+║  ├── scripts/            (compilation tools)                    ║
+║  │   ├── compile-latex.mjs                                      ║
+║  │   └── preview-pdf.mjs                                        ║
+║  └── book/                                                      ║
+║      ├── book.json       (manifest)                             ║
+║      ├── chapters/       (your content)                         ║
+║      │   └── 00-preface.md                                      ║
+║      ├── front-matter/   (title, dedication)                    ║
+║      │   └── title.md                                           ║
+║      ├── back-matter/    (appendix, bibliography)               ║
+║      └── dist/           (compiled outputs)                     ║
 ║                                                                 ║
 ║  Next steps:                                                    ║
 ║  - Add chapters: /author:chapter "Chapter Title"                ║
 ║  - View progress: /author:status                                ║
+║  - Preview as PDF: npm run preview                              ║
 ║  - Compile book: /author:compile                                ║
+║                                                                 ║
+║  Requirements for PDF: Node.js 18+ and pdflatex                 ║
+║  (brew install texlive)                                         ║
 ║                                                                 ║
 ╚════════════════════════════════════════════════════════════════╝
 ```

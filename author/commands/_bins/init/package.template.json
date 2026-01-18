@@ -1,0 +1,14 @@
+{
+  "name": "{{PACKAGE_NAME}}",
+  "version": "0.1.0",
+  "description": "{{TITLE}}",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "compile:latex": "node scripts/compile-latex.mjs",
+    "compile:pdf": "node scripts/preview-pdf.mjs --no-open",
+    "preview": "node scripts/preview-pdf.mjs"
+  },
+  "author": "{{AUTHOR}}",
+  "license": "UNLICENSED"
+}
