@@ -1,6 +1,10 @@
 {
-  "lastSequence": 56,
+  "lastSequence": 57,
   "entries": [
+    {
+      "branch": "fix/dev-setup-port-defaults-and-naming",
+      "adrs": ["057-random-high-port-allocation-tight-inclusion.md"]
+    },
     {
       "branch": "feat/demo-command",
       "adrs": ["056-demo-command-lightweight-project-walkthrough.md"]

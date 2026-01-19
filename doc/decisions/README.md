@@ -73,3 +73,5 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [053. Claude-Free Website Audit Architecture](053-claude-free-website-audit-architecture.md)
 - [054. Author Publish Pipeline Architecture](054-author-publish-pipeline-architecture.md)
 - [055. Bundled Compilation Scripts for /author:init](055-author-init-bundled-compilation-scripts.md)
+- [056. Demo Command Lightweight Project Walkthrough](056-demo-command-lightweight-project-walkthrough.md)
+- [057. Random High Port Allocation and Tight Inclusion Rules](057-random-high-port-allocation-tight-inclusion.md)

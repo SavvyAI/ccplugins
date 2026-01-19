@@ -1,6 +1,18 @@
 {
-  "lastSequence": 75,
+  "lastSequence": 76,
   "items": [
+    {
+      "id": 76,
+      "title": "dev.setup uses wrong port ranges and confusing server naming",
+      "description": "Three bugs in /pro:dev.setup:\n\n1. **Server naming**: Fallback template uses 'dev' as server name, causing confusing 'npx dev dev' commands\n2. **Port allocation**: Uses sequential low ports (3000, 4000) instead of random high ports - conflicts with 20-40 concurrent projects\n3. **Dependencies**: Installation is optional, causing first-run failures when tsx not available\n\n**Root causes:**\n- Line 354: Hardcoded 'dev' as fallback name\n- Lines 143-184: Sequential scan of commonly-used 4000/6000/7000 ranges\n- Lines 299-308: Dependency install is optional prompt\n\n**Fix:**\n- Smart naming: Detect server type (web, api, worker) from script content\n- Random high ports: 50000-58999 primary, 9000-9899 secondary\n- Mandatory deps: Remove optional prompt, verify tsx installed",
+      "category": "bug",
+      "severity": "high",
+      "fingerprint": "bug|76|dev-setup-port-defaults-naming",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/dev-setup-port-defaults-and-naming",
+      "createdAt": "2026-01-19T12:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 75,
       "title": "Implement /pro:demo command for quick project walkthrough",
