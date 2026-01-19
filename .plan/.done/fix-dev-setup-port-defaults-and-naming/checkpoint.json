@@ -1,0 +1,1 @@
+{"todos":[{"content":"Move planning docs to .plan/.done/","status":"in_progress","activeForm":"Moving planning docs"},{"content":"Check for ADRs and create if needed","status":"pending","activeForm":"Checking ADRs"},{"content":"Version check","status":"pending","activeForm":"Checking version"},{"content":"Create and push PR","status":"pending","activeForm":"Creating PR"}]}
