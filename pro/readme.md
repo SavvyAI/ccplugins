@@ -43,6 +43,7 @@ Installing this plugin gives Claude Code:
 | `/pro:handoff` | Generate comprehensive codebase handoff report |
 | `/pro:wtf` | Quick situational report (alias for handoff) |
 | `/pro:onboarding` | Interactive setup guide for new developers |
+| `/pro:demo` | Interactive project walkthrough - "show me what this does" |
 | `/pro:rules` | View bundled CLAUDE.md coding rules |
 | `/pro:rules.install` | Install bundled CLAUDE.md via symlink |
 | `/pro:supabase.local` | Setup and manage local Supabase with unique ports |
