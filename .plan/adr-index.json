@@ -1,6 +1,10 @@
 {
-  "lastSequence": 55,
+  "lastSequence": 56,
   "entries": [
+    {
+      "branch": "feat/demo-command",
+      "adrs": ["056-demo-command-lightweight-project-walkthrough.md"]
+    },
     {
       "branch": "feat/author-init-compilation-tooling",
       "adrs": ["055-author-init-bundled-compilation-scripts.md"]

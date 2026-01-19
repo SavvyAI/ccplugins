@@ -1,6 +1,33 @@
 {
-  "lastSequence": 73,
+  "lastSequence": 75,
   "items": [
+    {
+      "id": 75,
+      "title": "Implement /pro:demo command for quick project walkthrough",
+      "description": "Implement /pro:demo - a lightweight, interactive command that walks users through a project's features. Unlike /onboarding (setup), /wtf (analysis), or /handoff (docs), this focuses on 'show me what this does'. Key behaviors: (1) quick scan - what is this project, what can run, (2) feature discovery - detect dev servers, CLIs, APIs, tests, (3) guided walkthrough - start things with permission, show URLs, (4) key docs pointer - README, docs/, CLAUDE.md, (5) cleanup - stop any started processes. Read-only, non-destructive, menu-based navigation. Based on spike #74 findings.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|75|demo-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/demo-command",
+      "createdAt": "2026-01-19T08:30:00Z",
+      "status": "in-progress"
+    },
+    {
+      "id": 74,
+      "title": "Lightweight demo/tour command for quick project walkthrough",
+      "description": "Create a lightweight /pro:demo (or /pro:tour) command that walks users through a project's features interactively. Unlike /onboarding (setup-focused), /wtf (analysis-focused), or /handoff (documentation-focused), this command focuses on 'show me what this does' - starting servers, running CLIs, pointing to key docs. Hand-holding walkthrough style. Key behaviors: (1) detect runnable entry points (dev server, CLI, tests), (2) start them with user permission, (3) highlight key features and docs, (4) guided interactive exploration. Fills the gap for 'I forgot what this project does, just show me.'",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|74|demo-tour-command",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/demo-command-design",
+      "createdAt": "2026-01-19T08:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-01-19T08:30:00Z",
+      "resolvedBranch": "feat/demo-command",
+      "resolution": "Promoted to feature #75"
+    },
     {
       "id": 73,
       "title": "Add self-service compilation tooling to /author:init",
