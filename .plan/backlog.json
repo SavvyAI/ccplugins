@@ -1,6 +1,44 @@
 {
-  "lastSequence": 76,
+  "lastSequence": 79,
   "items": [
+    {
+      "id": 79,
+      "title": "Migrate backlog IDs to short hashes",
+      "description": "Convert sequential integer IDs to collision-resistant short hashes (e.g., `b-a1f3`) after #78 is complete.\n\n**Why:** Future-proofs against multi-branch backlog edits where two branches could pick the same sequential ID.\n\n**Migration steps:**\n1. Generate 4-char hex hash for each item (from title + createdAt)\n2. Update `id` field: `78` → `b-a1f3`\n3. Update `fingerprint` fields: `spike|77|...` → `spike|b-a1f3|...`\n4. Scan `.plan/` directories for ID references, update them\n5. Update checkpoint.json files if they reference IDs\n6. Remove `lastSequence` (no longer needed)\n7. Update backlog commands to generate hashes instead of incrementing\n\n**Prerequisite:** Complete #78 first (fewer items to migrate).\n\n**Format:** `b-{4-char-hex}` - short, human-referenceable, collision-resistant.",
+      "category": "chore",
+      "severity": "low",
+      "fingerprint": "chore|79|backlog-hash-ids",
+      "source": "/pro:spike",
+      "sourceBranch": null,
+      "createdAt": "2026-01-19T14:45:00Z",
+      "status": "open"
+    },
+    {
+      "id": 78,
+      "title": "Archive resolved backlog items for token conservation",
+      "description": "Move resolved items from backlog.json to backlog-archive.json to reduce token consumption during backlog operations.\n\n**Problem:** backlog.json is ~1000 lines with many resolved items. Every /pro:backlog, /pro:backlog.resume, and /pro:roadmap call reads the full file, wasting tokens on historical items.\n\n**Solution:**\n1. Create `.plan/backlog-archive.json` for resolved items\n2. Update backlog commands to auto-archive items with `status: resolved` older than 7 days\n3. Keep `lastSequence` in main file (IDs never reused)\n4. /pro:roadmap 'RECENTLY COMPLETED' section reads from both files\n5. Optional: /pro:backlog.archive command to manually trigger archiving\n\n**Expected benefit:** Active backlog drops from ~1000 to ~200-300 lines, faster operations, lower token cost.",
+      "category": "chore",
+      "severity": "medium",
+      "fingerprint": "chore|78|backlog-archive-token-conservation",
+      "source": "/pro:spike",
+      "sourceBranch": null,
+      "createdAt": "2026-01-19T14:30:00Z",
+      "status": "open"
+    },
+    {
+      "id": 77,
+      "title": "Evaluate Beads (bd) AI context framework for ccplugins",
+      "description": "Spike to evaluate Steve Yegge's Beads project (github.com/steveyegge/beads) for potential adoption. Beads is a Git-backed graph issue tracker designed for AI coding agents with features like: hash-based task IDs, dependency tracking, JSONL storage in .beads/, SQLite caching, and semantic summarization for token conservation. Questions to answer: (1) Does Beads solve problems our backlog.json doesn't? (2) What's the migration cost? (3) Partial adoption options? (4) Does the dependency graph add value for our workflow?",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|77|evaluate-beads-ai-context-framework",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/evaluate-beads-ai-context-framework",
+      "createdAt": "2026-01-19T14:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-01-19T14:30:00Z",
+      "resolution": "Do not adopt. Created chore #78 for token-conserving archive feature instead."
+    },
     {
       "id": 76,
       "title": "dev.setup uses wrong port ranges and confusing server naming",
