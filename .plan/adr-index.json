@@ -1,6 +1,10 @@
 {
-  "lastSequence": 57,
+  "lastSequence": 58,
   "entries": [
+    {
+      "branch": "spike/evaluate-beads-ai-context-framework",
+      "adrs": ["058-backlog-token-conservation-strategy.md"]
+    },
     {
       "branch": "fix/dev-setup-port-defaults-and-naming",
       "adrs": ["057-random-high-port-allocation-tight-inclusion.md"]
