@@ -1,6 +1,20 @@
 {
-  "lastSequence": 79,
+  "lastSequence": 80,
   "items": [
+    {
+      "id": 80,
+      "title": "Evaluate Gastown multi-agent orchestration framework",
+      "description": "Spike to evaluate Steve Yegge's Gastown project (github.com/steveyegge/gastown) for potential adoption. Gastown is a multi-agent orchestration layer built on Beads that coordinates 20-30 Claude Code agents across multiple repositories. Key features: Mayor pattern for orchestration, git worktree hooks for persistence, convoys for work batching, TOML formulas for workflows. Questions answered: (1) Does Gastown solve problems ccplugins has? No - single-agent workflow. (2) Are patterns extractable? Minimal - worktrees already documented. (3) Future relevance? Only if multi-agent Claude becomes standard.",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|80|evaluate-gastown-mcp-framework",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/evaluate-gastown-mcp-framework",
+      "createdAt": "2026-01-19T16:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-01-19T16:30:00Z",
+      "resolution": "Do not adopt. Gastown solves multi-agent problems that don't exist in single-agent workflow. Requires Beads (already rejected in ADR-058)."
+    },
     {
       "id": 79,
       "title": "Migrate backlog IDs to short hashes",
