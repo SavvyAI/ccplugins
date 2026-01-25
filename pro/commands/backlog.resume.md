@@ -124,6 +124,12 @@ For the selected in-progress item:
    - **Check for checkpoint**: Read `.plan/{branch-name}/checkpoint.json` if it exists
      - If found, restore todos using `TodoWrite` with the checkpoint's `todos` array
      - This preserves work state from the previous session
+   - **Check for error context**: Read `.plan/{branch-name}/errors.json` if it exists
+     - If found, note the strike count and any unresolved errors
+     - If strike count > 0, apply 3-Strike Protocol rules:
+       - Strike 1: Normal operation, previous attempt failed
+       - Strike 2: MUST use different approach than previous attempt
+       - Strike 3+: Escalate to user before proceeding
 
 3. **Present status summary**
 
@@ -136,11 +142,13 @@ For the selected in-progress item:
    │  Last commit: abc1234 - "Add initial implementation"    │
    │  Uncommitted changes: 3 files modified                  │
    │  Checkpoint: ✓ restored (3 completed, 2 pending)        │
+   │  Errors: ⚠ 2 unresolved (Strike 2 - different approach) │
    │                                                         │
    └─────────────────────────────────────────────────────────┘
    ```
 
    If checkpoint was restored, show the todo summary. If no checkpoint exists, omit that line.
+   If errors exist with strike count > 0, show the error summary line.
 
 4. **Continue work**
    - Read and follow the planning notes

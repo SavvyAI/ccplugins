@@ -1,5 +1,5 @@
 {
-  "description": "Checkpoint TodoWrite state for resume capability",
+  "description": "Checkpoint, 2-Action Rule, and error capture with 3-Strike Protocol",
   "hooks": {
     "PostToolUse": [
       {
@@ -8,6 +8,26 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/checkpoint.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "browser_snapshot|browser_take_screenshot|take_screenshot|take_snapshot",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[2-Action Rule] Visual data captured. After 2+ browser ops, persist key findings to a file before continuing.'"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/error-capture.sh"
           }
         ]
       }
