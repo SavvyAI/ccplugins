@@ -1,6 +1,30 @@
 {
-  "lastSequence": 81,
+  "lastSequence": 83,
   "items": [
+    {
+      "id": 83,
+      "title": "Author intent command for pre-writing compression",
+      "description": "/author:intent - Takes raw, unstructured input (voice notes, transcripts, bullets, conversation dumps) and produces a chapter-level intent brief that defines what the chapter must accomplish and why, without generating prose. Output: chapter-X.intent.md alongside chapter files. Schema includes: core thesis, chapter role in book arc, key arguments/moves, evidence needed, emotional arc, reader takeaway, exclusions, confidence rating, open questions. Behavioral constraint: NO prose generation, NO voice imitation, NO gap-filling with invented content. Flags gaps instead of guessing. Primary user: professional author/ghostwriter managing messy upstream client inputs.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|83|author-intent-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/author-intent-command",
+      "createdAt": "2026-01-25T18:30:00Z",
+      "status": "in-progress"
+    },
+    {
+      "id": 82,
+      "title": "Client workflow analysis - author plugin fit assessment",
+      "description": "Spike to analyze client discovery call notes against existing author plugin tooling. Goals: (1) Identify which existing author commands serve the client's workflow, (2) Find gaps where new commands or enhancements are needed, (3) Formulate a service offer based on tooling capabilities. Client was referred based on the author plugin specifically.",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|82|client-author-plugin-workflow-analysis",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/client-author-plugin-workflow-analysis",
+      "createdAt": "2026-01-25T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 81,
       "title": "Evaluate planning-with-files approach for context management",

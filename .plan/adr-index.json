@@ -1,6 +1,10 @@
 {
-  "lastSequence": 59,
+  "lastSequence": 60,
   "entries": [
+    {
+      "branch": "feat/author-intent-command",
+      "adrs": ["060-author-intent-pre-writing-compression.md"]
+    },
     {
       "branch": "spike/evaluate-planning-with-files-approach",
       "adrs": ["059-structured-error-logging-with-strike-protocol.md"]

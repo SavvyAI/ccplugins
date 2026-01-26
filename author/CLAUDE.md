@@ -16,6 +16,7 @@ book/
 ├── book.json              # Book manifest
 ├── chapters/              # Chapter Markdown files
 │   ├── 01-introduction.md
+│   ├── 01-introduction.intent.md  # Intent brief (optional)
 │   └── ...
 ├── front-matter/          # Title, dedication, preface
 ├── back-matter/           # Appendix, bibliography
@@ -33,6 +34,7 @@ book/
 |---------|---------|
 | `/author:init` | Initialize a new book project |
 | `/author:weave` | Weave content into book (bulk import or external references) |
+| `/author:intent` | Compress raw input into structured chapter intent brief |
 | `/author:chapter` | Create or edit chapters |
 | `/author:revise` | Revision operations (clarity, tone) |
 | `/author:compile` | Compile to publishing targets |
@@ -67,6 +69,7 @@ The Author plugin tracks progress through **inferred milestones**, not explicit 
 | thesis-locked | Central argument and scope are settled |
 | frame-locked | Book identity and tone established |
 | outline-locked | Chapter structure is stable |
+| intent-covered | 80%+ chapters have intent briefs |
 | how-to-read-locked | Reader expectations are set |
 | sample-chapters-exist | 2-3 chapters at target depth |
 | pitch-ready | Sufficient for publisher outreach |
