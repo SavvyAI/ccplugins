@@ -1,6 +1,10 @@
 {
-  "lastSequence": 58,
+  "lastSequence": 59,
   "entries": [
+    {
+      "branch": "spike/evaluate-planning-with-files-approach",
+      "adrs": ["059-structured-error-logging-with-strike-protocol.md"]
+    },
     {
       "branch": "spike/evaluate-beads-ai-context-framework",
       "adrs": ["058-backlog-token-conservation-strategy.md"]

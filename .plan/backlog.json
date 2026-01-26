@@ -1,6 +1,20 @@
 {
-  "lastSequence": 80,
+  "lastSequence": 81,
   "items": [
+    {
+      "id": 81,
+      "title": "Evaluate planning-with-files approach for context management",
+      "description": "Spike to evaluate OthmanAdi/planning-with-files repository - a 'Manus-style' persistent markdown planning methodology. Uses 3-file pattern (task_plan.md, findings.md, progress.md) with hooks for automatic plan re-reading and status reminders. Key questions: (1) Does this solve problems our .plan/ directory doesn't? (2) Are there patterns worth adopting? (3) How does it compare to our TodoWrite checkpoint approach (ADR-038)?",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|81|evaluate-planning-with-files-approach",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/evaluate-planning-with-files-approach",
+      "createdAt": "2026-01-25T12:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-01-25T12:30:00Z",
+      "resolution": "Do not adopt full approach. Extracted '2-Action Rule' via PostToolUse hook in pro/hooks/hooks.json (fires on browser snapshot/screenshot tools). Our .plan/ + checkpoint pattern is superior for Claude Code-native workflows."
+    },
     {
       "id": 80,
       "title": "Evaluate Gastown multi-agent orchestration framework",
