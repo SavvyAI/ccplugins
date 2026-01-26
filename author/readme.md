@@ -26,6 +26,7 @@ Author is a Claude Code plugin for writers who want to create books, essays, and
 |---------|---------|
 | `/author:init` | Initialize a new book project |
 | `/author:weave` | Weave content into book (bulk import or external references) |
+| `/author:intent` | Compress raw input into structured chapter intent brief |
 | `/author:chapter` | Create or edit chapters |
 | `/author:revise` | Revision operations (clarity, tone) |
 | `/author:compile` | Compile to publishing targets |
