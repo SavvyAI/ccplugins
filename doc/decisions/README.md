@@ -78,3 +78,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [058. Backlog Token Conservation Strategy](058-backlog-token-conservation-strategy.md)
 - [059. Structured Error Logging with 3-Strike Protocol](059-structured-error-logging-with-strike-protocol.md)
 - [060. Author Intent — Pre-Writing Compression Command](060-author-intent-pre-writing-compression.md)
+- [061. Composition Over Inheritance for Behavioral Constraints](061-composition-over-inheritance-for-behavioral-constraints.md)

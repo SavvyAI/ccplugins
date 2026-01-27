@@ -1,6 +1,18 @@
 {
-  "lastSequence": 83,
+  "lastSequence": 84,
   "items": [
+    {
+      "id": 84,
+      "title": "Extract author behavioral constraints into composable skill",
+      "description": "When /author:filter is built, extract the shared behavioral constraints (no prose generation, no voice imitation, [NEEDS INPUT] gap flagging, no invented content) from intent.md and filter.md into a composable skill. Per ADR-061: prefer composition (skills) over inheritance (CLAUDE.md) for cross-cutting behavioral rules. Extraction trigger: 2+ command files sharing identical constraints. The skill becomes an explicit dependency that commands reference, keeping each command self-documenting.",
+      "category": "chore",
+      "severity": "low",
+      "fingerprint": "chore|84|author-behavioral-constraints-skill",
+      "source": "/pro:pr",
+      "sourceBranch": "feat/author-intent-command",
+      "createdAt": "2026-01-27T12:00:00Z",
+      "status": "open"
+    },
     {
       "id": 83,
       "title": "Author intent command for pre-writing compression",

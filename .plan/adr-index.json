@@ -1,6 +1,10 @@
 {
-  "lastSequence": 60,
+  "lastSequence": 61,
   "entries": [
+    {
+      "branch": "main",
+      "adrs": ["061-composition-over-inheritance-for-behavioral-constraints.md"]
+    },
     {
       "branch": "feat/author-intent-command",
       "adrs": ["060-author-intent-pre-writing-compression.md"]
