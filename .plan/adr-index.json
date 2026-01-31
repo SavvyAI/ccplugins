@@ -1,6 +1,10 @@
 {
-  "lastSequence": 61,
+  "lastSequence": 62,
   "entries": [
+    {
+      "branch": "feat/default-local-supabase",
+      "adrs": ["062-default-local-supabase-skill.md"]
+    },
     {
       "branch": "main",
       "adrs": ["061-composition-over-inheritance-for-behavioral-constraints.md"]

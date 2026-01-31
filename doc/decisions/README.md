@@ -79,3 +79,4 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [059. Structured Error Logging with 3-Strike Protocol](059-structured-error-logging-with-strike-protocol.md)
 - [060. Author Intent — Pre-Writing Compression Command](060-author-intent-pre-writing-compression.md)
 - [061. Composition Over Inheritance for Behavioral Constraints](061-composition-over-inheritance-for-behavioral-constraints.md)
+- [062. Default to Local Supabase Skill](062-default-local-supabase-skill.md)

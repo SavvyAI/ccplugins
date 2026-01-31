@@ -1,6 +1,18 @@
 {
-  "lastSequence": 84,
+  "lastSequence": 85,
   "items": [
+    {
+      "id": 85,
+      "title": "Default to local Supabase skill",
+      "description": "Behavioral skill that auto-activates on Supabase-related work and enforces a local-first decision tree. Detects supabase/config.toml, checks local instance state via supabase status, reads ports/keys from running instance. Never asks 'which remote project?' when local config exists. Falls through to remote MCP tools only when no local configuration is detected. Per ADR-061: composition (skill) over inheritance (CLAUDE.md) for cross-cutting behavioral constraints.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|85|default-local-supabase-skill",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/default-local-supabase",
+      "createdAt": "2026-01-27T18:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 84,
       "title": "Extract author behavioral constraints into composable skill",
