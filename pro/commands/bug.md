@@ -49,6 +49,7 @@ safety invariant per ADR-017.**
      ```
 5. Store all planning notes, bug details, and related documentation here: `${ProjectRoot}/.plan/${BranchName}` with the following branch naming strategy: `fix/pattern-matcher-tests-static-rule` >> `fix-pattern-matcher-tests-static-rule`.
 6. **Investigate root cause** - Gather empirical evidence, trace code paths, identify where the bug originates. Do not proceed to implementation until the root cause is understood.
+   - **Per ADR-063:** Check for existing logs at `${XDG_STATE_HOME:-$HOME/.local/state}/<app-name>/` before asking to run the program. Logs are authoritative artifacts—execution is a last resort.
 7. Outline fix implementation steps.
 8. Implement the fix and document changes.
 9. **Verify fix** - Confirm the reproduction steps no longer trigger the bug.

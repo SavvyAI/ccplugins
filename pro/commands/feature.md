@@ -45,6 +45,13 @@ safety invariant per ADR-017.**
     - Use `/pro:backlog.add <description>` to add items to the backlog
     - Set `source` to `/pro:feature` and `sourceBranch` to current branch
 
+## Debugging During Implementation
+
+**Per ADR-063:** When bugs or issues arise during feature work:
+- Check for existing logs at `${XDG_STATE_HOME:-$HOME/.local/state}/<app-name>/` before asking to run the program
+- Logs are authoritative artifacts—execution is a last resort
+- Do not introduce application-level file logging; use stdout/stderr only
+
 ## Browser Verification
 
 For web applications, use Playwright MCP (if available) rather than screenshots for:
