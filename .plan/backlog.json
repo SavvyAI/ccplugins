@@ -1,6 +1,18 @@
 {
-  "lastSequence": 85,
+  "lastSequence": 86,
   "items": [
+    {
+      "id": 86,
+      "title": "ADR-063: Logging convention for CLI tools and daemons",
+      "description": "Establishes stdout/stderr-only logging convention for agent-readable, operator-controlled debugging. Applications write to stdout/stderr only; runtime owns persistence at XDG-compliant locations. Prevents agents from asking to re-run programs when logs are available. Updates /pro:bug and /pro:feature to reference ADR-063.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|86|adr-logging-convention",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/adr-logging-convention",
+      "createdAt": "2026-01-31T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 85,
       "title": "Default to local Supabase skill",

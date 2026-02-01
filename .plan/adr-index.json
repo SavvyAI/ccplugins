@@ -1,6 +1,10 @@
 {
-  "lastSequence": 62,
+  "lastSequence": 63,
   "entries": [
+    {
+      "branch": "feat/adr-logging-convention",
+      "adrs": ["063-logging-convention-stdout-only.md"]
+    },
     {
       "branch": "feat/default-local-supabase",
       "adrs": ["062-default-local-supabase-skill.md"]
