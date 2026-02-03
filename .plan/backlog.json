@@ -1,6 +1,18 @@
 {
-  "lastSequence": 90,
+  "lastSequence": 91,
   "items": [
+    {
+      "id": 91,
+      "title": "Automate version tagging in /pro:pr.merged",
+      "description": "When /pro:pr confirms a version bump, write to .plan/{branch}/version-bump.json. In /pro:pr.merged, check .plan/.done/{branch}/version-bump.json and create/push git tag automatically. Tag format: match existing tags (default v-prefix). If tag exists: warn and skip.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|91|automate-version-tagging-pr-merged",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/automate-version-tagging-pr-merged",
+      "createdAt": "2026-02-03T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 90,
       "title": "Pattern-aware scaffold command",

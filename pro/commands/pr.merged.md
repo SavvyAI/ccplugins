@@ -10,8 +10,9 @@ The pull request: $ARGUMENTS was successfully merged and closed.
 1. **Check for ADRs** - If ADRs were NOT created during `/pro:pr`, create them now (see ADR instructions below).
 2. Switch to the main branch.
 3. Pull latest changes.
-4. Delete the merged feature branch (local and remote).
-5. Clear the conversation.
+4. **Create version tag** - If version bump was recorded, create and push the git tag (see Tagging instructions below).
+5. Delete the merged feature branch (local and remote).
+6. Clear the conversation.
 
 ---
 
@@ -133,6 +134,51 @@ git add doc/decisions/ .plan/adr-index.json .plan/.done/
 git commit -m "Add ADRs for {feature-name}"
 git push origin main
 ```
+
+---
+
+## Tagging Instructions
+
+If a version bump was recorded during `/pro:pr`, create and push the git tag.
+
+### Step 1: Check for version bump file
+
+Look for `.plan/.done/{merged-branch-name}/version-bump.json`.
+
+- **If file does not exist:** Skip tagging (no version bump was recorded).
+- **If file exists:** Continue to Step 2.
+
+### Step 2: Determine tag format
+
+Check existing tags to match the project's convention:
+
+```bash
+git tag --list | head -5
+```
+
+- If existing tags use `v` prefix (e.g., `v1.0.0`) → use `v{version}`
+- If existing tags have no prefix (e.g., `1.0.0`) → use `{version}`
+- If no tags exist → default to `v{version}`
+
+### Step 3: Check if tag already exists
+
+```bash
+git tag --list {tag}
+```
+
+- **If tag exists:** Warn the user and skip:
+  > "Tag {tag} already exists. Skipping tag creation."
+- **If tag does not exist:** Continue to Step 4.
+
+### Step 4: Create and push the tag
+
+```bash
+git tag {tag}
+git push origin {tag}
+```
+
+Report success:
+> "Tagged and pushed {tag}"
 
 ---
 
