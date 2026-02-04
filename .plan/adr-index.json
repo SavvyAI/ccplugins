@@ -1,6 +1,10 @@
 {
-  "lastSequence": 63,
+  "lastSequence": 64,
   "entries": [
+    {
+      "branch": "feat/automate-version-tagging-pr-merged",
+      "adrs": ["064-version-bump-file-for-automated-tagging.md"]
+    },
     {
       "branch": "feat/adr-logging-convention",
       "adrs": ["063-logging-convention-stdout-only.md"]
