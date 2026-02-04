@@ -1,6 +1,70 @@
 {
-  "lastSequence": 86,
+  "lastSequence": 91,
   "items": [
+    {
+      "id": 91,
+      "title": "Automate version tagging in /pro:pr.merged",
+      "description": "When /pro:pr confirms a version bump, write to .plan/{branch}/version-bump.json. In /pro:pr.merged, check .plan/.done/{branch}/version-bump.json and create/push git tag automatically. Tag format: match existing tags (default v-prefix). If tag exists: warn and skip.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|91|automate-version-tagging-pr-merged",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/automate-version-tagging-pr-merged",
+      "createdAt": "2026-02-03T00:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-02-03T00:30:00Z",
+      "resolution": "PR #85 created. ADR-064 documents the pattern."
+    },
+    {
+      "id": 90,
+      "title": "Pattern-aware scaffold command",
+      "description": "/pro:scaffold <pattern> - Adapted from Tresor's scaffold command but focused on pattern-aware generation, not greenfield projects. Detects existing project conventions (routes, components, tests) and generates new instances following those patterns. Examples: 'Add a new route like /api/users but for /api/posts', 'Add a React component with tests like Button'. Key difference from Tresor: we detect and follow the project's conventions, not impose enterprise boilerplate.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|90|pattern-aware-scaffold-command",
+      "source": "/pro:spike",
+      "sourceBranch": null,
+      "createdAt": "2026-02-01T01:30:00Z",
+      "status": "open"
+    },
+    {
+      "id": 89,
+      "title": "Triage/debug command for symptom-based investigation",
+      "description": "/pro:triage <symptom> - Adapted from Tresor's incident-response pattern for developer use. Takes a symptom ('tests failing', 'error in logs', 'this broke') and runs parallel investigation: logs, git history, related code, dependencies. Synthesizes findings into actionable hypothesis. Key gap filled: /pro:bug assumes you KNOW the bug; /pro:triage helps you FIND what's wrong. Could use Task tool for parallel investigation agents.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|89|triage-debug-command",
+      "source": "/pro:spike",
+      "sourceBranch": null,
+      "createdAt": "2026-02-01T01:30:00Z",
+      "status": "open"
+    },
+    {
+      "id": 88,
+      "title": "Fix build-in-public trigger mechanism",
+      "description": "Build-in-public is architecturally complete (skill, subagent, command) but non-functional because there's no trigger mechanism. The 'Use PROACTIVELY' in the subagent description is advisory, not functional - Claude Code doesn't automatically invoke subagents. Options: (A) Add PostToolUse hook for git push/commit that invokes the skill, (B) Modify /pro:pr to explicitly invoke build-in-public at completion, (C) Add SessionEnd hook to review session for shareable moments. Related: ADR-021, ADR-026, backlog #38.",
+      "category": "bug",
+      "severity": "high",
+      "fingerprint": "bug|88|build-in-public-trigger-mechanism",
+      "source": "/pro:spike",
+      "sourceBranch": null,
+      "createdAt": "2026-02-01T01:30:00Z",
+      "status": "open"
+    },
+    {
+      "id": 87,
+      "title": "Explore claude-code-tresor commands for ccplugins",
+      "description": "Spike to evaluate alirezarezvani/claude-code-tresor repository for patterns, commands, or architectural ideas worth adopting into ccplugins. The repo contains 141 specialist agents, 19 slash commands, and 8 autonomous skills organized across development, testing, documentation, workflow, security, quality, performance, and operations categories.",
+      "category": "spike",
+      "severity": "medium",
+      "fingerprint": "spike|87|explore-claude-code-tresor-commands",
+      "source": "/pro:spike",
+      "sourceBranch": "spike/explore-claude-code-tresor-commands",
+      "createdAt": "2026-02-01T01:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-02-01T01:45:00Z",
+      "resolution": "Selective adoption value. Created 3 backlog items: #88 (HIGH) fix build-in-public trigger mechanism, #89 (MEDIUM) /pro:triage for symptom-based debugging, #90 (MEDIUM) /pro:scaffold for pattern-aware generation. Key insight: our 'proactive' features rely on trigger mechanisms that don't exist in Claude Code."
+    },
     {
       "id": 86,
       "title": "ADR-063: Logging convention for CLI tools and daemons",

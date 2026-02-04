@@ -264,6 +264,23 @@ If version is unchanged:
    - `fix/*` → patch (1.3.0 → 1.3.1)
    - `docs/*` → typically none needed
 
+### Step 4: Record version bump for tagging
+
+If a version bump was applied (either in Step 3 or already changed from base):
+
+1. **Get the new version** from the version file
+2. **Write** `.plan/{branch-name}/version-bump.json`:
+
+```json
+{
+  "version": "{new_version}",
+  "confirmedAt": "{ISO 8601 timestamp}",
+  "bumpType": "minor|patch|major"
+}
+```
+
+This file is archived to `.plan/.done/` and used by `/pro:pr.merged` to automatically create and push the git tag after merge.
+
 ---
 
 ### Omit the following from the commit message:
