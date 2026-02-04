@@ -1,6 +1,10 @@
 {
-  "lastSequence": 64,
+  "lastSequence": 65,
   "entries": [
+    {
+      "branch": "feat/branch-cleanup-pause-or-nix",
+      "adrs": ["065-branch-lifecycle-park-and-rmrf-commands.md"]
+    },
     {
       "branch": "feat/automate-version-tagging-pr-merged",
       "adrs": ["064-version-bump-file-for-automated-tagging.md"]

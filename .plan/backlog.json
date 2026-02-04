@@ -1,6 +1,19 @@
 {
-  "lastSequence": 91,
+  "lastSequence": 92,
   "items": [
+    {
+      "id": 92,
+      "title": "Branch cleanup commands - park and rmrf workflows",
+      "description": "Two commands for branch cleanup: (1) /pro:branch.park - preserve planning docs in .plan/.parked/, revert backlog item to 'open', delete branch, ready for later resumption. (2) /pro:branch.rmrf - completely remove branch, planning docs, mark backlog item 'aborted' (kill everything). Both include working directory triage, MVP batch handling, and safety confirmations.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|92|branch-cleanup-pause-or-nix",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/branch-cleanup-pause-or-nix",
+      "createdAt": "2026-02-04T00:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-02-04T00:00:00Z"
+    },
     {
       "id": 91,
       "title": "Automate version tagging in /pro:pr.merged",
