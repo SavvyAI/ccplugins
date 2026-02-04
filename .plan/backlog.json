@@ -11,7 +11,9 @@
       "source": "/pro:feature",
       "sourceBranch": "feat/automate-version-tagging-pr-merged",
       "createdAt": "2026-02-03T00:00:00Z",
-      "status": "in-progress"
+      "status": "resolved",
+      "resolvedAt": "2026-02-03T00:30:00Z",
+      "resolution": "PR #85 created. ADR-064 documents the pattern."
     },
     {
       "id": 90,
