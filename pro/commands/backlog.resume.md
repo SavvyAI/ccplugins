@@ -106,11 +106,49 @@ When resuming an MVP batch (`mvpBatch: true` items detected):
    - Enter implementation mode for current item
    - Follow the same flow as `/pro:backlog.mvp` step 7
 
+### 3b. Resume Parked Work (Pre-step)
+
+**This step executes BEFORE the normal resume flow when an item has `planningDocs` field.**
+
+When selecting an item with `planningDocs` field (previously parked via `/pro:branch.park`):
+
+1. **Detect parked state**
+   - Item has `planningDocs` pointing to `.plan/.parked/{branch-slug}/`
+   - Item has `parkedAt` timestamp
+
+2. **Restore planning docs**
+   - Move docs back: `mv .plan/.parked/{branch-slug}/ .plan/{branch-slug}/`
+   - Remove empty `.plan/.parked/` if no other parked items
+
+3. **Create new branch**
+   - Use original `sourceBranch` name
+   - First check if branch already exists:
+     ```bash
+     git show-ref --verify --quiet refs/heads/{sourceBranch}
+     ```
+   - If exists: `git checkout {sourceBranch}` (switch to existing)
+   - If not exists: `git checkout -b {sourceBranch}` (create new)
+
+4. **Update backlog item**
+   - Remove `parkedAt` and `planningDocs` fields
+   - Set `status: "in-progress"`
+
+5. **Persist backlog changes**
+   - Write updated `.plan/backlog.json`
+   - Commit on main before switching:
+     ```bash
+     git add .plan/backlog.json .plan/{branch-slug}/
+     git commit -m "chore: resume parked work on {branch-name}"
+     ```
+
+6. **Proceed with remainder of Step 3** (gathering context, presenting status, continuing work)
+
 ### 3. Resume in-progress work (non-MVP)
 
 For the selected in-progress item:
 
 1. **Switch to the work branch**
+   - **If item has `planningDocs` field:** Execute Step 3b first (restore parked work), then continue here
    - Get branch from the backlog item (check `sourceBranch` or infer from planning directory)
    - Check if branch exists locally: `git branch --list {branch}`
    - If exists, switch to it: `git checkout {branch}`
