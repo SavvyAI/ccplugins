@@ -11,7 +11,8 @@
       "source": "/pro:feature",
       "sourceBranch": "feat/add-ollama-mcp-server-and-docs",
       "createdAt": "2026-02-05T00:00:00Z",
-      "status": "in-progress"
+      "status": "resolved",
+      "resolvedAt": "2026-02-06T00:00:00Z"
     },
     {
       "id": 92,
