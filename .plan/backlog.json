@@ -1,6 +1,18 @@
 {
-  "lastSequence": 92,
+  "lastSequence": 93,
   "items": [
+    {
+      "id": 93,
+      "title": "Add Ollama MCP server and documentation",
+      "description": "Add ollama-mcp as a bundled MCP server in the Pro plugin. Ollama MCP exposes local LLM capabilities as tools, enabling Claude to delegate tasks like embeddings generation, simple text tasks, and boilerplate code to local models. Also add documentation with practical use case examples to the readme. Based on ollama-mcp npm package (npx -y ollama-mcp).",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|93|add-ollama-mcp-server-and-docs",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-ollama-mcp-server-and-docs",
+      "createdAt": "2026-02-05T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 92,
       "title": "Branch cleanup commands - park and rmrf workflows",

@@ -114,6 +114,7 @@ Installing this plugin gives Claude Code:
 | **Chrome DevTools** | Browser debugging, performance analysis, and automation |
 | **Figma** | Figma design file access and integration |
 | **shadcn-ui** | Access shadcn/ui v4 components, blocks, and implementations |
+| **Ollama** | Delegate tasks to local LLMs (embeddings, text generation) |
 
 ### Shell Configuration (Optional MCP Servers)
 
@@ -188,6 +189,47 @@ The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [
 The shadcn-ui MCP works out of the box but benefits from a GitHub token for higher rate limits (5000 vs 60 requests/hour). See [Shell Configuration](#shell-configuration-optional-mcp-servers) for setup.
 
 The server provides access to shadcn/ui v4 components across React, Vue, Svelte, and React Native frameworks.
+
+### Ollama Setup
+
+The Ollama MCP enables Claude to delegate tasks to local LLMs running via [Ollama](https://ollama.com). This provides capabilities Claude doesn't have natively (embeddings) and can save tokens by offloading simple tasks to smaller models.
+
+**Prerequisites:**
+- Ollama installed and running (`brew install ollama && brew services start ollama`)
+- Node.js v16+
+
+**Available Tools:**
+
+| Tool | Purpose |
+|------|---------|
+| `ollama_generate` | Text generation with a model |
+| `ollama_chat` | Multi-turn conversation |
+| `ollama_embed` | Generate vector embeddings |
+| `ollama_list` | List available models |
+| `ollama_ps` | Show running models |
+| `ollama_pull` | Download a model |
+
+**Recommended Models:**
+
+```bash
+ollama pull nomic-embed-text    # Embeddings (274 MB)
+ollama pull llama3.2:1b         # Fast simple tasks (1.3 GB)
+ollama pull qwen3-coder         # Code generation (18 GB)
+```
+
+**Practical Use Cases:**
+
+1. **Generate Embeddings** - Use `ollama_embed` with `nomic-embed-text` for semantic search, document similarity, or building a knowledge base. Claude doesn't natively generate embeddings.
+
+2. **Delegate Simple Tasks** - Offload routine work like writing docstrings to `llama3.2:1b`, reserving Claude's context for complex reasoning.
+
+3. **Summarize Large Documents** - Use `ollama_generate` to summarize lengthy files locally, then send only the summary to Claude.
+
+4. **Generate Boilerplate** - Delegate repetitive code generation to `qwen3-coder`, with Claude reviewing the output.
+
+5. **Multi-Model Workflows** - Local models handle volume; Claude handles nuance and review.
+
+**If Ollama isn't installed or running**, the tools will fail with a connection error when invoked. Start Ollama with `brew services start ollama` or verify it's running with `curl http://localhost:11434/api/tags`.
 
 ## Bounty Hunting Pipeline
 
