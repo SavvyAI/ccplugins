@@ -1,6 +1,18 @@
 {
-  "lastSequence": 95,
+  "lastSequence": 96,
   "items": [
+    {
+      "id": 96,
+      "title": "Document CRXJS hot reload limitations",
+      "description": "The /pro:scaffold.chrome-extension scaffold lacks documentation about Vite+CRXJS hot reload limitations. Developers need to know: (1) Content scripts require page refresh to re-inject, (2) Service worker changes require extension reload, (3) manifest.json changes require extension remove and re-add. This prevents developers from chasing their tails debugging code when the issue is stale extension state.",
+      "category": "debt",
+      "severity": "medium",
+      "fingerprint": "debt|96|document-crxjs-hot-reload-limitations",
+      "source": "/pro:refactor",
+      "sourceBranch": "refactor/document-crxjs-hot-reload-limitations",
+      "createdAt": "2026-02-07T18:03:57.220Z",
+      "status": "in-progress"
+    },
     {
       "id": 95,
       "title": "Document Supabase key shell configuration",
