@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "timestamp": "2026-02-07T00:26:37Z",
+      "tool": "Bash",
+      "error": "cd /tmp/test-chrome-extension && npm run build 2>&1",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-07T00:27:38Z",
+      "tool": "Bash",
+      "error": "echo \"=== Template structure ===\" && find /Users/wilmooreiii/Documents/src/ccplugins/pro/commands/_templates/chrome-extension -type f | sort\n\necho \"\"\necho \"=== Test extension dist ===\" && ls -laR /tmp",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-07T00:28:40Z",
+      "tool": "Bash",
+      "error": "echo \"=== New command ===\" && cat pro/commands/scaffold.chrome-extension.md | head -10\necho \"\"\necho \"=== Template files ===\" && find pro/commands/_templates/chrome-extension -type f | wc -l\necho \"file",
+      "status": "unresolved"
+    }
+  ],
+  "strikeCount": 1,
+  "lastErrorHash": "37c36375"
+}
