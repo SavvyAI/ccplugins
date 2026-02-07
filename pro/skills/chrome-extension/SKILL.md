@@ -289,21 +289,32 @@ If changes aren't appearing:
 
 **Nuclear option:** Stop dev server → `rm -rf dist/` → `npm run build` → remove extension → clear browser cache → load unpacked again.
 
-### CRXJS: Content Script CSS Not Loading
+### CRITICAL: Where to Put New Files
 
-**Symptom:** CSS referenced in manifest.json `content_scripts.css` doesn't apply.
+**When creating new files for a CRXJS extension, follow this rule:**
 
-**Cause:** CRXJS only bundles CSS from specific locations:
+| File Type | Put In | Reference As |
+|-----------|--------|--------------|
+| CSS for content scripts | `public/styles/` | `styles/foo.css` in manifest |
+| Images/icons | `public/icons/` or `public/images/` | `icons/foo.png` in manifest |
+| Static HTML | `public/` | Direct path in manifest |
+| TypeScript/JavaScript | `src/` | Path in manifest (CRXJS processes) |
 
-| Location | Works? |
-|----------|--------|
-| `public/styles/foo.css` | Yes - reference as `styles/foo.css` |
-| `src/content/foo.css` | **No** - CRXJS ignores this |
-| Imported in JS (`import './foo.css'`) | Yes - CRXJS bundles it |
+**Why this matters:** CRXJS does NOT bundle CSS files from `src/` when referenced directly in manifest.json. It only copies files from `public/` as static assets.
 
-**Fix:** Either move CSS to `public/` or import it in the JS file.
+**Wrong:**
+```
+src/content/feedback.css  ← CRXJS ignores this
+manifest: "css": ["src/content/feedback.css"]  ← Won't work
+```
 
-**Rule:** Static assets referenced directly in manifest.json → `public/`. Files processed by Vite → `src/` with imports.
+**Right:**
+```
+public/styles/feedback.css  ← Copied to dist/
+manifest: "css": ["styles/feedback.css"]  ← Works
+```
+
+**Alternative:** Import CSS in your JS file (`import './feedback.css'`) and CRXJS will bundle it. But manifest.json direct references require `public/`.
 
 ## Testing & Debugging
 
