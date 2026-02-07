@@ -222,6 +222,100 @@ Popup ↔ Service Worker ↔ Content Script
 | Content Script → Service Worker | `chrome.runtime.sendMessage` |
 | Any → Storage | `chrome.storage.local.set/get` |
 
+## Local Development & Hot Reload
+
+### CRITICAL: Report Reload Requirements After Changes
+
+**After making changes to a Chrome extension project, you MUST tell the developer what reload action is needed.**
+
+Use this template at the end of your response:
+
+```
+## To see your changes
+
+[ACTION REQUIRED]: [specific action from matrix below]
+```
+
+Examples:
+- `[ACTION REQUIRED]: Refresh the target page`
+- `[ACTION REQUIRED]: Reload the extension at chrome://extensions, then refresh the page`
+- `[ACTION REQUIRED]: Remove the extension and re-add it (manifest permissions changed)`
+
+**Never leave the developer guessing.** They will waste time debugging code when the real issue is stale extension state.
+
+### Reload Matrix
+
+CRXJS/Vite hot reload has limitations. Use this matrix:
+
+| What Changed | Required Action |
+|--------------|-----------------|
+| Content script CSS/JS (existing files) | Refresh the target page |
+| Content script (new file added) | Reload extension, then refresh page |
+| Popup HTML/CSS/JS | Close popup, reopen it |
+| Service worker code | Reload extension |
+| manifest.json (version only) | Reload extension |
+| manifest.json (permissions) | **Remove extension, re-add** |
+| manifest.json (content_scripts matches) | **Remove extension, re-add** |
+| manifest.json (background service_worker) | **Remove extension, re-add** |
+| New file referenced in manifest | **Remove extension, re-add** |
+
+### Multiple Files Changed? Escalate to Highest Action
+
+When you modify multiple files, report the **most severe** action required:
+
+**Priority order (highest to lowest):**
+1. Remove extension, re-add (manifest permissions/patterns/paths)
+2. Reload extension + refresh page (service worker or new files)
+3. Refresh the target page (content script logic)
+4. Close/reopen popup (popup only)
+
+Example: If you changed both a content script AND added a new permission to manifest.json → report "Remove extension, re-add" (not just "refresh page").
+
+### Why Manifest Changes Require Full Reinstall
+
+Chrome caches at install time:
+- Permission grants
+- Content script match patterns
+- Service worker registration
+
+Reloading the extension re-reads the manifest but **does not re-register** these cached properties. Only remove + re-add forces Chrome to re-process.
+
+### Debugging Stale State
+
+If changes aren't appearing:
+1. Did you refresh the page? (for content scripts)
+2. Did you reload the extension? (for service worker)
+3. Did you remove/re-add? (for manifest changes)
+
+**Nuclear option:** Stop dev server → `rm -rf dist/` → `npm run build` → remove extension → clear browser cache → load unpacked again.
+
+### CRITICAL: Where to Put New Files
+
+**When creating new files for a CRXJS extension, follow this rule:**
+
+| File Type | Put In | Reference As |
+|-----------|--------|--------------|
+| CSS for content scripts | `public/styles/` | `styles/foo.css` in manifest |
+| Images/icons | `public/icons/` or `public/images/` | `icons/foo.png` in manifest |
+| Static HTML | `public/` | Direct path in manifest |
+| TypeScript/JavaScript | `src/` | Path in manifest (CRXJS processes) |
+
+**Why this matters:** CRXJS does NOT bundle CSS files from `src/` when referenced directly in manifest.json. It only copies files from `public/` as static assets.
+
+**Wrong:**
+```
+src/content/feedback.css  ← CRXJS ignores this
+manifest: "css": ["src/content/feedback.css"]  ← Won't work
+```
+
+**Right:**
+```
+public/styles/feedback.css  ← Copied to dist/
+manifest: "css": ["styles/feedback.css"]  ← Works
+```
+
+**Alternative:** Import CSS in your JS file (`import './feedback.css'`) and CRXJS will bundle it. But manifest.json direct references require `public/`.
+
 ## Testing & Debugging
 
 ### Load Unpacked Workflow
@@ -230,7 +324,7 @@ Popup ↔ Service Worker ↔ Content Script
 2. Enable "Developer mode" (top right)
 3. Click "Load unpacked"
 4. Select extension directory
-5. After changes: Click refresh icon on extension card
+5. After changes: Click refresh icon on extension card (or remove/re-add for manifest changes)
 
 ### Service Worker Debugging
 

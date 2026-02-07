@@ -103,11 +103,16 @@ npm run build        # Build for production
 npm run test         # Run unit tests
 npm run test:e2e     # Run E2E tests (requires headed Chrome)
 
+### Important: Read docs/DEVELOPMENT.md
+Hot reload has limitations. Some changes require extension reload or remove/re-add.
+See docs/DEVELOPMENT.md for the reload matrix to avoid debugging frustration.
+
 ### Next Steps
-1. Add your extension icons to public/icons/ (16x16, 48x48, 128x128 PNG)
-2. Update public/manifest.json with your target URLs and permissions
-3. Implement your content script in src/content/index.ts
-4. See docs/PUBLISHING.md for Chrome Web Store setup
+1. Read docs/DEVELOPMENT.md (understand hot reload limitations)
+2. Add your extension icons to public/icons/ (16x16, 48x48, 128x128 PNG)
+3. Update public/manifest.json with your target URLs and permissions
+4. Implement your content script in src/content/index.ts
+5. See docs/PUBLISHING.md for Chrome Web Store setup
 
 ### Chrome Web Store Publishing
 After manual first publish, set up automation:
@@ -216,6 +221,7 @@ Files in `pro/commands/_templates/chrome-extension/`:
 .env.example                    # CWS credential template
 .gitignore                      # Extension-specific ignores
 .github/workflows/publish.yml   # CI/CD workflow
+docs/DEVELOPMENT.md             # Hot reload limitations and reload matrix
 docs/PUBLISHING.md              # CWS setup guide
 docs/RELEASING.md               # Release workflow docs
 e2e/extension-loading.spec.ts.hbs  # E2E test template
