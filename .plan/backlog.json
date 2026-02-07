@@ -1,6 +1,18 @@
 {
-  "lastSequence": 96,
+  "lastSequence": 97,
   "items": [
+    {
+      "id": 97,
+      "title": "Chrome Extension Dev MCP for automated reload/reinstall",
+      "description": "Build or find an MCP that provides extension_reload(extensionId), extension_reinstall(path), and tab_refresh(tabId) tools. This would allow the agent to automatically apply the required reload action after making changes to a Chrome extension, instead of just telling the developer what to do. Uses Chrome DevTools Protocol or chrome.management API primitives. Completes the loop: agent makes changes → agent knows what reload is needed → agent does the reload automatically.",
+      "category": "feature",
+      "severity": "low",
+      "fingerprint": "feature|97|chrome-extension-dev-mcp",
+      "source": "/pro:refactor",
+      "sourceBranch": "refactor/document-crxjs-hot-reload-limitations",
+      "createdAt": "2026-02-07T18:09:52.914Z",
+      "status": "open"
+    },
     {
       "id": 96,
       "title": "Document CRXJS hot reload limitations",
@@ -11,7 +23,8 @@
       "source": "/pro:refactor",
       "sourceBranch": "refactor/document-crxjs-hot-reload-limitations",
       "createdAt": "2026-02-07T18:03:57.220Z",
-      "status": "in-progress"
+      "status": "resolved",
+      "resolvedAt": "2026-02-07T18:08:00.268Z"
     },
     {
       "id": 95,
