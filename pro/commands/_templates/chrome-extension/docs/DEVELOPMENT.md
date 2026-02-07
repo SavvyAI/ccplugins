@@ -134,6 +134,39 @@ This eliminates all caching issues and gives you a clean slate.
 2. Right-click inside popup → "Inspect"
 3. DevTools opens for popup context
 
+## CRXJS-Specific Gotchas
+
+### Content Script CSS Not Loading
+
+**Symptom:** CSS file referenced in manifest.json `content_scripts.css` array doesn't apply.
+
+**Cause:** CRXJS expects CSS files for content scripts to be in specific locations:
+
+| Location | Works? | Notes |
+|----------|--------|-------|
+| `public/styles/foo.css` | Yes | Reference as `styles/foo.css` in manifest |
+| `src/content/foo.css` | No | CRXJS doesn't bundle CSS from src/ for content scripts |
+| Imported in JS | Yes | `import './foo.css'` in your content script |
+
+**Fix options:**
+
+1. **Move to public/** (simpler):
+   ```
+   mv src/content/feedback.css public/styles/feedback.css
+   ```
+   Then in manifest.json:
+   ```json
+   "css": ["styles/feedback.css"]
+   ```
+
+2. **Import in JS** (CRXJS bundles it):
+   ```javascript
+   // In your content script
+   import './feedback.css';
+   ```
+
+**Rule of thumb:** Static assets (CSS, images) that manifest.json references directly should be in `public/`. Files processed by Vite/CRXJS should be in `src/` and imported.
+
 ## Common Gotchas
 
 ### "Extension context invalidated"

@@ -289,6 +289,22 @@ If changes aren't appearing:
 
 **Nuclear option:** Stop dev server → `rm -rf dist/` → `npm run build` → remove extension → clear browser cache → load unpacked again.
 
+### CRXJS: Content Script CSS Not Loading
+
+**Symptom:** CSS referenced in manifest.json `content_scripts.css` doesn't apply.
+
+**Cause:** CRXJS only bundles CSS from specific locations:
+
+| Location | Works? |
+|----------|--------|
+| `public/styles/foo.css` | Yes - reference as `styles/foo.css` |
+| `src/content/foo.css` | **No** - CRXJS ignores this |
+| Imported in JS (`import './foo.css'`) | Yes - CRXJS bundles it |
+
+**Fix:** Either move CSS to `public/` or import it in the JS file.
+
+**Rule:** Static assets referenced directly in manifest.json → `public/`. Files processed by Vite → `src/` with imports.
+
 ## Testing & Debugging
 
 ### Load Unpacked Workflow
