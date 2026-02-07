@@ -1,0 +1,13 @@
+/**
+ * Styles injected by content script.
+ *
+ * These styles are scoped to pages where the content script runs.
+ * Use specific selectors to avoid conflicts with page styles.
+ */
+
+/* Example: scope all extension styles with a prefix */
+/*
+.extension-container {
+  font-family: system-ui, sans-serif;
+}
+*/

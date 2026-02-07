@@ -1,6 +1,18 @@
 {
-  "lastSequence": 93,
+  "lastSequence": 94,
   "items": [
+    {
+      "id": 94,
+      "title": "Chrome extension scaffold command",
+      "description": "/pro:scaffold.chrome-extension - Scaffolds a new Chrome extension project from production-proven exemplar (browser-extension-conversation-titles-chatgpt). Includes Vite+CRXJS build, TypeScript, Playwright E2E, Chrome Web Store publishing automation (Makefile, CI/CD, release scripts). Two modes: (1) Greenfield - creates full skeleton with interactive prompts for name/description, (2) Delta - detects existing extension and shows what's missing, offers to add each file. Templates stored in pro/commands/_templates/chrome-extension/ per ADR-006.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|94|scaffold-chrome-extension-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-scaffold-chrome-extension-commands",
+      "createdAt": "2026-02-06T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 93,
       "title": "Add Ollama MCP server and documentation",
