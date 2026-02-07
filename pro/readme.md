@@ -118,18 +118,68 @@ Installing this plugin gives Claude Code:
 
 ### Shell Configuration (Optional MCP Servers)
 
-Some MCP servers require environment variables. Add these to your shell config (`.zshrc` or `.bashrc`):
+Some MCP servers require environment variables. Add these to your shell config (`.zshrc` or `.bashrc`).
+
+#### GitHub Token
 
 ```bash
-# GitHub token for shadcn-ui MCP (optional, increases rate limit from 60 to 5000/hr)
+# Optional: increases shadcn-ui rate limit from 60 to 5000/hr
 export GITHUB_TOKEN='ghp_your_token_here'
-
-# Supabase env vars from running local instance
-# Handles edge cases: silent fail if not installed, skips if services stopped
-out="$(supabase status --output env 2>/dev/null)"; \
-  echo "$out" | grep -q '^Stopped services:' && true || \
-  eval "$(echo "$out" | grep -E '^[A-Z_][A-Z0-9_]*=' | sed 's/^SERVICE_ROLE_KEY=/SUPABASE_SERVICE_ROLE_KEY=/' | sed 's/^/export /')"
 ```
+
+#### Supabase Service Role Key
+
+The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY`. Choose one approach:
+
+**Option A: Quick (Recommended)**
+
+Add this function to your `.zshrc` or `.bashrc`:
+
+```bash
+# Load Supabase key from running local instance
+load_supabase_key() {
+  local out
+  out="$(supabase status --output json 2>/dev/null)"
+  [[ -n "$out" ]] && export SUPABASE_SERVICE_ROLE_KEY="$(echo "$out" | jq -r '.SERVICE_ROLE_KEY // empty')"
+}
+```
+
+Run `load_supabase_key` after starting a local Supabase instance.
+
+**Option B: Cached (faster shell startup)**
+
+For users who open many terminal sessions, this approach caches the key to avoid calling `supabase status` on every shell startup:
+
+```bash
+# Supabase service role key with caching (refreshes hourly)
+_SUPABASE_KEY_CACHE="$HOME/.cache/supabase_service_role_key"
+
+load_supabase_key() {
+  mkdir -p "$(dirname "$_SUPABASE_KEY_CACHE")"
+
+  # Use cache if fresh (<1 hour old)
+  if [[ -f "$_SUPABASE_KEY_CACHE" ]]; then
+    local age=$(( $(date +%s) - $(stat -f %m "$_SUPABASE_KEY_CACHE" 2>/dev/null || stat -c %Y "$_SUPABASE_KEY_CACHE" 2>/dev/null) ))
+    if (( age < 3600 )); then
+      export SUPABASE_SERVICE_ROLE_KEY="$(cat "$_SUPABASE_KEY_CACHE")"
+      return
+    fi
+  fi
+
+  # Refresh from supabase status
+  local key
+  key="$(supabase status --output json 2>/dev/null | jq -r '.SERVICE_ROLE_KEY // empty')"
+  [[ -n "$key" ]] && echo "$key" > "$_SUPABASE_KEY_CACHE"
+  export SUPABASE_SERVICE_ROLE_KEY="$key"
+}
+
+# Load from cache at shell startup (fast)
+[[ -f "$_SUPABASE_KEY_CACHE" ]] && export SUPABASE_SERVICE_ROLE_KEY="$(cat "$_SUPABASE_KEY_CACHE")"
+```
+
+After starting Supabase for the first time, run `load_supabase_key` to populate the cache.
+
+---
 
 After adding, restart your shell or run `source ~/.zshrc`.
 
@@ -182,7 +232,7 @@ The wrapper automatically enables `PLAYWRITER_AUTO_ENABLE` for automatic initial
 
 Use `/pro:supabase.local` to initialize and manage local Supabase instances with unique ports per project.
 
-The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [Shell Configuration](#shell-configuration-optional-mcp-servers) for the recommended setup.
+The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [Shell Configuration](#shell-configuration-optional-mcp-servers) to set up the `load_supabase_key` function, then run it after `supabase start`.
 
 ### shadcn-ui Setup
 
