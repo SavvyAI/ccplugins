@@ -1,6 +1,19 @@
 {
-  "lastSequence": 94,
+  "lastSequence": 95,
   "items": [
+    {
+      "id": 95,
+      "title": "Document Supabase key shell configuration",
+      "description": "Update pro/readme.md documentation to show how users can configure SUPABASE_SERVICE_ROLE_KEY in their shell. Current docs show a one-liner that works but is complex. User has a cleaner approach using a dedicated zsh function that: (1) caches the key to avoid repeated supabase status calls, (2) auto-loads on shell startup, (3) refreshes cache hourly. Document this pattern in a portable way so users can adapt it to their own shell configs (zsh, bash, or other).",
+      "category": "chore",
+      "severity": "medium",
+      "fingerprint": "chore|95|document-supabase-key-shell-config",
+      "source": "/pro:chore",
+      "sourceBranch": "chore/document-supabase-key-configuration",
+      "createdAt": "2026-02-07T00:00:00Z",
+      "status": "resolved",
+      "resolvedAt": "2026-02-07T00:00:00Z"
+    },
     {
       "id": 94,
       "title": "Chrome extension scaffold command",
