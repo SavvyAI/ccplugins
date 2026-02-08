@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "timestamp": "2026-02-08T02:34:31Z",
+      "tool": "Bash",
+      "error": "cd /tmp/test-scaffold-fix && npm run test:run 2>&1",
+      "status": "unresolved"
+    }
+  ],
+  "strikeCount": 1,
+  "lastErrorHash": "f29f0bf0"
+}

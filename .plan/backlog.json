@@ -1,5 +1,5 @@
 {
-  "lastSequence": 97,
+  "lastSequence": 98,
   "items": [
     {
       "id": 97,
@@ -1291,6 +1291,18 @@
       "status": "resolved",
       "resolvedAt": "2025-12-26T00:00:00Z",
       "resolvedBranch": "chore/rename-plugin-description-product-owner"
+    },
+    {
+      "id": 98,
+      "title": "Scaffold chrome-extension missing production code patterns",
+      "description": "The /pro:scaffold.chrome-extension template is missing key patterns from the reference extension (conversation-titles-chatgpt): 1) Has console.log instead of no debug logging 2) No centralized selectors.ts module 3) No unit test templates 4) No test pattern examples (Chrome API mocking, DOM mocking)",
+      "category": "bug",
+      "severity": "high",
+      "fingerprint": "bug|98|scaffold-chrome-extension-missing-production-patterns",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/add-to-attio-code-quality",
+      "createdAt": "2026-02-07T12:00:00Z",
+      "status": "completed"
     }
   ]
 }
