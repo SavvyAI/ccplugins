@@ -1,0 +1,78 @@
+{
+  "attempts": [
+    {
+      "timestamp": "2026-02-09T03:11:36Z",
+      "tool": "Bash",
+      "error": "ls -la ~/ComfyUI/Contents/ 2>/dev/null",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T03:11:42Z",
+      "tool": "Bash",
+      "error": "file ~/ComfyUI && ls ~/ComfyUI/",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:35:48Z",
+      "tool": "Bash",
+      "error": "curl -s \"http://localhost:8881/queue\" | jq '.queue_running | length, .queue_pending | length'",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:36:07Z",
+      "tool": "Bash",
+      "error": "ls -la \"/Users/wilmooreiii/Documents/ComfyUI/output/\" 2>/dev/null\necho \"---\"\ncurl -s \"http://localhost:8881/history/6553723e-6c6f-470d-906e-c5195a5db486\" | jq '.[\"6553723e-6c6f-470d-906e-c5195a5db486\"",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:54:53Z",
+      "tool": "Bash",
+      "error": "cd /tmp && snapai icon --model banana --prompt \"App icon for PDF Pages, a macOS document utility that extracts and manages pages from PDF files. Clean modern document icon with subtle page fold corner",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:55:11Z",
+      "tool": "Bash",
+      "error": "sleep 10 && cd /tmp && snapai icon --model banana --prompt \"App icon for PDF Pages, a macOS document utility. Clean modern document icon with page fold corner, blue and white, minimalist, no text\" -o ",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:56:06Z",
+      "tool": "Bash",
+      "error": "cd /tmp && snapai icon --model banana --prompt \"App icon for PDF Pages, a macOS document utility that extracts and manages pages from PDF files. Clean modern document icon with subtle page fold corner",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-09T04:56:15Z",
+      "tool": "Bash",
+      "error": "cd /tmp && snapai icon --model banana --pro --prompt \"PDF document icon, blue and white, minimalist, page fold corner, no text\" -o pdf_pages_icon 2>&1",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-10T00:52:48Z",
+      "tool": "Bash",
+      "error": "prompt_id=\"d980170b-d1e7-4e78-b76a-3544d15c06e4\"\necho \"Waiting for generation...\"\nfor i in {1..60}; do\n  status=$(curl -s \"http://localhost:8881/history/$prompt_id\" | jq -r 'if . == {} then \"pending\" ",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-10T00:55:15Z",
+      "tool": "Bash",
+      "error": "echo \"=== Queue ===\" && curl -s http://localhost:8881/queue | jq .\necho \"=== History ===\" && curl -s \"http://localhost:8881/history/d980170b-d1e7-4e78-b76a-3544d15c06e4\" | jq .",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-10T01:02:02Z",
+      "tool": "Bash",
+      "error": "curl -s http://localhost:8881/queue | jq '.queue_running | length, .queue_pending | length'",
+      "status": "unresolved"
+    },
+    {
+      "timestamp": "2026-02-10T02:48:14Z",
+      "tool": "Bash",
+      "error": "curl -s http://localhost:8881/queue | jq '.queue_running | length, (.queue_pending | length)'",
+      "status": "unresolved"
+    }
+  ],
+  "strikeCount": 1,
+  "lastErrorHash": "8bd1fe78"
+}

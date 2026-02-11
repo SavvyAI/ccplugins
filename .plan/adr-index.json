@@ -1,6 +1,10 @@
 {
-  "lastSequence": 66,
+  "lastSequence": 67,
   "entries": [
+    {
+      "branch": "feat/grab-app-icon-agent-skills",
+      "adrs": ["067-app-icon-multi-backend-architecture.md"]
+    },
     {
       "branch": "feat/add-scaffold-chrome-extension-commands",
       "adrs": ["066-scaffold-command-namespace-pattern.md"]

@@ -81,3 +81,7 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [061. Composition Over Inheritance for Behavioral Constraints](061-composition-over-inheritance-for-behavioral-constraints.md)
 - [062. Default to Local Supabase Skill](062-default-local-supabase-skill.md)
 - [063. Logging Convention: stdout/stderr Only](063-logging-convention-stdout-only.md)
+- [064. Version Bump File for Automated Tagging](064-version-bump-file-for-automated-tagging.md)
+- [065. Branch Lifecycle Park and RMRF Commands](065-branch-lifecycle-park-and-rmrf-commands.md)
+- [066. Scaffold Command Namespace Pattern](066-scaffold-command-namespace-pattern.md)
+- [067. App Icon Multi-Backend Architecture](067-app-icon-multi-backend-architecture.md)
