@@ -25,6 +25,10 @@
       "type": "http",
       "url": "https://mcp.figma.com/mcp"
     },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
     "shadcn-ui": {
       "command": "npx",
       "args": ["-y", "@jpisnice/shadcn-ui-mcp-server@latest"],

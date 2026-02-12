@@ -113,6 +113,7 @@ Installing this plugin gives Claude Code:
 | **Supabase** | Local database operations (requires setup) |
 | **Chrome DevTools** | Browser debugging, performance analysis, and automation |
 | **Figma** | Figma design file access and integration |
+| **Notion** | Read and write to Notion workspaces (OAuth required) |
 | **shadcn-ui** | Access shadcn/ui v4 components, blocks, and implementations |
 | **Ollama** | Delegate tasks to local LLMs (embeddings, text generation) |
 
@@ -239,6 +240,12 @@ The Supabase MCP requires `SUPABASE_SERVICE_ROLE_KEY` in your environment. See [
 The shadcn-ui MCP works out of the box but benefits from a GitHub token for higher rate limits (5000 vs 60 requests/hour). See [Shell Configuration](#shell-configuration-optional-mcp-servers) for setup.
 
 The server provides access to shadcn/ui v4 components across React, Vue, Svelte, and React Native frameworks.
+
+### Notion Setup
+
+The Notion MCP works like Figma - first invocation triggers an OAuth authorization flow in your browser. Grant access to the workspaces you want Claude to read/write.
+
+**Limitation:** Image and file uploads are not yet supported (on Notion's roadmap).
 
 ### Ollama Setup
 

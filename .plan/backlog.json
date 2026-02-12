@@ -1,6 +1,18 @@
 {
-  "lastSequence": 98,
+  "lastSequence": 100,
   "items": [
+    {
+      "id": 100,
+      "title": "Add Notion MCP to Pro plugin",
+      "description": "Add Notion MCP server as HTTP transport to pro/.mcp.json. Notion MCP enables Claude to read and write to Notion workspaces via OAuth authentication. Update readme with server info, noting OAuth flow and upload limitations.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|100|add-notion-mcp-plugin",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-notion-mcp-plugin",
+      "createdAt": "2026-02-10T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 97,
       "title": "Chrome Extension Dev MCP for automated reload/reinstall",
@@ -1303,6 +1315,18 @@
       "sourceBranch": "fix/add-to-attio-code-quality",
       "createdAt": "2026-02-07T12:00:00Z",
       "status": "completed"
+    },
+    {
+      "id": 99,
+      "title": "Add App Icon skill and /pro:app.icon command",
+      "description": "Bundle the app-icon skill from code-with-beto/skills and create user-invocable command for AI-powered app icon generation",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|99|add-app-icon-skill-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/grab-app-icon-agent-skills",
+      "createdAt": "2026-02-09T03:06:16Z",
+      "status": "in-progress"
     }
   ]
 }
