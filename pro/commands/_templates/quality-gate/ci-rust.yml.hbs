@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      {{#if buildCommand}}
+      - name: Build
+        run: {{buildCommand}}
+      {{/if}}
+
+      {{#if lintCommand}}
+      - name: Lint (clippy)
+        run: {{lintCommand}}
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+      {{/if}}
+
+      {{#if testCommand}}
+      - name: Test
+        run: {{testCommand}}
+      {{/if}}
