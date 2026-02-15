@@ -1,6 +1,18 @@
 {
-  "lastSequence": 100,
+  "lastSequence": 101,
   "items": [
+    {
+      "id": 101,
+      "title": "Universal pre-commit quality gates",
+      "description": "A /pro:quality-gate command that configures pre-commit hooks and CI workflows for any project type. Detects project type (TypeScript, Python, Go, Rust, etc.), generates GitHub Actions CI workflow, and configures local git hooks (husky + lint-staged) that mirror CI checks. CI is authoritative, local hooks provide fast feedback.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|101|universal-precommit-quality-gates",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/universal-precommit-quality-gates",
+      "createdAt": "2026-02-14T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 100,
       "title": "Add Notion MCP to Pro plugin",

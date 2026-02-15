@@ -1,6 +1,10 @@
 {
-  "lastSequence": 67,
+  "lastSequence": 68,
   "entries": [
+    {
+      "branch": "feat/universal-precommit-quality-gates",
+      "adrs": ["068-universal-precommit-quality-gates.md"]
+    },
     {
       "branch": "feat/grab-app-icon-agent-skills",
       "adrs": ["067-app-icon-multi-backend-architecture.md"]

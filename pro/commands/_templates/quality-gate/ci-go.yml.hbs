@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '{{goVersion}}'
+          cache: true
+
+      {{#if buildCommand}}
+      - name: Build
+        run: {{buildCommand}}
+      {{/if}}
+
+      {{#if lintCommand}}
+      - name: Lint
+        run: {{lintCommand}}
+      {{/if}}
+
+      {{#if testCommand}}
+      - name: Test
+        run: {{testCommand}}
+      {{/if}}
