@@ -1,6 +1,18 @@
 {
-  "lastSequence": 101,
+  "lastSequence": 102,
   "items": [
+    {
+      "id": 102,
+      "title": "/pro:social ignores Next.js App Router favicon conventions",
+      "description": "The /pro:social command places favicons in public/ directory, but Next.js App Router uses app/favicon.ico which takes precedence. This causes custom favicons to be invisible when the default Vercel favicon exists in app/.",
+      "category": "bug",
+      "severity": "critical",
+      "fingerprint": "bug|102|social-nextjs-favicon-override",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/social-nextjs-favicon-override",
+      "createdAt": "2026-02-15T00:00:00Z",
+      "status": "completed"
+    },
     {
       "id": 101,
       "title": "Universal pre-commit quality gates",

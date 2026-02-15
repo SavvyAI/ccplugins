@@ -61,8 +61,12 @@ Check for presence of:
 
 **Assets:**
 - OG image (`public/og-image.png`, `public/social-sharing.png`, etc.)
-- Favicon (`public/favicon.ico`, `public/favicon.png`)
-- Apple touch icon (`public/apple-touch-icon.png`)
+- Favicon (framework-dependent):
+  - Next.js App Router: `app/favicon.ico`, `app/icon.png`
+  - All others: `public/favicon.ico`, `public/favicon.png`
+- Apple touch icon (framework-dependent):
+  - Next.js App Router: `app/apple-icon.png`
+  - All others: `public/apple-touch-icon.png`
 - Logo source (`logo.svg`, `logo.png`)
 
 **Structured Data:**
@@ -96,8 +100,8 @@ Twitter/X:
 
 Assets:
   [✓|✗] OG image
-  [✓|✗] favicon.ico
-  [✓|✗] apple-touch-icon.png
+  [✓|✗] favicon.ico (check app/ for Next.js App Router, public/ otherwise)
+  [✓|✗] apple-touch-icon.png / apple-icon.png
   [✓|✗] Logo source found
 
 Structured Data:
@@ -170,18 +174,44 @@ Priority order:
 2. `logo.png` (raster, acceptable)
 3. `icon.svg` or `icon.png`
 
-#### 3.2 Generate Icons
+#### 3.2 Determine Icon Destination
+
+Based on detected framework from Phase 1:
+
+| Framework | Favicon Location | Apple Icon Location |
+|-----------|------------------|---------------------|
+| Next.js App Router | `app/favicon.ico` | `app/apple-icon.png` |
+| Next.js Pages Router | `public/favicon.ico` | `public/apple-touch-icon.png` |
+| Vite | `public/favicon.ico` | `public/apple-touch-icon.png` |
+| Plain HTML | `public/favicon.ico` | `public/apple-touch-icon.png` |
+
+**IMPORTANT for Next.js App Router:**
+If `app/favicon.ico` already exists (e.g., default Vercel favicon from create-next-app), it **MUST be replaced**. The `public/favicon.ico` will NOT override `app/favicon.ico` - Next.js App Router gives `app/` precedence.
+
+#### 3.3 Generate Icons
 
 **If logo found and ImageMagick available:**
 
+**For Next.js App Router:**
 ```bash
-# Favicon (multi-size ICO)
+# Favicon - MUST go in app/ to override default
+magick logo.svg -resize 32x32 app/favicon.ico
+
+# Apple touch icon - use app/ naming convention
+magick logo.svg -resize 180x180 app/apple-icon.png
+```
+
+**For all other frameworks:**
+```bash
+# Favicon
 magick logo.svg -resize 32x32 public/favicon.ico
 
 # Apple touch icon
 magick logo.svg -resize 180x180 public/apple-touch-icon.png
+```
 
-# PWA icons (if manifest.json exists)
+**PWA icons (if manifest.json exists, always in public/):**
+```bash
 magick logo.svg -resize 192x192 public/icon-192.png
 magick logo.svg -resize 512x512 public/icon-512.png
 ```
@@ -243,8 +273,8 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/favicon.ico',  // served from app/favicon.ico in App Router
+    apple: '/apple-icon.png',  // served from app/apple-icon.png in App Router
   },
 };
 ```
@@ -359,8 +389,8 @@ Social sharing setup complete!
 
 Changes made:
   [✓] OG image generated: public/og-image.png
-  [✓] Favicon generated: public/favicon.ico
-  [✓] Apple touch icon: public/apple-touch-icon.png
+  [✓] Favicon generated: app/favicon.ico (Next.js App Router) or public/favicon.ico
+  [✓] Apple touch icon: app/apple-icon.png (Next.js App Router) or public/apple-touch-icon.png
   [✓] OpenGraph meta tags configured
   [✓] Twitter card meta tags configured
   [✓] JSON-LD structured data added
