@@ -195,25 +195,26 @@ If `app/favicon.ico` already exists (e.g., default Vercel favicon from create-ne
 **For Next.js App Router:**
 ```bash
 # Favicon - MUST go in app/ to override default
-magick logo.svg -resize 32x32 app/favicon.ico
+# -background none preserves transparency from SVG
+magick logo.svg -background none -resize 32x32 app/favicon.ico
 
 # Apple touch icon - use app/ naming convention
-magick logo.svg -resize 180x180 app/apple-icon.png
+magick logo.svg -background none -resize 180x180 app/apple-icon.png
 ```
 
 **For all other frameworks:**
 ```bash
-# Favicon
-magick logo.svg -resize 32x32 public/favicon.ico
+# Favicon - -background none preserves transparency
+magick logo.svg -background none -resize 32x32 public/favicon.ico
 
 # Apple touch icon
-magick logo.svg -resize 180x180 public/apple-touch-icon.png
+magick logo.svg -background none -resize 180x180 public/apple-touch-icon.png
 ```
 
 **PWA icons (if manifest.json exists, always in public/):**
 ```bash
-magick logo.svg -resize 192x192 public/icon-192.png
-magick logo.svg -resize 512x512 public/icon-512.png
+magick logo.svg -background none -resize 192x192 public/icon-192.png
+magick logo.svg -background none -resize 512x512 public/icon-512.png
 ```
 
 For PNG source, replace `logo.svg` with `logo.png`.

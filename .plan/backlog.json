@@ -1,6 +1,18 @@
 {
-  "lastSequence": 102,
+  "lastSequence": 103,
   "items": [
+    {
+      "id": 103,
+      "title": "/pro:social favicon loses transparency during generation",
+      "description": "The ImageMagick commands in /pro:social do not include -background none flag, causing transparent SVG logos to lose their alpha channel when converted to favicon.ico. This results in white background bleed visible on inactive browser tabs.",
+      "category": "bug",
+      "severity": "high",
+      "fingerprint": "bug|103|social-favicon-transparency",
+      "source": "/pro:bug",
+      "sourceBranch": "fix/social-favicon-transparency-preservation",
+      "createdAt": "2026-02-15T00:00:00Z",
+      "status": "completed"
+    },
     {
       "id": 102,
       "title": "/pro:social ignores Next.js App Router favicon conventions",
