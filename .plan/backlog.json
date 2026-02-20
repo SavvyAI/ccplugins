@@ -1,6 +1,18 @@
 {
-  "lastSequence": 103,
+  "lastSequence": 104,
   "items": [
+    {
+      "id": 104,
+      "title": "Add Attio MCP and skill",
+      "description": "Add Attio MCP server (https://mcp.attio.com/mcp) to pro/.mcp.json and create pro/skills/attio/SKILL.md with guidance for both MCP tool usage and direct Attio API development. Skill covers CRM workflows (records, notes, tasks, meetings, emails) and OAuth integration patterns.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|104|add-attio-mcp-skill",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-attio-mcp-skill",
+      "createdAt": "2026-02-19T00:00:00Z",
+      "status": "in-progress"
+    },
     {
       "id": 103,
       "title": "/pro:social favicon loses transparency during generation",
