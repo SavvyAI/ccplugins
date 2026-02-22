@@ -85,3 +85,5 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [065. Branch Lifecycle Park and RMRF Commands](065-branch-lifecycle-park-and-rmrf-commands.md)
 - [066. Scaffold Command Namespace Pattern](066-scaffold-command-namespace-pattern.md)
 - [067. App Icon Multi-Backend Architecture](067-app-icon-multi-backend-architecture.md)
+- [068. Universal Pre-Commit Quality Gates](068-universal-precommit-quality-gates.md)
+- [070. Abandon Dual CLI Support in Favor of Separate Repos](070-abandon-dual-cli-support-in-favor-of-separate-repos.md)
