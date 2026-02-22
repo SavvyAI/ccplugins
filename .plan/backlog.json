@@ -1,5 +1,5 @@
 {
-  "lastSequence": 104,
+  "lastSequence": 105,
   "items": [
     {
       "id": 104,
@@ -1375,6 +1375,18 @@
       "sourceBranch": "feat/grab-app-icon-agent-skills",
       "createdAt": "2026-02-09T03:06:16Z",
       "status": "in-progress"
+    },
+    {
+      "id": 105,
+      "title": "Revert Gemini extension sideload attempt",
+      "description": "Clean up after abandoned dual CLI support approach. Write ADR 070, delete feat/setup-gemini-manifests branch, document lessons learned.",
+      "category": "chore",
+      "severity": "medium",
+      "fingerprint": "chore|105|revert-gemini-extension-sideload",
+      "source": "/pro:chore",
+      "sourceBranch": "chore/revert-gemini-extension-sideload",
+      "createdAt": "2026-02-21T12:00:00Z",
+      "status": "completed"
     }
   ]
 }
