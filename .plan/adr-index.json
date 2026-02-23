@@ -1,273 +1,414 @@
 {
-  "lastSequence": 68,
+  "lastSequence": 70,
   "entries": [
     {
+      "branch": "chore/revert-gemini-extension-sideload",
+      "adrs": [
+        "070-abandon-dual-cli-support-in-favor-of-separate-repos.md"
+      ]
+    },
+    {
       "branch": "feat/universal-precommit-quality-gates",
-      "adrs": ["068-universal-precommit-quality-gates.md"]
+      "adrs": [
+        "068-universal-precommit-quality-gates.md"
+      ]
     },
     {
       "branch": "feat/grab-app-icon-agent-skills",
-      "adrs": ["067-app-icon-multi-backend-architecture.md"]
+      "adrs": [
+        "067-app-icon-multi-backend-architecture.md"
+      ]
     },
     {
       "branch": "feat/add-scaffold-chrome-extension-commands",
-      "adrs": ["066-scaffold-command-namespace-pattern.md"]
+      "adrs": [
+        "066-scaffold-command-namespace-pattern.md"
+      ]
     },
     {
       "branch": "feat/branch-cleanup-pause-or-nix",
-      "adrs": ["065-branch-lifecycle-park-and-rmrf-commands.md"]
+      "adrs": [
+        "065-branch-lifecycle-park-and-rmrf-commands.md"
+      ]
     },
     {
       "branch": "feat/automate-version-tagging-pr-merged",
-      "adrs": ["064-version-bump-file-for-automated-tagging.md"]
+      "adrs": [
+        "064-version-bump-file-for-automated-tagging.md"
+      ]
     },
     {
       "branch": "feat/adr-logging-convention",
-      "adrs": ["063-logging-convention-stdout-only.md"]
+      "adrs": [
+        "063-logging-convention-stdout-only.md"
+      ]
     },
     {
       "branch": "feat/default-local-supabase",
-      "adrs": ["062-default-local-supabase-skill.md"]
+      "adrs": [
+        "062-default-local-supabase-skill.md"
+      ]
     },
     {
       "branch": "main",
-      "adrs": ["061-composition-over-inheritance-for-behavioral-constraints.md"]
+      "adrs": [
+        "061-composition-over-inheritance-for-behavioral-constraints.md"
+      ]
     },
     {
       "branch": "feat/author-intent-command",
-      "adrs": ["060-author-intent-pre-writing-compression.md"]
+      "adrs": [
+        "060-author-intent-pre-writing-compression.md"
+      ]
     },
     {
       "branch": "spike/evaluate-planning-with-files-approach",
-      "adrs": ["059-structured-error-logging-with-strike-protocol.md"]
+      "adrs": [
+        "059-structured-error-logging-with-strike-protocol.md"
+      ]
     },
     {
       "branch": "spike/evaluate-beads-ai-context-framework",
-      "adrs": ["058-backlog-token-conservation-strategy.md"]
+      "adrs": [
+        "058-backlog-token-conservation-strategy.md"
+      ]
     },
     {
       "branch": "fix/dev-setup-port-defaults-and-naming",
-      "adrs": ["057-random-high-port-allocation-tight-inclusion.md"]
+      "adrs": [
+        "057-random-high-port-allocation-tight-inclusion.md"
+      ]
     },
     {
       "branch": "feat/demo-command",
-      "adrs": ["056-demo-command-lightweight-project-walkthrough.md"]
+      "adrs": [
+        "056-demo-command-lightweight-project-walkthrough.md"
+      ]
     },
     {
       "branch": "feat/author-init-compilation-tooling",
-      "adrs": ["055-author-init-bundled-compilation-scripts.md"]
+      "adrs": [
+        "055-author-init-bundled-compilation-scripts.md"
+      ]
     },
     {
       "branch": "feat/author-publish-command",
-      "adrs": ["054-author-publish-pipeline-architecture.md"]
+      "adrs": [
+        "054-author-publish-pipeline-architecture.md"
+      ]
     },
     {
       "branch": "spike/web-check-permissionless-cli",
-      "adrs": ["053-claude-free-website-audit-architecture.md"]
+      "adrs": [
+        "053-claude-free-website-audit-architecture.md"
+      ]
     },
     {
       "branch": "fix/bug-command-branch-enforcement",
-      "adrs": ["052-branch-first-enforcement-for-work-commands.md"]
+      "adrs": [
+        "052-branch-first-enforcement-for-work-commands.md"
+      ]
     },
     {
       "branch": "feat/bounty-scout-github-native-sources",
-      "adrs": ["051-bounty-scout-multi-source-expansion.md"]
+      "adrs": [
+        "051-bounty-scout-multi-source-expansion.md"
+      ]
     },
     {
       "branch": "feat/bounty-competitive-intelligence",
-      "adrs": ["050-bounty-competitive-intelligence-system.md"]
+      "adrs": [
+        "050-bounty-competitive-intelligence-system.md"
+      ]
     },
     {
       "branch": "spike/production-ready-skill",
-      "adrs": ["049-code-quality-skill-architecture.md"]
+      "adrs": [
+        "049-code-quality-skill-architecture.md"
+      ]
     },
     {
       "branch": "feat/bounty-hunter-command",
-      "adrs": ["048-bounty-hunter-command-architecture.md"]
+      "adrs": [
+        "048-bounty-hunter-command-architecture.md"
+      ]
     },
     {
       "branch": "feat/content-fighter-dual-agent-refinement",
-      "adrs": ["047-content-fighter-adversarial-refinement-loop.md"]
+      "adrs": [
+        "047-content-fighter-adversarial-refinement-loop.md"
+      ]
     },
     {
       "branch": "feat/multi-proof-marketplace-support",
-      "adrs": ["046-multi-proof-marketplace-architecture.md"]
+      "adrs": [
+        "046-multi-proof-marketplace-architecture.md"
+      ]
     },
     {
       "branch": "feat/gh-pages-automation",
-      "adrs": ["045-github-pages-full-automation.md"]
+      "adrs": [
+        "045-github-pages-full-automation.md"
+      ]
     },
     {
       "branch": "feat/chrome-extension-developer-skill",
-      "adrs": ["044-chrome-extension-developer-skill.md"]
+      "adrs": [
+        "044-chrome-extension-developer-skill.md"
+      ]
     },
     {
       "branch": "fix/permissionless-proof-parity-failures",
-      "adrs": ["043-dom-based-structural-parity-verification.md"]
+      "adrs": [
+        "043-dom-based-structural-parity-verification.md"
+      ]
     },
     {
       "branch": "feat/npx-dev-port-command",
-      "adrs": ["042-npx-dev-port-command.md"]
+      "adrs": [
+        "042-npx-dev-port-command.md"
+      ]
     },
     {
       "branch": "feat/universal-content-retriever-skill",
-      "adrs": ["041-universal-content-retriever-skill.md"]
+      "adrs": [
+        "041-universal-content-retriever-skill.md"
+      ]
     },
     {
       "branch": "fix/product-brief-versioning-confusion",
-      "adrs": ["040-product-brief-versioned-storage.md"]
+      "adrs": [
+        "040-product-brief-versioned-storage.md"
+      ]
     },
     {
       "branch": "feat/permissionless-proof-check-dx",
-      "adrs": ["039-permissionless-proof-check-extension.md"]
+      "adrs": [
+        "039-permissionless-proof-check-extension.md"
+      ]
     },
     {
       "branch": "feat/checkpoint-persistence",
-      "adrs": ["038-todowrite-checkpoint-persistence.md"]
+      "adrs": [
+        "038-todowrite-checkpoint-persistence.md"
+      ]
     },
     {
       "branch": "feat/permissionless-proof-deploy-scripts",
-      "adrs": ["037-github-pages-deployment-for-proofs.md"]
+      "adrs": [
+        "037-github-pages-deployment-for-proofs.md"
+      ]
     },
     {
       "branch": "feat/auto-visual-parity-verification",
-      "adrs": ["036-auto-visual-parity-verification.md"]
+      "adrs": [
+        "036-auto-visual-parity-verification.md"
+      ]
     },
     {
       "branch": "feat/permissionless-proof-command",
-      "adrs": ["035-permissionless-proof-pipeline-architecture.md"]
+      "adrs": [
+        "035-permissionless-proof-pipeline-architecture.md"
+      ]
     },
     {
       "branch": "feature/add-playwriter-mcp-option",
-      "adrs": ["034-playwriter-alternative-browser-mcp.md"]
+      "adrs": [
+        "034-playwriter-alternative-browser-mcp.md"
+      ]
     },
     {
       "branch": "feat/social-sharing-setup-command",
-      "adrs": ["033-social-sharing-meta-command.md"]
+      "adrs": [
+        "033-social-sharing-meta-command.md"
+      ]
     },
     {
       "branch": "feature/weave-robust-content-intake",
-      "adrs": ["032-tiered-extraction-and-image-intelligence.md"]
+      "adrs": [
+        "032-tiered-extraction-and-image-intelligence.md"
+      ]
     },
     {
       "branch": "feat/product-validation-pipeline",
-      "adrs": ["031-product-validation-pipeline-architecture.md"]
+      "adrs": [
+        "031-product-validation-pipeline-architecture.md"
+      ]
     },
     {
       "branch": "feat/audit-repo-command",
-      "adrs": ["030-audit-repo-secrets-consolidation.md"]
+      "adrs": [
+        "030-audit-repo-secrets-consolidation.md"
+      ]
     },
     {
       "branch": "chore/rename-writer-to-author",
-      "adrs": ["029-author-plugin-rename-and-weave-consolidation.md"]
+      "adrs": [
+        "029-author-plugin-rename-and-weave-consolidation.md"
+      ]
     },
     {
       "branch": "feature/writer-milestones-progress-tracking",
-      "adrs": ["028-writer-milestone-tracking-design.md"]
+      "adrs": [
+        "028-writer-milestone-tracking-design.md"
+      ]
     },
     {
       "branch": "main",
-      "adrs": ["027-documentation-user-centric-refactor.md"]
+      "adrs": [
+        "027-documentation-user-centric-refactor.md"
+      ]
     },
     {
       "branch": "fix/build-in-public-missing-subagent",
-      "adrs": ["026-subagent-skill-dual-architecture-for-proactive-features.md"]
+      "adrs": [
+        "026-subagent-skill-dual-architecture-for-proactive-features.md"
+      ]
     },
     {
       "branch": "spike/writer-weave-command",
-      "adrs": ["025-writer-weave-command-for-reference-integration.md"]
+      "adrs": [
+        "025-writer-weave-command-for-reference-integration.md"
+      ]
     },
     {
       "branch": "spike/writer-import-existing-content",
-      "adrs": ["024-writer-import-command-for-existing-content.md"]
+      "adrs": [
+        "024-writer-import-command-for-existing-content.md"
+      ]
     },
     {
       "branch": "feat/adr-integration-workflow",
-      "adrs": ["001-integrate-adrs-into-pr-workflow.md"]
+      "adrs": [
+        "001-integrate-adrs-into-pr-workflow.md"
+      ]
     },
     {
       "branch": "feat/add-chrome-devtools-and-figma-mcp",
-      "adrs": ["002-support-http-transport-mcp-servers.md"]
+      "adrs": [
+        "002-support-http-transport-mcp-servers.md"
+      ]
     },
     {
       "branch": "feat/bundle-claude-md-rules",
-      "adrs": ["003-symlink-approach-for-plugin-instructions.md"]
+      "adrs": [
+        "003-symlink-approach-for-plugin-instructions.md"
+      ]
     },
     {
       "branch": "feat/add-bug-command",
-      "adrs": ["004-forensic-workflow-for-bug-command.md"]
+      "adrs": [
+        "004-forensic-workflow-for-bug-command.md"
+      ]
     },
     {
       "branch": "feat/pr-version-check",
-      "adrs": ["005-runtime-inference-for-version-check.md"]
+      "adrs": [
+        "005-runtime-inference-for-version-check.md"
+      ]
     },
     {
       "branch": "feat/wtf-alias-and-report-output",
-      "adrs": ["006-subdirectory-pattern-for-shared-templates.md"]
+      "adrs": [
+        "006-subdirectory-pattern-for-shared-templates.md"
+      ]
     },
     {
       "branch": "feat/add-onboarding-command",
-      "adrs": ["007-interactive-phased-onboarding-with-partial-detection.md"]
+      "adrs": [
+        "007-interactive-phased-onboarding-with-partial-detection.md"
+      ]
     },
     {
       "branch": "feat/readme-beauty-mode-formatting-control",
-      "adrs": ["008-explicit-mode-selection-for-readme-beautification.md"]
+      "adrs": [
+        "008-explicit-mode-selection-for-readme-beautification.md"
+      ]
     },
     {
       "branch": "feat/supabase-local-command",
-      "adrs": ["009-supabase-port-range-allocation-strategy.md"]
+      "adrs": [
+        "009-supabase-port-range-allocation-strategy.md"
+      ]
     },
     {
       "branch": "feat/dev-setup-command",
-      "adrs": ["010-bundled-bin-assets-for-setup-commands.md", "011-command-first-cli-pattern-for-npx-dev.md"]
+      "adrs": [
+        "010-bundled-bin-assets-for-setup-commands.md",
+        "011-command-first-cli-pattern-for-npx-dev.md"
+      ]
     },
     {
       "branch": "fix/dev-setup-port-detection",
-      "adrs": ["012-dynamic-port-allocation-at-setup-time.md"]
+      "adrs": [
+        "012-dynamic-port-allocation-at-setup-time.md"
+      ]
     },
     {
       "branch": "feat/known-issues-command",
-      "adrs": ["013-centralized-json-index-for-known-issues.md"]
+      "adrs": [
+        "013-centralized-json-index-for-known-issues.md"
+      ]
     },
     {
       "branch": "feat/frontend-design-skill",
-      "adrs": ["014-skills-directory-for-bundled-agent-skills.md"]
+      "adrs": [
+        "014-skills-directory-for-bundled-agent-skills.md"
+      ]
     },
     {
       "branch": "feat/audit-backlog-roadmap-commands",
-      "adrs": ["015-audit-backlog-roadmap-command-architecture.md"]
+      "adrs": [
+        "015-audit-backlog-roadmap-command-architecture.md"
+      ]
     },
     {
       "branch": "fix/adr-check-backlog-integration-commands",
-      "adrs": ["016-adr-check-and-backlog-integration-for-work-commands.md"]
+      "adrs": [
+        "016-adr-check-and-backlog-integration-for-work-commands.md"
+      ]
     },
     {
       "branch": "feat/work-type-commands-spec-ingestion",
-      "adrs": ["017-branch-naming-invariant-and-work-type-taxonomy.md"]
+      "adrs": [
+        "017-branch-naming-invariant-and-work-type-taxonomy.md"
+      ]
     },
     {
       "branch": "feat/mvp-cut-line-workflow",
-      "adrs": ["018-mvp-cut-line-moscow-phases.md"]
+      "adrs": [
+        "018-mvp-cut-line-moscow-phases.md"
+      ]
     },
     {
       "branch": "feat/react-to-next-migration-command",
-      "adrs": ["019-react-to-next-migration-design.md"]
+      "adrs": [
+        "019-react-to-next-migration-design.md"
+      ]
     },
     {
       "branch": "feat/audit-security-command",
-      "adrs": ["020-audit-command-namespace-hierarchy.md"]
+      "adrs": [
+        "020-audit-command-namespace-hierarchy.md"
+      ]
     },
     {
       "branch": "feat/build-in-public",
-      "adrs": ["021-build-in-public-skill-architecture.md"]
+      "adrs": [
+        "021-build-in-public-skill-architecture.md"
+      ]
     },
     {
       "branch": "feature/ultrathink-integration",
-      "adrs": ["022-ultrathink-integration-for-complex-commands.md"]
+      "adrs": [
+        "022-ultrathink-integration-for-complex-commands.md"
+      ]
     },
     {
       "branch": "mvp/writer-plugin",
-      "adrs": ["023-writer-plugin-multi-plugin-architecture.md"]
+      "adrs": [
+        "023-writer-plugin-multi-plugin-architecture.md"
+      ]
     }
   ]
 }
