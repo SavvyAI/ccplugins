@@ -1,0 +1,12 @@
+{
+  "name": "clip",
+  "description": "Content capture primitive - extract and transform web content to clipboard",
+  "version": "1.0.0",
+  "author": {
+    "name": "Wil Moore III"
+  },
+  "repository": "https://github.com/SavvyAI/ccplugins",
+  "license": "MIT",
+  "keywords": ["clipboard", "extraction", "markdown", "content", "web"],
+  "skills": "./skills/"
+}

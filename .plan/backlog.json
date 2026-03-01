@@ -1,5 +1,5 @@
 {
-  "lastSequence": 105,
+  "lastSequence": 106,
   "items": [
     {
       "id": 104,
@@ -1387,6 +1387,18 @@
       "sourceBranch": "chore/revert-gemini-extension-sideload",
       "createdAt": "2026-02-21T12:00:00Z",
       "status": "completed"
+    },
+    {
+      "id": 106,
+      "title": "Add clip plugin for content extraction",
+      "description": "Create a new clip plugin with hierarchical skills for extracting web content to clipboard. Skills: /clip:content, /clip:content.headline, /clip:content.summary, /clip:content.usecases, /clip:content.sentiment, /clip:content.screenshot",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|106|add-clip-plugin-for-content-extraction",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-article-extraction-skill",
+      "createdAt": "2026-02-28T10:00:00Z",
+      "status": "in-progress"
     }
   ]
 }
