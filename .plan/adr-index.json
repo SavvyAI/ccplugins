@@ -1,6 +1,12 @@
 {
-  "lastSequence": 70,
+  "lastSequence": 71,
   "entries": [
+    {
+      "branch": "feat/add-article-extraction-skill",
+      "adrs": [
+        "071-clip-plugin-content-capture-primitive.md"
+      ]
+    },
     {
       "branch": "chore/revert-gemini-extension-sideload",
       "adrs": [
