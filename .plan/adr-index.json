@@ -1,6 +1,12 @@
 {
-  "lastSequence": 71,
+  "lastSequence": 72,
   "entries": [
+    {
+      "branch": "fix/backlog-status-not-updated-on-pr-merged",
+      "adrs": [
+        "072-backlog-lifecycle-via-composable-skill.md"
+      ]
+    },
     {
       "branch": "feat/add-article-extraction-skill",
       "adrs": [

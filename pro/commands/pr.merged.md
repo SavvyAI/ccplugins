@@ -11,8 +11,9 @@ The pull request: $ARGUMENTS was successfully merged and closed.
 2. Switch to the main branch.
 3. Pull latest changes.
 4. **Create version tag** - If version bump was recorded, create and push the git tag (see Tagging instructions below).
-5. Delete the merged feature branch (local and remote).
-6. Clear the conversation.
+5. **Mark backlog item resolved** - Invoke the `backlog-resolve` skill (see Backlog Status Update below).
+6. Delete the merged feature branch (local and remote).
+7. Clear the conversation.
 
 ---
 
@@ -179,6 +180,19 @@ git push origin {tag}
 
 Report success:
 > "Tagged and pushed {tag}"
+
+---
+
+## Backlog Status Update
+
+After a PR is merged, the corresponding backlog item must be marked as resolved.
+
+**Invoke the `backlog-resolve` skill** with the merged branch name. The skill will:
+1. Find the matching backlog item by `sourceBranch`
+2. Update `status` to `"resolved"` with `resolvedAt` timestamp
+3. Commit the change
+
+If no matching backlog item exists (work started manually), this is not an error.
 
 ---
 
