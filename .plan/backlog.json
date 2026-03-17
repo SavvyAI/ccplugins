@@ -1,6 +1,18 @@
 {
-  "lastSequence": 106,
+  "lastSequence": 107,
   "items": [
+    {
+      "id": 107,
+      "title": "Integrate Context Mode MCP server",
+      "description": "Add Context Mode MCP server for context window optimization. Reduces token usage via sandboxed execution (only stdout enters context) and FTS5 indexing for intelligent retrieval. Tools: ctx_execute, ctx_execute_file, ctx_batch_execute, ctx_index, ctx_search, ctx_fetch_and_index, ctx_stats, ctx_doctor, ctx_upgrade. Source: https://github.com/mksglu/context-mode",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|107|integrate-context-mode-mcp",
+      "source": "/pro:feature",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
     {
       "id": 104,
       "title": "Add Attio MCP and skill",
