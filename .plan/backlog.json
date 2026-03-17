@@ -1,5 +1,5 @@
 {
-  "lastSequence": 107,
+  "lastSequence": 110,
   "items": [
     {
       "id": 107,
@@ -1411,6 +1411,42 @@
       "sourceBranch": "feat/add-article-extraction-skill",
       "createdAt": "2026-02-28T10:00:00Z",
       "status": "in-progress"
+    },
+    {
+      "id": 108,
+      "title": "Add TDD skill for test-driven development enforcement",
+      "description": "Port TDD skill from obra/superpowers. Enforces RED-GREEN-REFACTOR cycle with hard gate: no production code without failing test first. Auto-invokes when implementation detected. Rejects common rationalizations ('too simple', 'I'll test after'). Design decision: skill-only vs /pro:tdd command vs --tdd flag.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|108|add-tdd-skill",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 109,
+      "title": "Add Git worktrees skill for isolated development",
+      "description": "Port git worktrees skill from obra/superpowers. Enables isolated parallel development with proper directory selection, safety verification (.gitignore checks), dependency auto-install, and baseline test runs. Expand brief mention in /pro:spike to full skill. Design decision: skill-only vs /pro:worktree command.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|109|add-git-worktrees-skill",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 110,
+      "title": "Enhance /pro:bug with 4-phase systematic debugging",
+      "description": "Port systematic debugging phases from obra/superpowers to /pro:bug. Four phases: (1) Root Cause Investigation - read errors, reproduce, trace data flow; (2) Pattern Analysis - compare broken vs working; (3) Hypothesis Testing - single variable changes; (4) Implementation - failing test first. Add red flags for premature fixes.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|110|enhance-bug-4-phase-debugging",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
     }
   ]
 }
