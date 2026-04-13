@@ -1458,7 +1458,8 @@
       "source": "/pro:feature",
       "sourceBranch": "feat/add-framework-evaluation-command",
       "createdAt": "2026-03-19T00:00:00Z",
-      "status": "in-progress"
+      "status": "resolved",
+      "resolvedAt": "2026-04-13T00:00:00Z"
     }
   ]
 }
