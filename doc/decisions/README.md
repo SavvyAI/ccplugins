@@ -88,3 +88,5 @@ We use the [Michael Nygard format](https://cognitect.com/blog/2011/11/15/documen
 - [068. Universal Pre-Commit Quality Gates](068-universal-precommit-quality-gates.md)
 - [070. Abandon Dual CLI Support in Favor of Separate Repos](070-abandon-dual-cli-support-in-favor-of-separate-repos.md)
 - [071. Clip Plugin - Content Capture Primitive](071-clip-plugin-content-capture-primitive.md)
+- [072. Backlog Lifecycle via Composable Skill](072-backlog-lifecycle-via-composable-skill.md)
+- [073. Evaluate Framework Command Architecture](073-evaluate-framework-command-architecture.md)

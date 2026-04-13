@@ -1,5 +1,5 @@
 {
-  "lastSequence": 110,
+  "lastSequence": 111,
   "items": [
     {
       "id": 107,
@@ -1447,6 +1447,18 @@
       "sourceBranch": null,
       "createdAt": "2026-03-17T00:00:00Z",
       "status": "open"
+    },
+    {
+      "id": 111,
+      "title": "Add /pro:evaluate.framework command for systematic framework evaluation",
+      "description": "Create command to systematically evaluate external frameworks, skill packs, or plugins against ccplugins. Creates spike branch, clones to $TMPDIR, gathers metadata (age, stars, license), detects project type (marketplace/plugin/skill), runs standard checks, generates comparison matrix, outputs to doc/frameworks/{name}.md, and suggests ADRs and backlog items.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|111|add-evaluate-framework-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-framework-evaluation-command",
+      "createdAt": "2026-03-19T00:00:00Z",
+      "status": "in-progress"
     }
   ]
 }
