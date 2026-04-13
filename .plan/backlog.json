@@ -1,5 +1,5 @@
 {
-  "lastSequence": 111,
+  "lastSequence": 114,
   "items": [
     {
       "id": 107,
@@ -1460,6 +1460,42 @@
       "createdAt": "2026-03-19T00:00:00Z",
       "status": "resolved",
       "resolvedAt": "2026-04-13T00:00:00Z"
+    },
+    {
+      "id": 112,
+      "title": "Add parallel task execution pattern",
+      "description": "Port cavekit's wave-based parallel dispatch using tmux and git worktrees. Groups independent tasks into waves, dispatches as parallel subagents, merges results, computes next frontier. Enables significant speedup for independent tasks. Source: cavekit/make.md, doc/frameworks/cavekit.md",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|112|add-parallel-task-execution",
+      "source": "spike/evaluate-cavekit",
+      "sourceBranch": null,
+      "createdAt": "2026-04-13T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 113,
+      "title": "Enhance backlog with task dependencies",
+      "description": "Add dependsOn field to backlog items enabling tiered execution. Tasks organized into tiers where Tier 0 has no deps, Tier 1 depends on Tier 0, etc. Enables parallel execution of independent tasks within same tier. Source: cavekit build site concept, doc/frameworks/cavekit.md",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|113|backlog-task-dependencies",
+      "source": "spike/evaluate-cavekit",
+      "sourceBranch": null,
+      "createdAt": "2026-04-13T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 114,
+      "title": "Add /pro:spec.extract for brownfield adoption",
+      "description": "Reverse-engineer specs from existing codebase. Layer kits on top of existing code without rewrite. The existing code becomes reference material, specs are extracted from what code actually does. Enables adopting specification-driven methodology on existing projects. Source: cavekit brownfield-adoption skill, doc/frameworks/cavekit.md",
+      "category": "feature",
+      "severity": "low",
+      "fingerprint": "feature|114|spec-extract-brownfield",
+      "source": "spike/evaluate-cavekit",
+      "sourceBranch": null,
+      "createdAt": "2026-04-13T00:00:00Z",
+      "status": "open"
     }
   ]
 }
