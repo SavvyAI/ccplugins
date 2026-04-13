@@ -1,5 +1,5 @@
 {
-  "lastSequence": 114,
+  "lastSequence": 115,
   "items": [
     {
       "id": 107,
@@ -1493,6 +1493,18 @@
       "severity": "low",
       "fingerprint": "feature|114|spec-extract-brownfield",
       "source": "spike/evaluate-cavekit",
+      "sourceBranch": null,
+      "createdAt": "2026-04-13T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 115,
+      "title": "Consider caveman integration",
+      "description": "Evaluate whether to port caveman's token-efficiency capability or document it as a recommended companion plugin. Also assess whether its hooks and state management pattern should influence ccplugins. Source: doc/frameworks/caveman.md",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|115|consider-caveman-integration",
+      "source": "spike/evaluate-caveman",
       "sourceBranch": null,
       "createdAt": "2026-04-13T00:00:00Z",
       "status": "open"
