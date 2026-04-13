@@ -1,6 +1,18 @@
 {
-  "lastSequence": 106,
+  "lastSequence": 111,
   "items": [
+    {
+      "id": 107,
+      "title": "Integrate Context Mode MCP server",
+      "description": "Add Context Mode MCP server for context window optimization. Reduces token usage via sandboxed execution (only stdout enters context) and FTS5 indexing for intelligent retrieval. Tools: ctx_execute, ctx_execute_file, ctx_batch_execute, ctx_index, ctx_search, ctx_fetch_and_index, ctx_stats, ctx_doctor, ctx_upgrade. Source: https://github.com/mksglu/context-mode",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|107|integrate-context-mode-mcp",
+      "source": "/pro:feature",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
     {
       "id": 104,
       "title": "Add Attio MCP and skill",
@@ -1398,6 +1410,54 @@
       "source": "/pro:feature",
       "sourceBranch": "feat/add-article-extraction-skill",
       "createdAt": "2026-02-28T10:00:00Z",
+      "status": "in-progress"
+    },
+    {
+      "id": 108,
+      "title": "Add TDD skill for test-driven development enforcement",
+      "description": "Port TDD skill from obra/superpowers. Enforces RED-GREEN-REFACTOR cycle with hard gate: no production code without failing test first. Auto-invokes when implementation detected. Rejects common rationalizations ('too simple', 'I'll test after'). Design decision: skill-only vs /pro:tdd command vs --tdd flag.",
+      "category": "feature",
+      "severity": "high",
+      "fingerprint": "feature|108|add-tdd-skill",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 109,
+      "title": "Add Git worktrees skill for isolated development",
+      "description": "Port git worktrees skill from obra/superpowers. Enables isolated parallel development with proper directory selection, safety verification (.gitignore checks), dependency auto-install, and baseline test runs. Expand brief mention in /pro:spike to full skill. Design decision: skill-only vs /pro:worktree command.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|109|add-git-worktrees-skill",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 110,
+      "title": "Enhance /pro:bug with 4-phase systematic debugging",
+      "description": "Port systematic debugging phases from obra/superpowers to /pro:bug. Four phases: (1) Root Cause Investigation - read errors, reproduce, trace data flow; (2) Pattern Analysis - compare broken vs working; (3) Hypothesis Testing - single variable changes; (4) Implementation - failing test first. Add red flags for premature fixes.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|110|enhance-bug-4-phase-debugging",
+      "source": "spike/evaluate-superpowers-porting",
+      "sourceBranch": null,
+      "createdAt": "2026-03-17T00:00:00Z",
+      "status": "open"
+    },
+    {
+      "id": 111,
+      "title": "Add /pro:evaluate.framework command for systematic framework evaluation",
+      "description": "Create command to systematically evaluate external frameworks, skill packs, or plugins against ccplugins. Creates spike branch, clones to $TMPDIR, gathers metadata (age, stars, license), detects project type (marketplace/plugin/skill), runs standard checks, generates comparison matrix, outputs to doc/frameworks/{name}.md, and suggests ADRs and backlog items.",
+      "category": "feature",
+      "severity": "medium",
+      "fingerprint": "feature|111|add-evaluate-framework-command",
+      "source": "/pro:feature",
+      "sourceBranch": "feat/add-framework-evaluation-command",
+      "createdAt": "2026-03-19T00:00:00Z",
       "status": "in-progress"
     }
   ]

@@ -1,6 +1,12 @@
 {
-  "lastSequence": 72,
+  "lastSequence": 73,
   "entries": [
+    {
+      "branch": "feat/add-framework-evaluation-command",
+      "adrs": [
+        "073-evaluate-framework-command-architecture.md"
+      ]
+    },
     {
       "branch": "fix/backlog-status-not-updated-on-pr-merged",
       "adrs": [

@@ -57,6 +57,7 @@ Installing this plugin gives Claude Code:
 | `/pro:product.pitch` | Generate investor-ready pitch deck outline from validation |
 | `/pro:bounty.scout` | Discover and evaluate high-ROI bounties (no side effects) |
 | `/pro:bounty.hunter` | Full bounty execution: fork, implement, PR with human checkpoint |
+| `/pro:evaluate.framework` | Evaluate external framework against ccplugins with comparison matrix |
 
 ## Workflow
 
@@ -102,6 +103,10 @@ Installing this plugin gives Claude Code:
 # Bounty hunting (OSS revenue)
 /pro:bounty.scout               # Research bounties, get TAKE/SKIP recommendation
 /pro:bounty.hunter              # Full execution: fork, implement, PR
+
+# Framework evaluation
+/pro:evaluate.framework https://github.com/obra/superpowers
+                                # Clone, analyze, generate doc/frameworks/superpowers.md
 ```
 
 ## Bundled MCP Servers
