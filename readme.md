@@ -12,6 +12,7 @@ Plugins that extend Claude Code with powerful development workflows.
 |--------|-------------|
 | [Pro](./pro/readme.md) | Professional development workflows with planning, branch management, and PR automation |
 | [Author](./author/readme.md) | Markdown-native authoring and publishing for long-form writing |
+| [Clip](./clip/readme.md) | Content capture primitive - extract and transform web content to clipboard |
 
 ## Installation
 
