@@ -1,5 +1,5 @@
 {
-  "lastSequence": 115,
+  "lastSequence": 116,
   "items": [
     {
       "id": 107,
@@ -1508,6 +1508,18 @@
       "sourceBranch": null,
       "createdAt": "2026-04-13T00:00:00Z",
       "status": "open"
+    },
+    {
+      "id": 116,
+      "title": "Clip plugin missing from marketplace",
+      "description": "The clip plugin exists in the repository but doesn't appear in Claude Code's plugin lists because it was never added to .claude-plugin/marketplace.json. Clip skills are completely unusable until fixed.",
+      "category": "bug",
+      "severity": "critical",
+      "fingerprint": "bug|116|clip-plugin-missing-from-list",
+      "source": "fix/clip-plugin-missing-from-list",
+      "sourceBranch": "fix/clip-plugin-missing-from-list",
+      "createdAt": "2026-05-01T00:00:00Z",
+      "status": "in-progress"
     }
   ]
 }

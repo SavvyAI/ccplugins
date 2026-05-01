@@ -11,6 +11,10 @@
     {
       "name": "author",
       "source": "./author"
+    },
+    {
+      "name": "clip",
+      "source": "./clip"
     }
   ]
 }
