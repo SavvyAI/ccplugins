@@ -1519,7 +1519,8 @@
       "source": "fix/clip-plugin-missing-from-list",
       "sourceBranch": "fix/clip-plugin-missing-from-list",
       "createdAt": "2026-05-01T00:00:00Z",
-      "status": "in-progress"
+      "status": "resolved",
+      "resolvedAt": "2026-05-01T00:00:00Z"
     }
   ]
 }
